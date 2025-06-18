@@ -1,0 +1,43 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import AnchorHeading from '@astrojs/starlight/components/AnchorHeading.astro';
+import { actions } from 'astro:actions';
+import greyMatter from "gray-matter";
+import { LinkCard } from '@astrojs/starlight/components';
+
+
+/**
+ * Fetch integrations directory from websites-sources using GraphQL.
+ */
+ const { data, error } = await Astro.callAction(
+  actions.getRepoContentGQL, 
+  { path: `content/en/integrations` }
+) as {data: {repository: {object: {entries: any[]}}}, error: any};
+
+if (error) {
+  console.error("Error fetching repo content:", decodeURIComponent(error.message));
+  return Astro.redirect("/404");
+}
+---
+
+
+<StarlightPage frontmatter={{ title: 'Integrations QL' }}>
+    <AnchorHeading level="2" id="greeting">Getting Started with Integrations GraphQL</AnchorHeading>
+    <div>
+        {
+            data.repository.object.entries.map((entry: any) => {
+                const fm = greyMatter(entry.object.text).data // use greyMatter to parse markdown. separate yaml from markdown content
+                const title = fm.title
+                const slug = entry.name.replace('.md', '')
+                console.log("data", fm)
+                return (
+                    <LinkCard
+                        title={title}
+                        href={`/integrations-ssr-gql/${slug}`}
+                        data-astro-prefetch="tap"
+                    />
+                )
+            })
+        }
+    </div>
+</StarlightPage>

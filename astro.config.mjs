@@ -21,8 +21,12 @@ export default defineConfig({
           autogenerate: { directory: "guides" },
         },
         {
-          label: "Integrations-SSR",
-          link: "/integrations-ssr",
+          label: "Integrations-SSR-REST",
+          link: "/integrations-ssr-rest",
+        },
+        {
+          label: "Integrations-SSR-GQL",
+          link: "/integrations-ssr-gql",
         },
         {
           label: "Reference",

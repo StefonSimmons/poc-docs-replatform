@@ -13,8 +13,8 @@ import { LinkCard } from '@astrojs/starlight/components';
  * we may want to use Github Graphql API to combine requests as this seems to be a limitation of the Github RESTAPI.
  */
  const { data, error } = await Astro.callAction(
-  actions.getRepoContent, 
-  { owner: "DataDog", repo: "websites-sources", path: `content/en/integrations` }
+  actions.getFileContent, 
+  { path: `content/en/integrations` }
 ) as {data: {data: any}, error: any};
 
 
@@ -27,7 +27,7 @@ if (error) {
 
 
 <StarlightPage frontmatter={{ title: 'Integrations' }}>
-    <AnchorHeading level="1" id="greeting">Getting Started with Integrations</AnchorHeading>
+    <AnchorHeading level="2" id="greeting">Getting Started with Integrations REST</AnchorHeading>
     <div class="">
         {
             data.data.entries.map((entry: any) => {
@@ -36,7 +36,7 @@ if (error) {
                 return (
                     <LinkCard
                         title={title}
-                        href={`/integrations-ssr/${slug}`}
+                        href={`/integrations-ssr-rest/${slug}`}
                         data-astro-prefetch="tap"
                     />
                 )

@@ -12,22 +12,19 @@ const { id } = Astro.params;
  * Fetch integrations content of websites-sources
  */
 const { data, error } = await Astro.callAction(
-  actions.getRepoContent, 
-  { owner: "DataDog", repo: "websites-sources", path: `content/en/integrations/${id}.md` }
-) as {data: {data: {content: string, name: string, encoding: string}}, error: any};
+  actions.getFileContentGQL, 
+  { path: `content/en/integrations/${id}.md` }
+) as {data: {repository: {object: {text: string}}}, error: any};
 
 if (error) {
   console.error("Error fetching repo content:", decodeURIComponent(error.message));
   return Astro.redirect("/404");
 }
-let content, fm = null;
 
-const decodeContent = Buffer.from(data.data.content, data.data.encoding).toString('utf-8');
-const greyMatterData = greyMatter(decodeContent) // use greyMatter to parse markdown. separate yaml from markdown content
-content = greyMatterData.content
-fm = greyMatterData.data
-content = marked.parse(content)
 
+const greyMatterData = greyMatter(data.repository.object.text) // use greyMatter to parse markdown. separate yaml from markdown content
+const content = marked.parse(greyMatterData.content)
+const fm = greyMatterData.data
 ---
 
 
