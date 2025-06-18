@@ -1,0 +1,30 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import AnchorHeading from '@astrojs/starlight/components/AnchorHeading.astro';
+import { LinkCard } from '@astrojs/starlight/components';
+import { getCollection, getEntry } from 'astro:content';
+
+
+/**
+ * Fetch remote integrations collection from Content Loader.
+*/
+const integrations = await getCollection('remote_integrations');
+---
+
+<StarlightPage frontmatter={{ title: 'Integrations ACL' }}>
+    <AnchorHeading level="2" id="greeting">Getting Started with Integrations ACL</AnchorHeading>
+    <div class="">
+        {
+            integrations.map((entry: any) => {
+                const {data: {fm}} = entry
+                return (
+                    <LinkCard
+                        title={fm.title}
+                        href={`/integrations-ssg-acl/${entry.id}`}
+                        data-astro-prefetch="tap"
+                    />
+                )
+            })
+        }
+    </div>
+</StarlightPage>

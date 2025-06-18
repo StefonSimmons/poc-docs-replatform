@@ -29,6 +29,10 @@ export default defineConfig({
           link: "/integrations-ssr-gql",
         },
         {
+          label: "Integrations-SSG-ACL",
+          link: "/integrations-ssg-acl",
+        },
+        {
           label: "Reference",
           // Autogenerate a group of links for the 'reference' directory.
           autogenerate: { directory: "reference" },
