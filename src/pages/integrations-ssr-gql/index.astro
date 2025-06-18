@@ -29,7 +29,6 @@ if (error) {
                 const fm = greyMatter(entry.object.text).data // use greyMatter to parse markdown. separate yaml from markdown content
                 const title = fm.title
                 const slug = entry.name.replace('.md', '')
-                console.log("data", fm)
                 return (
                     <LinkCard
                         title={title}
