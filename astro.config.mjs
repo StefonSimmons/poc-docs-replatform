@@ -6,7 +6,7 @@ import starlight from "@astrojs/starlight";
 export default defineConfig({
   integrations: [
     starlight({
-      title: "My Docs",
+      title: "My Docs POC",
       social: [
         {
           icon: "github",
@@ -21,8 +21,8 @@ export default defineConfig({
           autogenerate: { directory: "guides" },
         },
         {
-          label: "Integrations",
-          link: "/integrations",
+          label: "Integrations-SSR",
+          link: "/integrations-ssr",
         },
         {
           label: "Reference",

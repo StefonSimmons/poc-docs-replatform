@@ -1,0 +1,46 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import AnchorHeading from '@astrojs/starlight/components/AnchorHeading.astro';
+import { actions } from 'astro:actions';
+import { LinkCard } from '@astrojs/starlight/components';
+
+
+/**
+ * Fetch integrations directory from websites-sources.
+ * we are currently using the de-slugged file name as the title. which isnt correct.
+ * we may need to fetch for the individual file's content (i.e. contnet/en/integrations/ably.md) as
+ * the "content" and "encryption" fields are not returned in the content/en/integrations list output. 
+ * we may want to use Github Graphql API to combine requests as this seems to be a limitation of the Github RESTAPI.
+ */
+ const { data, error } = await Astro.callAction(
+  actions.getRepoContent, 
+  { owner: "DataDog", repo: "websites-sources", path: `content/en/integrations` }
+) as {data: {data: any}, error: any};
+
+
+if (error) {
+  console.error("Error fetching repo content:", decodeURIComponent(error.message));
+  return Astro.redirect("/404");
+}
+
+---
+
+
+<StarlightPage frontmatter={{ title: 'Integrations' }}>
+    <AnchorHeading level="1" id="greeting">Getting Started with Integrations</AnchorHeading>
+    <div class="">
+        {
+            data.data.entries.map((entry: any) => {
+                const slug = entry.name.replace('.md', '')
+                const title = slug.replaceAll("-", " ").replaceAll("_", " ")
+                return (
+                    <LinkCard
+                        title={title}
+                        href={`/integrations-ssr/${slug}`}
+                        data-astro-prefetch="tap"
+                    />
+                )
+            })
+        }
+    </div>
+</StarlightPage>
