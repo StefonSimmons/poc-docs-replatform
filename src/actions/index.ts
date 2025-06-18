@@ -47,9 +47,9 @@ export const server = {
      */
     getFileContentGQL: defineAction({
         input: z.object({
-            owner: z.string().optional().default("DataDog").describe('The name of the repository owner'),
-            repo: z.string().optional().default("websites-sources").describe('The name of the repository to fetch the content for'),
-            branch: z.string().optional().default("main").describe('The branch to fetch from'),
+            owner: z.string().default("DataDog").describe('The name of the repository owner'),
+            repo: z.string().default("websites-sources").describe('The name of the repository to fetch the content for'),
+            branch: z.string().default("main").describe('The branch to fetch from'),
             path: z.string().describe('The file path to fetch the content for')
         }),
         handler: async ({ owner, branch, repo, path }) => {
@@ -77,9 +77,9 @@ export const server = {
      */
     getRepoContentGQL: defineAction({
         input: z.object({
-            owner: z.string().optional().default("DataDog").describe('The name of the repository owner'),
-            repo: z.string().optional().default("websites-sources").describe('The name of the repository to fetch the content for'),
-            branch: z.string().optional().default('main').describe('The branch to fetch from'),
+            owner: z.string().default("DataDog").describe('The name of the repository owner'),
+            repo: z.string().default("websites-sources").describe('The name of the repository to fetch the content for'),
+            branch: z.string().default('main').describe('The branch to fetch from'),
             path: z.string().describe('The directory path to fetch the content for')
         }),
         handler: async ({ owner, repo, path, branch }) => {
