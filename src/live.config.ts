@@ -1,4 +1,4 @@
-import { defineLiveCollection, z } from 'astro:content';
+import { defineLiveCollection } from 'astro:content';
 import { remoteLiveLoader } from '../loaders';
 
 export const collections = {

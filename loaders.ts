@@ -2,7 +2,7 @@ import type { Loader, LoaderContext, LiveLoader } from "astro/loaders";
 import { Octokit } from "octokit";
 import { getSecret } from 'astro:env/server'
 import greyMatter from 'gray-matter'
-import { marked, options } from "marked";
+import { marked } from "marked";
 
 const octokit = new Octokit({ 
     auth: getSecret('GITHUB_TOKEN')
@@ -98,7 +98,7 @@ export function remoteLoader(options: Options): Loader {
 export function remoteLiveLoader (config: Options): LiveLoader {
     return {
         name: 'remote-live-integrations',
-        loadCollection: async ({filters}:any) => {
+        loadCollection: async () => {
             console.log("Loading Remote Live Integrations")
             const getIntegrations = async (options: Options) => {
                 const expression = `${options.branch}:${options.path}`;

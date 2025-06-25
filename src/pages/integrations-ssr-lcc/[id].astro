@@ -5,7 +5,7 @@ export const prerender = false
 
 const { id } = Astro.params as {id: string};
 
-const { entry, error, cacheHint } = await getLiveEntry('remote_live_integrations', id);
+const { entry, error } = await getLiveEntry('remote_live_integrations', id);
 
 if (error || !entry) {
   console.error(`Error fetching integration: ${id}`,error);

@@ -7,15 +7,18 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.4",
     "@astrojs/starlight": "^0.34.4",
-    "@astrojs/vercel": "^8.2.0",
+    "@astrojs/vercel": "^8.0.4",
     "astro": "^5.10.1",
     "gray-matter": "^4.0.3",
     "marked": "^15.0.12",
     "octokit": "^5.0.3",
-    "sharp": "^0.32.5"
+    "sharp": "^0.32.5",
+    "typescript": "^5.8.3"
   }
 }
