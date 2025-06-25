@@ -82,7 +82,9 @@ export const server = {
             branch: z.string().default('main').describe('The branch to fetch from'),
             path: z.string().describe('The directory path to fetch the content for')
         }),
-        handler: async ({ owner, repo, path, branch }) => {
+        handler: async ({ owner, repo, path, branch }, config) => {
+            console.log("CONFIG::", config)
+
             const expression = `${branch}:${path}`;
             const query = `
             query ($owner: String!, $repo: String!, $expression: String!) {
