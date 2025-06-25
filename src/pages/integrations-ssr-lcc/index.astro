@@ -1,0 +1,33 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import AnchorHeading from '@astrojs/starlight/components/AnchorHeading.astro';
+import { LinkCard } from '@astrojs/starlight/components';
+import { getLiveCollection } from 'astro:content';
+
+
+// /**
+//  * Fetch remote integrations collection from Content Loader.
+// */
+const {entries, error} = await getLiveCollection('remote_live_integrations');
+if (error) {
+    console.error("Live Collection Error:",error.message);
+}
+---
+
+<StarlightPage frontmatter={{ title: 'Integrations Live Content Collections' }}>
+    <AnchorHeading level="2" id="greeting">Getting Started with Integrations LCC</AnchorHeading>
+    <div>
+        {
+            entries?.map((entry: any) => {
+                const {data: {fm}} = entry
+                return (
+                    <LinkCard
+                        title={fm.title}
+                        href={`/integrations-ssr-lcc/${fm.app_id}`}
+                        data-astro-prefetch="tap"
+                    />
+                )
+            })
+        }
+    </div>
+</StarlightPage>

@@ -4,6 +4,9 @@ import starlight from "@astrojs/starlight";
 
 // https://astro.build/config
 export default defineConfig({
+  experimental: {
+    liveContentCollections: true,
+  },
   integrations: [
     starlight({
       title: "My Docs POC",
@@ -33,11 +36,15 @@ export default defineConfig({
           link: "/integrations-ssg-acl",
         },
         {
+          label: "Integrations-SSR-LCC",
+          link: "/integrations-ssr-lcc",
+        },
+        {
           label: "Reference",
           // Autogenerate a group of links for the 'reference' directory.
           autogenerate: { directory: "reference" },
         },
       ],
     }),
-  ],
+  ]
 });

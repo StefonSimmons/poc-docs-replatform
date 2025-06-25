@@ -3,7 +3,7 @@ import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getCollection } from 'astro:content';
 
 
-// 1. Generate a new path for every collection entry
+// 1. Generate a new path for every collection entry at build
 export async function getStaticPaths() {
   const integrations = await getCollection('remote_integrations');
   return integrations.map(entry => ({
@@ -12,7 +12,7 @@ export async function getStaticPaths() {
   }));
 }
 
-// 2. For the template, we can get the entry directly from the prop and destructure the frontmatter and content
+// 2. For the template, we can get the entry directly from the prop and deconstruct the frontmatter and content
 const { entry } = Astro.props;
 const {data: {fm, content}} = entry
 ---

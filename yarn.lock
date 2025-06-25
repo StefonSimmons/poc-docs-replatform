@@ -74,10 +74,10 @@
     stream-replace-string "^2.0.0"
     zod "^3.24.2"
 
-"@astrojs/starlight@^0.34.3":
-  version "0.34.3"
-  resolved "https://registry.npmjs.org/@astrojs/starlight/-/starlight-0.34.3.tgz"
-  integrity sha512-MAuD3NF+E+QXJJuVKofoR6xcPTP4BJmYWeOBd03udVdubNGVnPnSWVZAi+ZtnTofES4+mJdp8BNGf+ubUxkiiA==
+"@astrojs/starlight@^0.34.4":
+  version "0.34.4"
+  resolved "https://registry.npmjs.org/@astrojs/starlight/-/starlight-0.34.4.tgz"
+  integrity sha512-NfQ6S2OaDG8aaiE+evVxSMpgqMkXPLa/yCpzG340EX2pRzFxPeTSvpei3Uz9KouevXRCctjHSItKjuZP+2syrQ==
   dependencies:
     "@astrojs/markdown-remark" "^6.3.1"
     "@astrojs/mdx" "^4.2.3"
@@ -744,10 +744,10 @@ astro-expressive-code@^0.41.1:
   dependencies:
     rehype-expressive-code "^0.41.2"
 
-"astro@^4.0.0-beta || ^5.0.0-beta || ^3.3.0", astro@^5.0.0, astro@^5.5.0, astro@^5.6.1:
-  version "5.9.2"
-  resolved "https://registry.npmjs.org/astro/-/astro-5.9.2.tgz"
-  integrity sha512-K/zZlQOWMpamfLDOls5jvG7lrsjH1gkk3ESRZyZDCkVBtKHMF4LbjwCicm/iBb3mX3V/PerqRYzLbOy3/4JLCQ==
+"astro@^4.0.0-beta || ^5.0.0-beta || ^3.3.0", astro@^5.0.0, astro@^5.10.1, astro@^5.5.0:
+  version "5.10.1"
+  resolved "https://registry.npmjs.org/astro/-/astro-5.10.1.tgz"
+  integrity sha512-DJVmt+51jU1xmgmAHCDwuUgcG/5aVFSU+tcX694acAZqPVt8EMUAmUZcJDX36Z7/EztnPph9HR3pm72jS2EgHQ==
   dependencies:
     "@astrojs/compiler" "^2.12.2"
     "@astrojs/internal-helpers" "0.6.1"

@@ -1,0 +1,18 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getLiveEntry } from 'astro:content';
+export const prerender = false
+
+const { id }:any = Astro.params;
+
+
+const { entry, error, cacheHint } = await getLiveEntry('remote_live_integrations', id);
+
+const {data: {fm, content}} = entry as any
+---
+<StarlightPage frontmatter={{ title: fm.title }}>
+  <div>
+    <p>{fm.description}</p>
+  </div>
+  <div set:html={content}></div>
+</StarlightPage>
