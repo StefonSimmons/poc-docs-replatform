@@ -1,8 +1,8 @@
 ---
 export const prerender = false
-// import { actions } from "astro:actions"
-// import greyMatter from "gray-matter";
-// import { marked } from "marked";
+import { actions } from "astro:actions"
+import greyMatter from "gray-matter";
+import { marked } from "marked";
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 
 // uses dynamic routing. routes are created on-demand. 'id" can be anything, but will redirect to /404 if not found.
@@ -11,27 +11,27 @@ const { id } = Astro.params;
 /**
  * Fetch integrations content of websites-sources
  */
-// const { data, error } = await Astro.callAction(
-//   actions.getFileContent, 
-//   { path: `content/en/integrations/${id}.md` }
-// ) as {data: {data: {content: string, name: string, encoding: string}}, error: any};
+const { data, error } = await Astro.callAction(
+  actions.getFileContent, 
+  { path: `content/en/integrations/${id}.md` }
+) as {data: {data: {content: string, name: string, encoding: string}}, error: any};
 
-// if (error) {
-//   console.error("Error fetching repo content:", decodeURIComponent(error.message));
-//   return Astro.redirect("/404");
-// }
+if (error) {
+  console.error("Error fetching repo content:", decodeURIComponent(error.message));
+  return Astro.redirect("/404");
+}
 
-// const decodeContent = Buffer.from(data.data.content, data.data.encoding).toString('utf-8');
-// const greyMatterData = greyMatter(decodeContent) // use greyMatter to parse markdown. separate yaml from markdown content
-// const content = marked.parse(greyMatterData.content)
-// const fm = greyMatterData.data
+const decodeContent = Buffer.from(data.data.content, data.data.encoding).toString('utf-8');
+const greyMatterData = greyMatter(decodeContent) // use greyMatter to parse markdown. separate yaml from markdown content
+const content = marked.parse(greyMatterData.content)
+const fm = greyMatterData.data
 ---
 
-<h1>REST-SSR In progress {id}</h1>
-<!-- <StarlightPage frontmatter={{ title: fm.title }}>
+
+<StarlightPage frontmatter={{ title: fm.title }}>
   <div>
     <p>{fm.description}</p>
   </div>
   <div set:html={content}></div>
-</StarlightPage> -->
+</StarlightPage>
 
