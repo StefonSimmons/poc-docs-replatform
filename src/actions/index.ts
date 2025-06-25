@@ -53,21 +53,29 @@ export const server = {
             path: z.string().describe('The file path to fetch the content for')
         }),
         handler: async ({ owner, branch, repo, path }) => {
-            const expression = `${branch}:${path}`;
-            const query = `
-            query ($owner: String!, $repo: String!, $expression: String!) {
-                repository(owner: $owner, name: $repo) {
-                    object (expression: $expression){
-                        ... on Blob {
-                            text
+            try {
+                const expression = `${branch}:${path}`;
+                const query = `
+                query ($owner: String!, $repo: String!, $expression: String!) {
+                    repository(owner: $owner, name: $repo) {
+                        object (expression: $expression){
+                            ... on Blob {
+                                text
+                            }
                         }
                     }
                 }
+                `
+                const variables = { owner, repo, expression };
+                const result = await octokit.graphql(query, variables);
+                return result;
+
+            } catch (error:any) {
+                throw new ActionError({
+                    code: error.status === 404 ? "NOT_FOUND" : "INTERNAL_SERVER_ERROR",
+                    message: `No file found at ${error.request.url}`
+                });
             }
-            `
-            const variables = { owner, repo, expression };
-            const result = await octokit.graphql(query, variables);
-            return result;
         }
     }),
     /**
@@ -82,9 +90,7 @@ export const server = {
             branch: z.string().default('main').describe('The branch to fetch from'),
             path: z.string().describe('The directory path to fetch the content for')
         }),
-        handler: async ({ owner, repo, path, branch }, config) => {
-            console.log("CONFIG::", config)
-
+        handler: async ({ owner, repo, path, branch }) => {
             const expression = `${branch}:${path}`;
             const query = `
             query ($owner: String!, $repo: String!, $expression: String!) {
