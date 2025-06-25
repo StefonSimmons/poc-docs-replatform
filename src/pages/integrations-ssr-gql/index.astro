@@ -9,10 +9,8 @@ import { LinkCard } from '@astrojs/starlight/components';
 /**
  * Fetch integrations directory from websites-sources using GraphQL.
  */
-const { data, error } = await Astro.callAction(
-  actions.getRepoContentGQL, 
-  { path: `content/en/integrations` }
-) as {data: {repository: {object: {entries: any[]}}}, error: any};
+console.log("GQL-SSR", actions.getRepoContentGQL)
+const { data, error } = await Astro.callAction(actions.getRepoContentGQL, { path: `content/en/integrations` }) as {data: any, error: any};
 
 if (error) {
   console.error("Error fetching repo content:", decodeURIComponent(error.message));
