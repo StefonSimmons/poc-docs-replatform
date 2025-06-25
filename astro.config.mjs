@@ -9,6 +9,7 @@ export default defineConfig({
   experimental: {
     liveContentCollections: true,
   },
+  output: 'static',
   adapter: vercel(),
   integrations: [
     starlight({
