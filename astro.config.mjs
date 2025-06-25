@@ -2,11 +2,14 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 
+import vercel from "@astrojs/vercel";
+
 // https://astro.build/config
 export default defineConfig({
   experimental: {
     liveContentCollections: true,
   },
+  adapter: vercel(),
   integrations: [
     starlight({
       title: "My Docs POC",
@@ -46,5 +49,7 @@ export default defineConfig({
         },
       ],
     }),
-  ]
+  ],
+
+  adapter: vercel()
 });
