@@ -96,10 +96,10 @@ export function remoteLoader(options: Options): Loader {
 
 
 export function remoteLiveLoader (config: Options): LiveLoader {
-    console.log("MADE IT HERE")
     return {
         name: 'remote-live-integrations',
         loadCollection: async ({filters}:any) => {
+            console.log("Loading Remote Live Integrations")
             const getIntegrations = async (options: Options) => {
                 const expression = `${options.branch}:${options.path}`;
                 const query = `
@@ -169,7 +169,7 @@ export function remoteLiveLoader (config: Options): LiveLoader {
 
                 return result;
             }
-            
+
             const updatedConfig = {
                 ...config,
                 path: `${config.path}/${filter.id}.md`
