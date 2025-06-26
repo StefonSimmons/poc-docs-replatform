@@ -188,7 +188,10 @@ export function remoteLiveLoader (config: Options): LiveLoader {
                     id: 'remote-live-integrations',
                     data: {
                         name: fm.title,
-                        fm,
+                        fm: fm.app_id ? fm : {
+                            title: "Jenkins (Manual FM)",
+                            description: "jenkins ManualFM Description",
+                        },
                         content
                     }
                 }

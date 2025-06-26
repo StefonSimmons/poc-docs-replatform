@@ -20,6 +20,7 @@ const integrations = await getCollection('remote_integrations');
                 return (
                     <LinkCard
                         title={fm.title}
+                        description={fm.description}
                         href={`/integrations-ssg-acl/${entry.id}`}
                         data-astro-prefetch="tap"
                     />

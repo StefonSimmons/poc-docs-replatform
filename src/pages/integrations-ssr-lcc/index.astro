@@ -11,6 +11,7 @@ import { getLiveCollection } from 'astro:content';
 const {entries, error} = await getLiveCollection('remote_live_integrations');
 if (error) {
     console.error("Live Collection Error:",error.message);
+    return Astro.redirect("/404");
 }
 ---
 
@@ -23,6 +24,7 @@ if (error) {
                 return (
                     <LinkCard
                         title={fm.title}
+                        description={fm.description}
                         href={`/integrations-ssr-lcc/${fm.app_id}`}
                         data-astro-prefetch="tap"
                     />
