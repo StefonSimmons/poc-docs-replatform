@@ -63,7 +63,7 @@ export function remoteLoader(options: Options): Loader {
             const entries = response.repository.object.entries;
 
 
-            store.clear();            
+            store.clear();  
 
             for (const entry of entries) {
                 const greyMatterData = greyMatter(entry.object.text)
@@ -72,10 +72,14 @@ export function remoteLoader(options: Options): Loader {
 
                 // validates the data against the schema.
                 const data = await parseData({
-                    id: collection,
+                    id: entry.name.replace('.md', ''),
                     data: {
                         name: entry.name,
-                        fm,
+                        // edge case for Jenkins.md. this should be handled in websites sources.
+                        fm: fm.app_id ? fm : {
+                            title: "Jenkins (Manual FM)",
+                            description: "jenkins ManualFM Description",
+                        },
                         content
                     }
                 });

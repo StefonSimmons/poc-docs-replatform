@@ -20,9 +20,9 @@ export const collections = {
       fm: z.object({
         algolia: z.optional(z.record(z.any())),
         aliases: z.optional(z.array(z.string())),
-        app_id: z.string(),
-        categories: z.array(z.string()),
-        custom_kind: z.string(),
+        app_id: z.optional(z.string()),
+        categories: z.optional(z.array(z.string())),
+        custom_kind: z.optional(z.string()),
         description: z.string(),
         further_reading: z.optional(z.array(z.object({
           link: z.string(),
@@ -39,6 +39,6 @@ export const collections = {
         title: z.string(),
       }),
       content: z.string(),
-    }),
+    }), 
   }),
 };
