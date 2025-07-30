@@ -3,10 +3,16 @@
 using the Integrations 
 
 # Local Development
-Start the local Astro server
+## Github Token
+Create a .env file and add your Github Token
+```
+GITHUB_TOKEN="<token>"
+```
+## Start the local Astro server
 ```
 yarn start
 ```
+
 
 # Short-term findings
 Built a Proof of Concept (POC) here that fetches integrations from `websites-sources` four ways. It leverages **SSR** and **SSG** solutions and **REST** vs **GraphQL**.
@@ -24,7 +30,7 @@ Using the Github GraphQL API, I found that for integrations, I formed a query th
 ## SSR with GraphQL as a Live Content Loader (LCL)
 `http://localhost:4321/integrations-ssr-lcc`
 
-Using the Github GraphQL in a Live Content Loader, I found that I maintain the request frequency advantage of GraphQL. Benefits from a native tools designed for fetching page content vs astro actions which are really to be used for user interactions like form submissions.  With LCL, we can easily filter content before rendering with getLiveEntry().
+Using the Github GraphQL in a Live Content Loader, I found that I maintain the request frequency advantage of GraphQL. Benefits from a native tool designed for fetching page content (LCL) v.s Astro **actions** which are really to be used for user interactions like form submissions.  With LCL, we can easily filter content before rendering with getLiveEntry().
 
 ## SSG with GraphQL as a build-time Content Loader (CL)
 `http://localhost:4321/integrations-ssg-acl`
