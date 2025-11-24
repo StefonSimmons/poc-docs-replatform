@@ -3,11 +3,12 @@
 using the Integrations 
 
 # Local Development
-## Github Token
-Create a .env file and add your Github Token
-```
-GITHUB_TOKEN="<token>"
-```
+## Use Github Token
+We use `octokit` for our **graphql** requests.
+For these requests, we need to generate a short-lived GitHub token provided by Datadog's `ddtool`.
+
+If you are properly logged into `ddtool`, running `yarn start` should properly retrieve the token and start the server. If you should have any trouble, please see the `ddtool` documentation [here](https://datadoghq.atlassian.net/wiki/spaces/ITSEC/pages/5750917294/GitHub+Personal+Access+Tokens).
+
 ## Start the local Astro server
 ```
 yarn start
