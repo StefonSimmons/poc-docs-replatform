@@ -1,6 +1,6 @@
 # Docs Replatform Proof of Concept
 
-using the Integrations 
+Pull in Integrations content (`/content/en/integrations`) from the `webites-sources` Github repository. 
 
 # Local Development
 ## Use Github Token
@@ -16,7 +16,7 @@ yarn start
 
 
 # Short-term findings
-Built a Proof of Concept (POC) here that fetches integrations from `websites-sources` four ways. It leverages **SSR** and **SSG** solutions and **REST** vs **GraphQL**.
+Built a Proof of Concept (POC) here that fetches integrations from `websites-sources` four ways. It leverages **SSR** and **SSG** astro solutions and **REST** vs **GraphQL** fetches.
 
 ## SSR with REST as an Astro Action
 `http://localhost:4321/integrations-ssr-rest`
