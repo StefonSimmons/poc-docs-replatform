@@ -24,6 +24,19 @@ export default defineMarkdocConfig({
                 stagger: { type: Boolean },
             },
         },
+        callout: {
+            render: component('./src/components/Callout.astro'),
+            attributes: {
+                url: { type: String, default: ''}, 
+                type: { type: String, default: 'default', matches: ['default', 'learn'], errorLevel: 'error'},
+                hide_img: { type: Boolean, default: false },
+                cta: { type: String, default: '' },
+                header: { type: String, default: null }, 
+                d_toggle: { type: Boolean, default: false }, 
+                d_target : { type: String, default: ''},
+                custom_class: { type: String, default: ''}
+            },
+        }
 
     },
     extends: [starlightMarkdoc()]

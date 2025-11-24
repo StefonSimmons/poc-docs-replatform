@@ -1,0 +1,2 @@
+A space for the converted Docs hugo shortcodes. Only `.astro` components live here.
+These astro components are configured as `tags` in  `../../markdoc.config.mjs` in order to be rendered as markdoc pages (`../content/*.mdoc`).

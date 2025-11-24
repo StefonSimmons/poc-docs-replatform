@@ -3,10 +3,20 @@ import { docsLoader } from "@astrojs/starlight/loaders";
 import { docsSchema } from "@astrojs/starlight/schema";
 import { remoteLoader } from "../loaders";
 
+/**
+ * This file exports a collections object that defines the collections for the project.
+ * A collection is a group of documents that share the same schema.
+ * Each collection is defined using the defineCollection function.
+ */
 export const collections = {
   docs: defineCollection({
     loader: docsLoader(),
-    schema: docsSchema(),
+    schema: docsSchema({
+      extend: z.object({
+        title: z.string(),
+        description: z.string()
+      }),
+    }),
   }),
   remote_integrations: defineCollection({
     loader: remoteLoader({
