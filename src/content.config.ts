@@ -11,11 +11,13 @@ import { remoteLoader } from "../loaders";
 export const collections = {
   docs: defineCollection({
     loader: docsLoader(),
-    schema: docsSchema({
-      extend: z.object({
-        title: z.string(),
-        description: z.string()
-      }),
+    schema: docsSchema(),
+  }),
+  components: defineCollection({
+    loader: docsLoader(),
+    schema: z.object({
+      title: z.string(),
+      description: z.string()
     }),
   }),
   remote_integrations: defineCollection({
