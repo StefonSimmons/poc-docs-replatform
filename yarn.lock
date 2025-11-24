@@ -158,6 +158,11 @@
     stream-replace-string "^2.0.0"
     zod "^3.24.2"
 
+"@astrojs/starlight-markdoc@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/starlight-markdoc/-/starlight-markdoc-0.5.1.tgz#1674a3e7458c5081c0689ab9133d6a328d603ece"
+  integrity sha512-YxTvCHr/0ovDUhuRm0xeCjjGYtnqpa9EtTwc9fTbRO7Zpnsu1mDmm2L9HHSBWZ4YsFb005/GJYNDjk4WXNLoUg==
+
 "@astrojs/starlight@0.36.2":
   version "0.36.2"
   resolved "https://registry.yarnpkg.com/@astrojs/starlight/-/starlight-0.36.2.tgz#629adafd18ed0e0e86de34f9d916151ec105ec68"
