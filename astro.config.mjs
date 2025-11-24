@@ -45,6 +45,7 @@ export default defineConfig({
           link: "/integrations-ssr-lcc",
         },
         {
+          // Autogenerate a group of links for the 'components' directory.
           label: "Components",
           autogenerate: { directory: "components" },
         },
