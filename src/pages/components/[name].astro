@@ -1,0 +1,24 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection, render } from 'astro:content';
+
+
+// 1. Generate a new path for every collection entry at build
+export async function getStaticPaths() {
+  // Fetches the compoennts collection using the configuration ./content.config.ts
+  const components = await getCollection('components');
+  return components.map(entry => ({
+    params: { name: entry.data.title.toLowerCase().replaceAll(' ', '-') },
+    props: { entry },
+  }));
+}
+
+
+// 2. For each page, get the entry info and render the body
+const { entry } = Astro.props
+const { Content } = await render(entry);
+---
+
+<StarlightPage frontmatter={{ title: entry.data.title }}>
+  <Content/>
+</StarlightPage>
