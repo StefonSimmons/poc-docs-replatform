@@ -50,7 +50,10 @@ export default defineMarkdocConfig({
                 href: { type: String, required: true, errorLevel: 'error' },
                 tag: { type: String, default: '' },
             }
-        }
+        },
+        platforms: {
+            render: component('./src/components/Platforms.astro')
+        },
 
     },
     nodes: {

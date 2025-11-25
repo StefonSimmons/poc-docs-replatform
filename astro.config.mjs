@@ -1,12 +1,10 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
-
 import vercel from "@astrojs/vercel";
-
 import markdoc from "@astrojs/markdoc";
-
 import tailwindcss from "@tailwindcss/vite";
+import yaml from '@rollup/plugin-yaml';
 
 // https://astro.build/config
 export default defineConfig({
@@ -69,6 +67,6 @@ export default defineConfig({
   ],
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss(), yaml()]
   }
 });
