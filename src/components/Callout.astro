@@ -3,14 +3,14 @@ import ddBitsLearnLogo from '../assets/images/learning-center-bits-logo-2.png';
 
 const {url, type, header, cta, hide_img, d_toggle, d_target, custom_class } = Astro.props;
 
+// callout cta variants
 const calloutVariants:{[key:string]: string} = {
-    default: "Request Access", 
-    learn: "Sign up"
+    learn: "Sign up",
+    default: "Request Access" 
 };
-
-
 const cta_text = cta  || calloutVariants[type];
 
+// callout style variants
 const calloutStyleVariants:{[key:string]: string} = {
     learn: "bg-ddpurple-light border-ddpurple rounded-xl",
     default: "bg-white border-gray-200 rounded-sm"
@@ -22,18 +22,14 @@ const anchorStyleVariants:{[key:string]: string} = {
 ---
 
 <!--
-Renders a callout box with a header, content body, and a CTA button
-for specs, see docs-astro/markdoc.config.mjs config file
+Renders a callout box with a header, content body, and a CTA button.
 
-for more details, see:
-- docs-astro/markdoc.config.mjs for Component props schema.
-- docs-astro/src/content/config.ts for frontmatter schema
 -->
 
 <div class=`${calloutStyleVariants[type]} flex flex-col p-4 border shadow-xs`>
-    <div class="flex flex-col md:flex-row gap-x-5 ">
+    <div class="flex flex-col gap-x-5 md:flex-row">
         { (type === "learn" && !hide_img) &&
-            <img class="mb-2 md:mb-0 min-w-[166px] min-h-[94px] object-cover" src={ddBitsLearnLogo.src} alt="learning center"/>
+            <img class="mb-2 min-w-[166px] min-h-[94px] object-cover md:mb-0" src={ddBitsLearnLogo.src} alt="learning center"/>
         }
         <div class="flex flex-col">
             <h5 class="text-black font-semibold mt-0 mb-1">{header || "Join the Preview"}</h5>
