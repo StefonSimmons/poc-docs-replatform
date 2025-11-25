@@ -10,13 +10,12 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://docs.datadoghq.com",
   experimental: {
     liveContentCollections: true,
   },
-
   output: 'static',
   adapter: vercel(),
-
   integrations: [
     starlight({
       title: "My Docs POC",
