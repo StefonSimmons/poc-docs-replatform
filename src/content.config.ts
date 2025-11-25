@@ -2,6 +2,7 @@ import { defineCollection, z } from "astro:content";
 import { docsLoader } from "@astrojs/starlight/loaders";
 import { docsSchema } from "@astrojs/starlight/schema";
 import { remoteLoader } from "../loaders";
+import { glob } from "astro/loaders";
 
 /**
  * This file exports a collections object that defines the collections for the project.
@@ -11,13 +12,28 @@ import { remoteLoader } from "../loaders";
 export const collections = {
   docs: defineCollection({
     loader: docsLoader(),
-    schema: docsSchema(),
+    schema: docsSchema({
+      // need to extend the built-in docs schema in order to make these frontmatter params available as variables
+      extend: z.object({
+        further_reading: z.object({
+          link: z.string(),
+          text: z.string(),
+          tag: z.string().optional(),
+        }).array().optional(),
+      }),
+    }),
   }),
   components: defineCollection({
-    loader: docsLoader(),
+    // For all components in content/docs/components
+    loader: glob({ pattern:"**/*.mdoc", base: "./src/content/docs/components" }),
     schema: z.object({
       title: z.string(),
-      description: z.string()
+      description: z.string(),
+      further_reading: z.object({
+        link: z.string(),
+        text: z.string(),
+        tag: z.string().optional(),
+      }).array().optional(),
     }),
   }),
   remote_integrations: defineCollection({

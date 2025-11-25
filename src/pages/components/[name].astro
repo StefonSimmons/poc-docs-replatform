@@ -5,7 +5,7 @@ import { getCollection, render } from 'astro:content';
 
 // 1. Generate a new path for every collection entry at build
 export async function getStaticPaths() {
-  // Fetches the compoennts collection using the configuration ./content.config.ts
+  // Fetches the "components" collection which uses the configuration in ./content.config.ts
   const components = await getCollection('components');
   return components.map(entry => ({
     params: { name: entry.data.title.toLowerCase().replaceAll(' ', '-') },
