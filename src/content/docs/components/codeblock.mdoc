@@ -1,0 +1,85 @@
+---
+title: CodeBlock
+description: CodeBlock component.
+---
+
+## Renders a code block with a title and a code snippet.
+
+`meta` param syntax:
+- "{n}" - highlights line n
+- "{n-m}" - highlights lines n-m
+- "{n m}" - highlights lines n and m
+- "{n n-m}" - highlights lines n and n-m
+- "{n-m n}" - highlights lines n-m and n
+- "{n-m n-m}" - highlights lines n-m and n-m
+- "'word' 'another word'" - only used for one-line code snippets. highlights words 'word' and 'another word'
+
+
+**Basic CodeBlock**
+```
+print("Hello, World!")
+```
+
+**Basic CodeBlock with lang**
+```python
+print("Hello, World!")
+```
+
+**Basic CodeBlock. No lang specified w/ title**
+```{% title="CodeBlock here"%}
+print("Hello, World!")
+```
+
+
+**Basic CodeBlock with title param and lang**
+```python {% title="CodeBlock here" %}
+print("Hello, World!")
+```
+
+**CodeBlock with title and code snippet**
+```dockerfile {% title="Dockerfile" meta="{7}" %}
+COPY --from=datadog/serverless-init:1 /datadog-init /app/datadog-init
+ADD 'https://dtdg.co/latest-java-tracer' /dd_tracer/java/dd-java-agent.jar
+ENV DD_SERVICE=datadog-demo-run-java
+ENV DD_ENV=datadog-demo
+ENV DD_VERSION=1
+ENV DD_APPSEC_ENABLED=1
+CMD ["/app/datadog-init", "./mvnw", "spring-boot:run"]
+```
+
+**Code tag with title, lang, meta and code snippet params. Meta param highlighting words 'file' and 'CMS'. Good for one-line code snippets.**
+{% code
+   code="console.log('This could come from a file or CMS!');"
+   lang="js"
+   title="example.js"
+   meta="'file' 'CMS'" /%}
+
+
+
+**CodeBlock with meta param. highlighting line 2 and lines 5-9.**
+```json {% meta="{2 5-9}" %}
+{
+    "viz": "timeseries",
+    "requests": [
+        {
+            "style": {
+                "palette": "dog_classic",
+                "type": "solid",
+                "width": "normal"
+            }
+        }
+    ]
+}
+```
+
+**CodeBlock with disable_copy param. disables the copy button.**
+```python {% disable_copy=true %}
+def main():
+    print("Hello, World!")
+```
+
+**CodeBlock with wrap param. wraps the code block.**
+```python {% wrap=true %}
+def main():
+    print("Hello, World Hello, WorldHello, WorldHello, WorldHello, WorldHello, WorldHello, WorldHello, WorldHello, WorldHello, WorldHello, WorldHello, World!")
+```

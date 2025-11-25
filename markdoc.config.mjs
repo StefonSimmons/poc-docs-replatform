@@ -53,5 +53,18 @@ export default defineMarkdocConfig({
         }
 
     },
+    nodes: {
+        fence: {
+            // Add custom Expressive Code component
+            render: component('./src/components/CodeBlock.astro'),
+            attributes: {
+                ...starlightMarkdoc().nodes.fence.attributes,
+                meta: { type: String, default: '' },
+                title: { type: String, default: '' },
+                disable_copy: { type: Boolean, default: false },
+                wrap: { type: Boolean, default: false }
+            }
+        }
+    },
     extends: [starlightMarkdoc()]
 });
