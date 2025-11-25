@@ -1,0 +1,19 @@
+---
+const {key, code, link, text} = Astro.props;
+if (!key) {
+    throw new Error('key is required');
+} 
+---
+<!-- 
+
+Renders a region parameter with a code block or a link.
+
+If the referrer is from a Datadog region, the code block or link is rendered.
+Otherwise, the region parameter is rendered as a span.
+-->
+<script>
+    console.log("REFERER", new URL(document.referrer).hostname);
+</script>
+{ code && <code class="js-region-param region-param" data-region-param={key}></code> }
+{ link && <a class="js-region-param region-param" data-region-param={key} href="">{text}</a> }
+{ !code && !link && <span class="js-region-param region-param" data-region-param={key}></span> }

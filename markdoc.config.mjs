@@ -54,6 +54,15 @@ export default defineMarkdocConfig({
         platforms: {
             render: component('./src/components/Platforms.astro')
         },
+        regionparam: {
+            render: component('./src/components/RegionParam.astro'),
+            attributes: {
+                key: { type: String, default: '' },
+                code: { type: String, default: '' },
+                link: { type: String, default: '' },
+                text: { type: String, default: '' },
+            }
+        },
 
     },
     nodes: {
