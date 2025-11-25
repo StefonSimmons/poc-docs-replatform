@@ -1,0 +1,24 @@
+---
+title: SiteRegion [in progress]
+description: SiteRegion component.
+---
+
+## Renders a SiteRegion component.
+Renders a site region with a code block or a link.
+
+<!-- 
+See region-redirect.js for additional logic.
+-->
+
+{% siteregion region="us" %}
+    this content is only shown in the United States
+{% /siteregion %}
+
+{% siteregion region="eu" %}
+    this content is only shown in Europe
+{% /siteregion %}
+
+{% siteregion region="us3" %}
+    this content is only shown in the United States 3
+{% /siteregion %}
+

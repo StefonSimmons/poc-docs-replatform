@@ -57,10 +57,16 @@ export default defineMarkdocConfig({
         regionparam: {
             render: component('./src/components/RegionParam.astro'),
             attributes: {
-                key: { type: String, default: '' },
+                key: { type: String, required: true, errorLevel: 'error' },
                 code: { type: String, default: '' },
                 link: { type: String, default: '' },
                 text: { type: String, default: '' },
+            }
+        },
+        siteregion: {
+            render: component('./src/components/SiteRegion.astro'),
+            attributes: {
+                region: { type: String, required: true, errorLevel: 'error' },
             }
         },
 
