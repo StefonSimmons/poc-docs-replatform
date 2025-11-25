@@ -1,0 +1,36 @@
+---
+title: WhatsNext
+description: WhatsNext component.
+further_reading:
+  - link: https://www.datadoghq.com
+    text: One further reading link
+    tag: Click here
+  - link: https://www.datadoghq.com
+    text: Two further reading link
+    tag: Click here
+  - link: https://www.datadoghq.com
+    text: Three further reading link
+    tag: Learn More
+---
+
+## Renders a list of NextLink components with a description.
+Renders a list of links relevant to the parent page. Typically used at the end of a page.
+
+**Basic WhatsNext with description and 4 links**
+{% whatsnext desc="Additional helpful documentation, links, and articles:" %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    One thing
+  {% /nextlink %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    Second thing
+  {% /nextlink %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    Third thing
+  {% /nextlink %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    Fourth thing
+  {% /nextlink %}
+{% /whatsnext %}
+
+**WhatsNext using "further_reading" frontmatter param**
+{% whatsnext further_reading=$frontmatter.further_reading /%}

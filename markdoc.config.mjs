@@ -36,6 +36,20 @@ export default defineMarkdocConfig({
                 d_target : { type: String, default: ''},
                 custom_class: { type: String, default: ''}
             },
+        },
+        whatsnext: {
+            render: component('./src/components/WhatsNext.astro'),
+            attributes: {
+                further_reading: { type: Array, default: [] },
+                desc: { type: String, default: 'Additional helpful documentation, links, and articles:' }
+            }
+        },
+        nextlink: {
+            render: component('./src/components/NextLink.astro'),
+            attributes: {
+                href: { type: String, required: true, errorLevel: 'error' },
+                tag: { type: String, default: '' },
+            }
         }
 
     },

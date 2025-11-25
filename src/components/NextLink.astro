@@ -1,0 +1,30 @@
+---
+import whatsNextArrow from '../assets/images/list-group-whats-next-arrow-1.png';
+
+const { href, tag } = Astro.props;
+const fragment = new URL(href, Astro.site).hash;
+let link = href;
+
+if (!href.startsWith('http') || !href.startsWith('/')) {
+    // if href is a relative path, append it to the site URL
+    link = href.startsWith('/') ? new URL(href.slice(1), Astro.site).href : new URL(href, Astro.site).href;
+}
+
+if (fragment && !link.endsWith(fragment)) {
+    link += fragment;
+}
+
+---
+<!-- 
+Renders a link with an arrow pointing to the right
+-->
+
+<a class="flex justify-between items-center w-full border border-black/12 px-3 py-[0.65rem] no-underline text-black! group hover:cursor-pointer hover:shadow-[0_0_4px_1px_rgba(0,0,0,0.4)]" href={link}>
+  <span class="flex justify-between w-full">
+    <span class="group-hover:text-ddpurple"><slot/></span>
+    { tag && 
+        <span class="pe-[20px] text-[#555] group-hover:text-ddpurple">{tag.toUpperCase()}</span>
+    }
+  </span>
+  <img class="max-h-6!" src={whatsNextArrow.src} alt="arrow pointing to the right" />
+</a>

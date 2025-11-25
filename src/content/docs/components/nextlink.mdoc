@@ -1,0 +1,21 @@
+---
+title: NextLink
+description: NextLink component.
+---
+
+## Renders a link with an arrow pointing to the right.
+
+**Basic NextLink**
+{% nextlink href="https://www.datadoghq.com" %}
+  A basic nextlink with no tag.
+{% /nextlink %}
+
+**NextLink with href and tag**
+{% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+  A nextlink with a tag.
+{% /nextlink %}
+
+**NextLink with relative href and tag**
+{% nextlink href="/guides/example/" tag="Learn More" %}
+  Should take you to the example guide.
+{% /nextlink %}
