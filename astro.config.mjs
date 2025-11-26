@@ -16,6 +16,7 @@ export default defineConfig({
   adapter: vercel(),
   integrations: [
     starlight({
+      // Starlight contnet lives within content/docs/. This is pretty strict outside of remote content.
       title: "My Docs POC",
       social: [
         {
@@ -42,18 +43,18 @@ export default defineConfig({
           link: "/integrations-ssr-lcc",
         },
         {
-          // Autogenerate a group of links for the 'components' directory.
+          // Autogenerate a group of links for the 'components' directory within /content/docs.
           label: "Components",
           autogenerate: { directory: "components" },
         },
         {
           label: "Reference",
-          // Autogenerate a group of links for the 'reference' directory.
+          // Autogenerate a group of links for the 'reference' directory within /content/docs
           autogenerate: { directory: "reference" },
         },
         {
           label: "Guides",
-          // Autogenerate a group of links for the 'guides' directory.
+          // Autogenerate a group of links for the 'guides' directory within /content/docs.
           autogenerate: { directory: "guides" },
         },
       ],
