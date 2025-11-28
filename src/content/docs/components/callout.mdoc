@@ -6,24 +6,50 @@ description: Iterations of the `callout` component.
 Renders a callout box with a header, content body, and a CTA button.
 
 
+## Examples
+
 **Default Callout**
 {% callout url="#" %}
   Cross-organization visibility is in beta.
 {% /callout %}
+
+```md {% title="Markdoc" %}
+{% callout url="#" %}
+  Cross-organization visibility is in beta.
+{% /callout %}
+```
 
 **Custom Header and CTA**
 {% callout url="https://docs.google.com/forms/d/1NvW3I0Ep-lQo4FbiSwOEjccoFsS9Ue2wYiYDmCxKDYg/viewform?edit_requested=true"  header="Try the Preview!"%}
 Datastore is in Preview. Use this form to request access today.
 {% /callout %}
 
-**Learn Callout no image**
-{% callout type="learn" header="Join an enablement webinar session" hide_img=true cta="Sign Up" url="https://www.datadoghq.com/technical-enablement/sessions/?tags.topics-0=Cloud+Cost+Management"%}
-  Explore your cloud provider costs and correlate them with real-time telemetry data. Gain actionable insights and alerts on where your cloud costs are coming from, how they are changing, and where to find potential optimizations.
+```md {% title="Markdoc" %}
+{% callout url="https://docs.google.com/forms/d/1NvW3I0Ep-lQo4FbiSwOEjccoFsS9Ue2wYiYDmCxKDYg/viewform?edit_requested=true"  header="Try the Preview!"%}
+Datastore is in Preview. Use this form to request access today.
 {% /callout %}
+```
 
 **Learn Callout w/ image**
 {% callout type="learn" header="Join an enablement webinar session" cta="Sign Up" url="https://www.datadoghq.com/technical-enablement/sessions/?tags.topics-0=Cloud+Cost+Management"%}
-  Explore your cloud provider costs and correlate them with real-time telemetry data. Gain actionable insights and alerts on where your cloud costs are coming from, how they are changing, and where to find potential optimizations.
+  Insert content here.
 {% /callout %}
+
+```md {% title="Markdoc" %}
+{% callout type="learn" header="Join an enablement webinar session" cta="Sign Up" url="https://www.datadoghq.com/technical-enablement/sessions/?tags.topics-0=Cloud+Cost+Management"%}
+  Insert content here.
+{% /callout %}
+```
+**Learn Callout no image**
+{% callout type="learn" header="Join an enablement webinar session" hide_img=true cta="Sign Up" url="https://www.datadoghq.com/technical-enablement/sessions/?tags.topics-0=Cloud+Cost+Management"%}
+  Insert content here.
+{% /callout %}
+
+```md {% title="Markdoc" %}
+{% callout type="learn" header="Join an enablement webinar session" hide_img=true cta="Sign Up" url="https://www.datadoghq.com/technical-enablement/sessions/?tags.topics-0=Cloud+Cost+Management"%}
+  Insert content here.
+{% /callout %}
+```
+
 
 
