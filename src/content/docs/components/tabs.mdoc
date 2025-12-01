@@ -1,0 +1,153 @@
+---
+title: Tabs
+description: Iterations of the `tabs` component.
+---
+
+Renders a tabs component with multiple tab items. This is a Starlight component. https://starlight.astro.build/components/tabs/
+
+
+## Examples
+
+**Tabs component with 4 tabs w/ no syncKey**
+
+{% tabs %}
+{% tabitem label="200" %}
+
+OK
+
+| Field | Type | Description |
+| :----- | :---- | :----------- |
+| data | object | Domain Allowlist email data |
+| data.type | enum | Domain Allowlist type. Allowed enum values: `domain_allowlist`. Default: `domain_allowlist`.
+
+{% /tabitem %}
+{% tabitem label="403" %}
+
+Forbidden
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% tabitem label="404" %}
+
+Not Found
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% tabitem label="429" %}
+
+Too many requests
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% /tabs %}
+
+
+
+{% tabs %}
+{% tabitem label="200" %}
+
+OK
+
+| Field | Type | Description |
+| :----- | :---- | :----------- |
+| data | object | Domain Allowlist email data |
+| data.type | enum | Domain Allowlist type. Allowed enum values: `domain_allowlist`. Default: `domain_allowlist`.
+
+{% /tabitem %}
+{% tabitem label="403" %}
+
+Forbidden
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% tabitem label="404" %}
+
+Not Found
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% tabitem label="429" %}
+
+Too many requests
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% /tabs %}
+
+
+**Tabs component using the syncKey param**
+
+{% tabs syncKey="http_codes" %}
+{% tabitem label="200" %}
+
+OK
+
+{% /tabitem %}
+{% tabitem label="304" %}
+
+Not Modified
+1st tab
+
+{% /tabitem %}
+{% /tabs %}
+
+
+{% tabs syncKey="http_codes" %}
+{% tabitem label="200" %}
+
+OK
+
+{% /tabitem %}
+{% tabitem label="304" %}
+
+Not Modified
+2nd tab
+
+{% /tabitem %}
+{% /tabs %}
+
+{% tabs syncKey="http_codes" %}
+{% tabitem label="200" %}
+
+OK
+
+{% /tabitem %}
+{% tabitem label="304" %}
+
+Not Modified
+3rd tab
+{% /tabitem %}
+
+{% /tabs %}
+
+{% tabs syncKey="http_codes" %}
+{% tabitem label="200" %}
+
+OK
+
+{% /tabitem %}
+{% tabitem label="304" %}
+
+Not Modified
+4th tab
+{% /tabitem %}
+{% /tabs %}
+
