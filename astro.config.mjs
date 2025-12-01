@@ -16,7 +16,7 @@ export default defineConfig({
   adapter: vercel(),
   integrations: [
     starlight({
-      // Starlight contnet lives within content/docs/. This is pretty strict outside of remote content.
+      // Starlight content lives within content/docs/. This is pretty strict outside of remote content.
       title: "My Docs POC",
       social: [
         {

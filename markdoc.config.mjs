@@ -69,6 +69,13 @@ export default defineMarkdocConfig({
                 region: { type: String, required: true, errorLevel: 'error' },
             }
         },
+        multifiltersearch: {
+            render: component('./src/components/MultiFilterSearch.astro'),
+            attributes: {
+                resource: { type: String, default: "" },
+                fm_resource: { type: Object, default: {"headers": [], "data": []} },
+            }
+        },
 
     },
     nodes: {

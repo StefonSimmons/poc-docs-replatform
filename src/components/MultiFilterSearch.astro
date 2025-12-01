@@ -1,0 +1,105 @@
+---
+/**
+ * Astro component that renders a table with search and optional filtering capabilities.
+ * Uses vanilla JavaScript for client-side interactivity. Supports URL state management for search/filter params.
+ *
+ * @param headers: array.<{id:string, name:string, filter_by:boolean}> - header/field info.
+ *   - id: must be unique in the array. must match a key in "data" object
+ *   - name: field/header display name
+ *   - filter_by: (optional) if true, creates a filter dropdown and enables filtering for that field.
+ * @param data: array.<object> - table details. each key in the object must match a unique id in the "headers" array.
+ * @param resource: (optional) string - path to JSON file with multifiltersearch data structure
+ *
+ * @example
+ * // Using props directly:
+ * <Multi
+ *   headers={[
+ *     { id: 'name', name: 'Name', filter_by: false },
+ *     { id: 'category', name: 'Category', filter_by: true },
+ *     { id: 'description', name: 'Description', filter_by: false }
+ *   ]}
+ *   data={[
+ *     { name: 'Item 1', category: 'Type A', description: 'Description 1' },
+ *     { name: 'Item 2', category: 'Type B', description: 'Description 2' }
+ *   ]}
+ * />
+ *
+ * // Using a resource file:
+ * <Multi resource="data/my-data.json" />
+ *
+ * // JSON structure for resource file:
+ * {
+ *   "multifiltersearch": {
+ *     "headers": [...],
+ *     "data": [...]
+ *   }
+ * }
+ * // Or simplified:
+ * {
+ *   "headers": [...],
+ *   "data": [...]
+ * }
+ */
+type Data = {
+  multifiltersearch: {
+    headers: {
+      id: string;
+      name: string;
+      filter_by: boolean;
+    }[];
+    data: Record<string, string>[];
+  };
+};
+
+const { resource, fmResource } = Astro.props;
+console.log("fmResource", fmResource);
+console.log("resource", resource);
+
+// Fail early if no data source provided
+if (!fmResource && !resource) {
+  throw new Error(
+    `No data source provided for multifilter-search component. Provide either headers/data props or a resource path. Resource: ${resource} FM Resource: ${fmResource}`
+  );
+}
+
+let headers: Data["multifiltersearch"]["headers"] = [];
+let data: Data["multifiltersearch"]["data"] = [];
+
+// Determine multifiltersearch data source, if any
+if (fmResource) {
+  // Use frontmatter dataset
+  headers = fmResource.headers;
+  data = fmResource.data;
+} else if (resource) {
+  // Use JSON dataset from ./data directory
+  try {
+    const resourcePath = `../data/${resource}.json`;
+    const jsonFiles = await import.meta.glob(`../data/*.json`, { eager: true });
+    const jsonFile = Object.entries(jsonFiles).find(
+      (file) => file[0] === resourcePath
+    );
+
+    if (!jsonFile) {
+      throw new Error(`No JSON file found for resource: ${resourcePath}`);
+    }
+    const jsonData = (jsonFile[1] as Data).multifiltersearch;
+    headers = jsonData.headers;
+    data = jsonData.data;
+
+    if (!headers || !data) {
+      throw new Error(
+        `No header of data array found in the JSON file: ${resourcePath}`
+      );
+    }
+  } catch (error) {
+    console.error(`Failed to load resource: ${resource}`, error);
+    throw new Error(
+      `No valid data source provided for multifilter-search component`
+    );
+  }
+}
+
+console.log("headers:", headers);
+console.log("data:", data);
+
+---

@@ -24,7 +24,7 @@ export const collections = {
           text: z.string(),
           tag: z.string().optional(),
         })).optional(),
-        multifiltersearch: z.object({
+        multi_filter_search: z.object({
           headers: z.array(z.object({
             name: z.string(),
             id: z.string(),

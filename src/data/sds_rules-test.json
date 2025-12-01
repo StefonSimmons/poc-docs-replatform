@@ -1,0 +1,1071 @@
+{
+  "multifiltersearch": {
+    "headers": [
+      {
+        "id": "library-rule",
+        "name": "Library Rule"
+      },
+      {
+        "id": "recommended-keywords",
+        "name": "Recommended Keywords"
+      },
+      {
+        "id": "category",
+        "name": "Category",
+        "filter_by": true
+      }
+    ],
+    "data": [
+      {
+        "library-rule": "AWS Access Key ID Scanner",
+        "recommended-keywords": "access key, aws access, aws_access_key_id, x-amz-credential",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "AWS Secret Access Key Scanner",
+        "recommended-keywords": "aws secret key, aws-secret-key, aws_secret_access_key, aws_secret_key, secret access key, secret key, secret-access-key, secret_access_key, set-awscredential",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Adafruit IO Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Adobe API Key Scanner",
+        "recommended-keywords": "adobe",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Adobe Client Secret Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Aiven Default Service Password Scanner",
+        "recommended-keywords": "aiven, password, pwd",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Aiven Personal Token Scanner",
+        "recommended-keywords": "aiven",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Amazon Marketplace Web Services Auth Token Scanner",
+        "recommended-keywords": "amazon, auth, authentication, authorization, aws, marketplace, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "American Express Card Scanner (1x15 digits)",
+        "recommended-keywords": "account number, american express, amex, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, pan, payment account number, payment card number, pcn, union pay",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "American Express Card Scanner (4+4+4+3 digits)",
+        "recommended-keywords": "account number, american express, amex, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, pan, payment account number, payment card number, pcn, union pay",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "American Express Card Scanner (4+6+5 digits)",
+        "recommended-keywords": "account number, american express, amex, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, pan, payment account number, payment card number, pcn, union pay",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "American Express Card Scanner (8+7 digits)",
+        "recommended-keywords": "account number, american express, amex, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, pan, payment account number, payment card number, pcn, union pay",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Anthropic's Claude API Key Scanner",
+        "recommended-keywords": "anthropic, anthropic_api_key, api_key, claude, x-api-key",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Asana Personal Access Token Scanner",
+        "recommended-keywords": "asana, pat, personal access token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Atlassian API Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Austria Social Security Number Scanner",
+        "recommended-keywords": "social security, sozialversicherungsnummer, ssn",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Azure API Management Direct Management Key Scanner",
+        "recommended-keywords": "api key, api management key, apim key, azure, sn",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Azure AppConfig Connection Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Azure Container Registry Admin Key Scanner",
+        "recommended-keywords": "azure, azurecr",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Azure CosmosDB Connection Key Scanner",
+        "recommended-keywords": "accountkey, azure, cosmos db, cosmosdb",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Azure DevOps Personal Access Token Scanner",
+        "recommended-keywords": "azure, azure_, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Azure OpenAI Key Scanner",
+        "recommended-keywords": "azure, azure openai, azure openai key",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Azure SQL Connection String Scanner",
+        "recommended-keywords": "azure, connection string, sql",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Azure Search Admin Key Scanner",
+        "recommended-keywords": "azure admin key, azure api key, azure search key",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Azure Shared Access Signature Scanner",
+        "recommended-keywords": "azure, sas, sig",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Azure Storage Account Key Scanner",
+        "recommended-keywords": "azure, azure_storage_account_key",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Azure Subscription Key Scanner",
+        "recommended-keywords": "authoring, programmatic, subscription key",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Bearer Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Bitbucket Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Bitcoin (BTC) wallet address Scanner",
+        "recommended-keywords": "address, bech32, bech32m, bitcoin, btc, crypto, p2pkh, p2sh, p2tr, p2wpkh, p2wsh, pay-to-public-key-hash, pay-to-script-hash, pay-to-taproot, wallet, witness-public-key-hash, witness-script-hash",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "BuildKite Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Bulgaria Unified Civil Number Scanner",
+        "recommended-keywords": "egn, national id, unified_civil_number, \u0435\u0433\u043d, \u0435\u0434\u0438\u043d\u0435\u043d \u0433\u0440\u0430\u0436\u0434\u0430\u043d\u0441\u043a\u0438 \u043d\u043e\u043c\u0435\u0440",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Canada Social Insurance Number Scanner",
+        "recommended-keywords": "canadian, canadian insurance number, canadian social insurance, insurance number, number, sin, social, social insurance",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Cfx.re Server Registration Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Checkout.com API Secret Key Scanner",
+        "recommended-keywords": "checkout, secret",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "China Passport Scanner",
+        "recommended-keywords": "passport, travel document",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "China Phone Number Scanner",
+        "recommended-keywords": "cell, mobile, phone",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "China Resident Identity Card Number Scanner",
+        "recommended-keywords": "identification number, identity card number, identity number, national id, national identification number, resident identity",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "China Vehicle Identification Number Scanner",
+        "recommended-keywords": "vehicle identification number, vin",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "China Vehicle License Plate Number Scanner",
+        "recommended-keywords": "car, license, plate, platenumber, vehicle",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "CircleCI Personal Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "CircleCI Project Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Cloudflare API Token Scanner",
+        "recommended-keywords": "cloudflare api key, cloudflare api token, cloudflare d1 api, cloudflare images api",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Cloudflare Global API Key Scanner",
+        "recommended-keywords": "api key, cloudflare, global api key",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Cloudflare Origin CA Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Contentful Access Token Scanner",
+        "recommended-keywords": "content delivery, contentful",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Crates.io API Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Croatia Health Insurance Number Scanner",
+        "recommended-keywords": "broj osiguranika, health insurance number, hzzo, insurance, mati\u010dni broj osiguranika, mbo",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Croatia Personal Identification Number Scanner",
+        "recommended-keywords": "majstorski broj gra\u0111ana, master citizen number, nacionalni identifikacijski, national identification number, oib, osobni broj, osobni id, osobni identifikacijski, porezni broj, porezni id, porezni identifikacijski, tax id, tax identification, tax no, tin id, tin no",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Cyprus Identity Card Number Scanner",
+        "recommended-keywords": "id card number, identity card number, kimlik karti",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Cyprus Tax Identification Number Scanner",
+        "recommended-keywords": "tax id, tax id code, tax identification code, tax no, tax number, taxid, tic, tin, vergi kimlik kodu, vergi kimlik numarasi",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Czechia Personal Identity Number Scanner",
+        "recommended-keywords": "czech republic id, identification no, identification number, identity number, insurance number, national identification number, national number, n\u00e1rodn\u00e1 identifika\u010dn\u00e1 zna\u010dka \u010d, osobn\u00ed \u010d\u00edslo, personal identification number, personal number, poji\u0161t\u011bn\u00ed \u010d\u00edslo, rodne cislo, social security number, sz\u00e1m, \u010d\u00edslo n\u00e1rodnej identifika\u010dnej",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Czechia Tax Identification Number Scanner",
+        "recommended-keywords": "identifikacni, tax, tax number",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Databricks Personal Access Token Scanner",
+        "recommended-keywords": "access, databricks, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Datadog API Key Scanner",
+        "recommended-keywords": "api_key, dd-api-key, dd_api_key",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Datadog Application Key Scanner",
+        "recommended-keywords": "application_key, dd-application-key, dd_application_key",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Datadog Nonce Session Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Datadog OAuth Tokens Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Datadog Personal Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Diners Card Scanner (1x14 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, diners club, mastercard, mc, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Diners Card Scanner (4+4+4+2 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, diners club, mastercard, mc, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Diners Card Scanner (4+6+4 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, diners club, mastercard, mc, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Diners Card Scanner (8+6 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, diners club, mastercard, mc, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Discord Application OAuth Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Discord Application OAuth Secret Key Scanner",
+        "recommended-keywords": "discord client secret, discord key, discord oauth, discord secret",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Discord Application Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Discord Bot Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Discord Webhook Codes Scanner",
+        "recommended-keywords": "discord",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Discover Card Scanner (1x16 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, discover, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Discover Card Scanner (2x8 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, discover, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Discover Card Scanner (4x4 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, discover, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Docker Organization Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Docker Personal Access Token Scanner",
+        "recommended-keywords": "dckr pat, dckr_pat, docker, docker pat, docker personal access token, docker_pat, docker_personal_access_token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Docker Swarm Join Token Scanner",
+        "recommended-keywords": "docker, docker swarm, join token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Docker Swarm Unlock Key Scanner",
+        "recommended-keywords": "docker, docker swarm, unlock key",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Doppler Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Dropbox Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Duffel Test Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Dynatrace Token Scanner",
+        "recommended-keywords": "dynatrace, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "EasyPost API Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Facebook Access Token Scanner",
+        "recommended-keywords": "access, facebook, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Figma Personal Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Flutterwave API Secret Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Frame.io Developer Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Frame.io OAuth Secret Scanner",
+        "recommended-keywords": "frame.io, frameio",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Frame.io OAuth Session Secret Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "France Social Security Number Scanner",
+        "recommended-keywords": "insee, nir, social security",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "France Tax Identification Number Scanner",
+        "recommended-keywords": "fiscal, nif, tax",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Generic JSON Web Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Germany Identity Card Number Scanner",
+        "recommended-keywords": "ausweis, identity card, identity number, national id",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Germany Social Security Number Scanner",
+        "recommended-keywords": "rentenversicherungsausweis, rentenversicherungsnummer, rnvr, rv-nummer, sozialversicherungsausweis, sozialversicherungsnummer, ssn, sv-nummer, svnr",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Germany Tax Identification Number Scanner",
+        "recommended-keywords": "id number, identifikationsnummer, idnr, steuer-idnr, steuerid, tax id, tin",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Github Access Token Scanner",
+        "recommended-keywords": "access, github, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Github Fine-grained Personal Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Github Refresh Token Scanner",
+        "recommended-keywords": "github, refresh token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Gitlab Personal and Project Access Token Scanner",
+        "recommended-keywords": "bearer, gitlab, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Google API Key Scanner",
+        "recommended-keywords": "g_places_key, gcp api key, gcp key, gemini, google cloud key, google-api-key, google-cloud-apikeys, googlekey, x-goog-api-key, youtube",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Google Client Secret Scanner",
+        "recommended-keywords": "google, google api client secret, google api secret, google client secret, google secret, google_api_client_secret, google_api_secret, google_client_secret, google_secret",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Google Cloud Service Account Bound API Key Scanner",
+        "recommended-keywords": "account, api, bound, cloud, gcp, google, key, service",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Google Cloud Service Account OAuth Access Token Scanner",
+        "recommended-keywords": "access_token, account, cloud, gcp, google, oauth, service, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Google OAuth Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Grafana Cloud Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Grafana Service Account Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Greece Tax Identification Number Scanner",
+        "recommended-keywords": "afm, tax, tax id, taxid, \u03b1.\u03c6.\u03bc., \u03b1\u03c6\u03bc",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "HTTP Basic Authentication Header Scanner",
+        "recommended-keywords": "",
+        "category": "Network and device information"
+      },
+      {
+        "library-rule": "HTTP Cookie Scanner",
+        "recommended-keywords": "cookie",
+        "category": "Network and device information"
+      },
+      {
+        "library-rule": "HTTP(S) URL Scanner",
+        "recommended-keywords": "",
+        "category": "Network and device information"
+      },
+      {
+        "library-rule": "Heroku API Key Scanner",
+        "recommended-keywords": "heroku",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Hubspot Developer API Key Scanner",
+        "recommended-keywords": "api key, hubspot",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Hubspot Personal Access Key Scanner",
+        "recommended-keywords": "hubspot",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Hugging Face Access Token Scanner",
+        "recommended-keywords": "access, hugging face, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Hungary Social Security Number Scanner",
+        "recommended-keywords": "social security number, ssn, taj",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Hungary Tax Identification Number Scanner",
+        "recommended-keywords": "id number, tax id, tin",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "IPv4 Address Scanner",
+        "recommended-keywords": "",
+        "category": "Network and device information"
+      },
+      {
+        "library-rule": "IPv6 Address Scanner",
+        "recommended-keywords": "",
+        "category": "Network and device information"
+      },
+      {
+        "library-rule": "Instagram Token Scanner",
+        "recommended-keywords": "igqvj, instagram",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Intercom Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Ionic Personal Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Ireland Personal Public Service Number Scanner",
+        "recommended-keywords": "personal public service number, personal service no, pps no, pps num, pps number, pps service no, ppsn",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Italy Personal Identification Number Scanner",
+        "recommended-keywords": "id nazionale, identity card, identity number, identit\u00e0, national id",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "JCB Card Scanner (1x16 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, japanese card bureau, jcb, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "JCB Card Scanner (2x8 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, japanese card bureau, jcb, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "JCB Card Scanner (4x4 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, japanese card bureau, jcb, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "JIRA API Token Scanner",
+        "recommended-keywords": "jira, jira_",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Latvia Personal Identification Number Scanner",
+        "recommended-keywords": "id number, personal identity number, personas kods",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "LaunchDarkly Access Token Scanner",
+        "recommended-keywords": "authorization, feature flag, featureflag, launchdarkly, ldkey, ldtoken",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Lichess Personal Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Linear API Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "LinkedIn Secret Scanner",
+        "recommended-keywords": "linkedin, linkedin_",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Lithuania Personal Identification Number Scanner",
+        "recommended-keywords": "asmens kodas, mokesciu numeris, personal code, personal numeric code, unikalus identifikavimo kodas",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Luxembourg Personal Identification Number Scanner",
+        "recommended-keywords": "eindeutige id, eindeutige id-nummer, eindeutigeid#, id personnelle, identification personnel, identifikationsnummer, idpersonnelle, idpersonnelle#, individual code, individual id, individual identification, individual identity, personal id, personal identification, personal identity, personalidno#, personalidnumber#, unique id, unique identity, uniqueidkey#",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Maestro Card Scanner (1x16 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, mastercard, mc, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Maestro Card Scanner (2x8 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, mastercard, mc, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Maestro Card Scanner (4x4 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, mastercard, mc, pan, payment account number, payment card number, pcn",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Mailchimp API Key Scanner",
+        "recommended-keywords": "api key, mailchimp",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Mailgun API Key Scanner",
+        "recommended-keywords": "api key, mailgun",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Mailgun API Key v2 Scanner",
+        "recommended-keywords": "mailgun",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Malta Identity Card Number Scanner",
+        "recommended-keywords": "identity card, identity number, karta tal-identita, karta tal-identit\u00e0, national id",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Mapbox Secret Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "MasterCard Scanner (1x16 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, mastercard, mc, pan, payment account number, payment card number, pcn, union pay",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "MasterCard Scanner (2x8 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, mastercard, mc, pan, payment account number, payment card number, pcn, union pay",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "MasterCard Scanner (4x4 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, mastercard, mc, pan, payment account number, payment card number, pcn, union pay",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Maxmind License Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "MongoDB Atlas Database URI with Credentials Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "NPM Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Netherlands Citizen Service Number Scanner",
+        "recommended-keywords": "bsn, burgerservicenummer, citizen service number, personal number, sofinummer",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Notion Integration Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "NuGet API Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Octopus Deploy API Key Scanner",
+        "recommended-keywords": "octopus",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Okta API Token Scanner",
+        "recommended-keywords": "api token, okta",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "OpenAI Project API Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "OpenAI User API Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Oracle API Signing Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "PGP Private Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "PKCS 8 Private Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "PagerDuty API Token Scanner",
+        "recommended-keywords": "pager_duty, pagerduty, pg, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Paypal Braintree Access Token Scanner",
+        "recommended-keywords": "access, braintree, paypal, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Perfect Cloud API Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Poland Personal Identification Number Scanner",
+        "recommended-keywords": "dow\u00f3d osobisty, national id, numer identyfikacyjny, pesel",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Poland Tax Identification Number Scanner",
+        "recommended-keywords": "identyfikacji podatkowej, nip, numeridentyfikacjipodatkowej, tax file number, tax id, tax identification no, tax identification number, tax no, tax number, tax registration number, taxid, taxnumber, tin, tin id, tin no",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Portugal Social Security Number Scanner",
+        "recommended-keywords": "id number, niss, social security, ssn",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Portugal Tax Identification Number Scanner",
+        "recommended-keywords": "nif, numero fiscal, tax number",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Postman API Key Scanner",
+        "recommended-keywords": "postman, postman-api-key, x-api-key",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Pulumi Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "PyPI Upload Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "RSA Private Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Romania Personal Numeric Code Scanner",
+        "recommended-keywords": "cnp, cod, national id, national identification, numar identificare, numar identitate, numar personal unic, personal numeric code, pnc",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "RubyGems API Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "SSH Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "SendGrid API Key Scanner",
+        "recommended-keywords": "api token, send grid",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Sentry Organization Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Sentry Personal Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Shippo API Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Shopify Access Secret Scanner",
+        "recommended-keywords": "shared secret, shopify",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Shopify Access Token Scanner",
+        "recommended-keywords": "access, shopify, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Slack Access Token Scanner",
+        "recommended-keywords": "access, slack, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Slack Webhook Secret Scanner",
+        "recommended-keywords": "secret, slack, webhook",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Slovenia Personal Identification Number Scanner",
+        "recommended-keywords": "edinstvena \u0161tevilka glavnega, emso, identifikacijska \u0161tevilka, identity card, osebna izkaznica, osebni koda, personal identification code, personal identification number, \u0161tevilka dr\u017eavljana",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Spain Personal Identification Number Scanner",
+        "recommended-keywords": "dni, id number, national identity number, n\u00famero nacional identidad",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Spain Social Security Number Scanner",
+        "recommended-keywords": "nuss, n\u00famero de la seguridad social, social security, ssn",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Square Access Token Scanner",
+        "recommended-keywords": "access, square, token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Square OAuth Secret Scanner",
+        "recommended-keywords": "authentication, authorization, oauth, secret, square",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Standard Email Address Scanner",
+        "recommended-keywords": "",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Standard IBAN Code Scanner",
+        "recommended-keywords": "account code, account number, accountno#, accountnumber#, bank account, bank acct, bban, checking account, checking acct, chequing account, chequing acct, customer account id, customer account number, customer bank account id, deposit account, deposit acct, iban, savings account, savings acct, sepa",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Standard MAC Address Scanner",
+        "recommended-keywords": "",
+        "category": "Network and device information"
+      },
+      {
+        "library-rule": "Stripe Restricted API Key Scanner",
+        "recommended-keywords": "api key, stripe",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Stripe Secret API Key Scanner",
+        "recommended-keywords": "api key, stripe",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Sweden Coordination Number Scanner",
+        "recommended-keywords": "coordination, samordningsnummer",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Sweden Personal Identity Number Scanner",
+        "recommended-keywords": "id number, personal identity number, personnummer",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Tableau Personal Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Telegram Bot Token Scanner",
+        "recommended-keywords": "telegram, telegram bot token, tgram",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Twilio API Key Scanner",
+        "recommended-keywords": "api key, twilio",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Twilio API Secret Scanner",
+        "recommended-keywords": "twilio api, twilio api secret, twilio api secret key",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Twilio Account String Identifier (SID) Scanner",
+        "recommended-keywords": "twilio, twilio_account_sid, twilio_accountsid, twiliosid",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Twilio Auth Token Scanner",
+        "recommended-keywords": "twilio auth token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Twitter Access Token Scanner",
+        "recommended-keywords": "twitter, twitter_",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Typeform Personal Access Token Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "UK National Health Service Number Scanner",
+        "recommended-keywords": "national health number, nhs",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "UK National Insurance Number Scanner",
+        "recommended-keywords": "insurance, national, ni, nin",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "US Passport Scanner",
+        "recommended-keywords": "passport, passport_",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "US Social Security Number Scanner",
+        "recommended-keywords": "social security, ssn",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "US Tax Identification Number Scanner",
+        "recommended-keywords": "i.t.i.n., individual taxpayer, itin",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "US Vehicle Identification Number Scanner",
+        "recommended-keywords": "vehicle identification number, vin",
+        "category": "Personal Identifiable Information (PII)"
+      },
+      {
+        "library-rule": "Vault Access Token Scanner",
+        "recommended-keywords": "bearer, token, vault, x-vault-token",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "Visa Card Scanner (1x16 & 1x19 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, electron, pan, payment account number, payment card number, pcn, union pay, visa",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Visa Card Scanner (2x8 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, electron, pan, payment account number, payment card number, pcn, union pay, visa",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Visa Card Scanner (4x4 digits)",
+        "recommended-keywords": "account number, bank card, card, card num, card number, cc #, ccn, check card, credit, credit card#, dankort, debit, debit card, electron, pan, payment account number, payment card number, pcn, union pay, visa",
+        "category": "Credit cards and banking"
+      },
+      {
+        "library-rule": "Wakatime API Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "WorkOS API Key Scanner",
+        "recommended-keywords": "",
+        "category": "Secrets and credentials"
+      },
+      {
+        "library-rule": "xAI (Grok) API Key Scanner",
+        "recommended-keywords": "api_key, apikey, authorization, bearer, xai_api_key",
+        "category": "Secrets and credentials"
+      }
+    ]
+  }
+}
