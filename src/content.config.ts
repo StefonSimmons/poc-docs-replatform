@@ -31,7 +31,7 @@ export const collections = {
             filter_by: z.boolean().optional()
           })),
           data: z.array(z.record(z.string(), z.any()))
-        }).optional()
+        }).optional(),
       }),
     }),
   }),

@@ -21,14 +21,17 @@ multi_filter_search:
       type: Unified service tagging
 ---
 
+<!-- TODO: For the component itself i can probably extract the alpine pieces and have it run server side with a mix of tailwind. Alternatively I could use the alpinejs integration -->
+
 Renders a MultiFilterSearch component.
 
 ## Examples
 
 **MultiFilterSearch component using fm_resource in frontmatter**
-<!-- {% multifiltersearch fm_resource=$frontmatter.multi_filter_search /%} -->
+{% multifiltersearch fm_resource=$frontmatter.multi_filter_search /%}
 
 **MultiFilterSearch component using resource in props**
 {% multifiltersearch resource="sds_rules-test" /%}
+
 
 

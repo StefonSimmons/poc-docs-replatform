@@ -40,66 +40,49 @@
  *   "data": [...]
  * }
  */
-type Data = {
-  multifiltersearch: {
+
+type Props = {
+resource: string;
+fm_resource: {
     headers: {
-      id: string;
-      name: string;
-      filter_by: boolean;
+        id: string;
+        name: string;
+        filter_by: boolean;
     }[];
-    data: Record<string, string>[];
-  };
+    data: Record<string, any>[];
 };
-
-const { resource, fmResource } = Astro.props;
-console.log("fmResource", fmResource);
-console.log("resource", resource);
-
-// Fail early if no data source provided
-if (!fmResource && !resource) {
-  throw new Error(
-    `No data source provided for multifilter-search component. Provide either headers/data props or a resource path. Resource: ${resource} FM Resource: ${fmResource}`
-  );
 }
 
-let headers: Data["multifiltersearch"]["headers"] = [];
-let data: Data["multifiltersearch"]["data"] = [];
+const { resource, fm_resource } = Astro.props;
+const { pathname } = Astro.url;
+console.log("FM_RESOURCE",fm_resource);
 
-// Determine multifiltersearch data source, if any
-if (fmResource) {
-  // Use frontmatter dataset
-  headers = fmResource.headers;
-  data = fmResource.data;
-} else if (resource) {
-  // Use JSON dataset from ./data directory
-  try {
+// Fail early if no data source found
+if(!fm_resource.headers.length && !fm_resource.data.length && !resource) {
+    throw new Error(`No data source provided for multifiltersearch component in file: ${pathname}`);
+}
+
+// Initialize headers and data variables
+let headers:Props['fm_resource']['headers'] | [] = []
+let data:Props['fm_resource']['data'] = []
+
+if(fm_resource && !resource) {
+    // Get frontmatter dataset
+    headers = fm_resource.headers;
+    data = fm_resource.data;
+} else if(resource && !fm_resource.headers.length && !fm_resource.data.length) {
+    // Get JSON dataset
     const resourcePath = `../data/${resource}.json`;
     const jsonFiles = await import.meta.glob(`../data/*.json`, { eager: true });
-    const jsonFile = Object.entries(jsonFiles).find(
+    const jsonFile: any = Object.entries(jsonFiles).find(
       (file) => file[0] === resourcePath
-    );
-
-    if (!jsonFile) {
-      throw new Error(`No JSON file found for resource: ${resourcePath}`);
+    )
+    if(!jsonFile) {
+        throw new Error(`No data source found for resource param: ${resource} in file: ${pathname}`);
     }
-    const jsonData = (jsonFile[1] as Data).multifiltersearch;
-    headers = jsonData.headers;
-    data = jsonData.data;
-
-    if (!headers || !data) {
-      throw new Error(
-        `No header of data array found in the JSON file: ${resourcePath}`
-      );
-    }
-  } catch (error) {
-    console.error(`Failed to load resource: ${resource}`, error);
-    throw new Error(
-      `No valid data source provided for multifilter-search component`
-    );
-  }
+    const jsonData = jsonFile[1].default;
+    headers = jsonData.multifiltersearch.headers;
+    data = jsonData.multifiltersearch.data;
+    
 }
-
-console.log("headers:", headers);
-console.log("data:", data);
-
----
+console.log("JSON DATA",headers, data);

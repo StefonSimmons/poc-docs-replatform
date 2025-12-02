@@ -76,7 +76,6 @@ export default defineMarkdocConfig({
                 fm_resource: { type: Object, default: {"headers": [], "data": []} },
             }
         },
-
     },
     nodes: {
         fence: {
