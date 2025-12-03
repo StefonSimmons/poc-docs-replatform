@@ -7,9 +7,9 @@ multi_filter_search:
       id: opentelemetry_convention
     - name: Datadog convention
       id: datadog_convention
+      filter_by: true
     - name: Type
       id: type
-      filter_by: true
   data:
     - opentelemetry_convention: 'deployment.environment.name'
       datadog_convention: 'env'

@@ -310,74 +310,78 @@ const state = {
   
   {console.log("Dropdowns:", state.dropdowns)}
   <!-- NAV - Keep here. scratch pad for filters need to form first -->
-  <nav id="multifilter-search-nav" class="container px-0">
+  <nav id="multifilter-search-nav" class="">
     <div class="filters__multifilter row">
-        {console.log("Filtered Set:", state.filterKeys, headers)}
+        {console.log("Filtered Set:", state.filterTypes)}
         { headers.map((header, idx) => {
-            // const header = headers.find((header) => header.id === filterKey);
-            // if (!header) return null;
             return (
                 header.filter_by && (
-                <div class='filter-type flex-column col-12 col-md-{{cond (not idx) "12" "6" }}' data-id="{{filterKey}}" >
-                    <p class="filter-type-name fw-semibold">{ header.name }</p>
-                    <div class="filter-component position-relative">
+                <div class='filter-type' data-id={header.id} >
+                    <p class="filter-type-name">{ header.name }</p>
+                    <div class="filter-component">
                         <button 
-                        data-id="{{filterKey}}"
-                        class="toggler w-100 rounded position-relative">
-                            <div class="selections d-flex">
+                        data-id={header.id}
+                        class="toggler">
+                            <div class="selections">
                                 {/* All */}
-                                <template x-if="!filterTypes['{{$filter_type}}'].length">
-                                    <span class="all fw-semibold">All</span>
-                                </template>
+                                <span class="all">All</span>
                                 
                                 {/* { Show filter selections from `filterTypes` data in button as they are selected} */}
-                                {/* {state.filterTypes[filterKey].map((filter) => {
+                                {state.filterTypes[header.id]?.map((filter) => {
                                     return (
-                                        <div class="selection-container rounded d-flex align-items-center">
-                                            <span class="selection-name" x-text="filter"></span>
+                                        <div class="selection-container">
+                                            <span class="selection-name">{filter}</span>
                                         </div>
                                     )
-                                })} */}
+                                })}
                             </div>
                             {/* { Delete all selections for a filter type } */}
                             <div class="overflow-gradient h-100 position-absolute top-0 end-0 rounded-end">
-                                <template x-if="filterTypes['{{$filter_type}}'].length">
+                                {/* <template x-if="filterTypes['{{$filter_type}}'].length">
                                     <span class="cancel-circle-wrapper">
-                                    {/* icon here */}
+                                        icon here
                                     </span>
-                                </template>
+                                </template> */}
                                 <span class="chevron-wrapper d-flex align-items-center justify-content-center position-relative h-100">
                                     <div class="chevron chevron-down"></div>
                                 </span>
                             </div>
                         </button>
-                <!-- Filter Form -->
-                <form 
-                data-id="{{$filter_type}}"
-                class="d-flex flex-column bg-white rounded position-absolute w-100"
-                x-cloak x-show.important="openedFilterForm === '{{$filter_type}}'"
-                @click.outside="openedFilterForm = null"
-                >
-                    <div class="filter-selection-container">
-                        <span>All</span>
-                    </div>
-
-                   {/* {state.filterTypes[filterKey].map((filter) => {
-                    return (
-                        <div class="filter-selection-container">
-                            <span>{filter}</span>
-                        </div>
-                    )
-                   })} */}
-                </form>
+                        {/* Filter Form */}
+                        <form 
+                        data-id={header.id}
+                        class=""
+                        >
+                            <div class="filter-selection-container">
+                                <span>All</span>
+                            </div>
+                            {
+                                state.dropdowns[header.name]?.map((filter) => {
+                                    const cleanValue = filter.replace(/\[(.*)\]\(.*\)/g, '$1')
+                                    const id = `${cleanValue}-${header.id}`
+                                    return (
+                                        <div class="filter-selection-container">
+                                            <input 
+                                            type="checkbox" 
+                                            id={id} 
+                                            value={cleanValue}
+                                            />
+                                            <label for={id} class="">
+                                                {cleanValue}
+                                            </label>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </form>
             </div>                      
         </div>
         )
     )})}
     </div>
     <!-- //  SEARCH FORM -->
-    <form class="search__multifilter" @submit.prevent="">
-        <input type="search" placeholder="Search here" class="w-100 px-1" x-model="searchValue" @input="resetFilteredSet" @input.debounce="pushState()">
+    <form class="search__multifilter">
+        <input type="search" placeholder="Search here" class="">
     </form>
   </nav>
 </div>
