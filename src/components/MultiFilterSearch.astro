@@ -245,7 +245,7 @@ const state = {
   }
 };
 ---
-<multi-filter-search class="multifilter-search-component flex flex-col">
+<div is="multi-filter-search" class="multifilter-search-component flex flex-col">
     <h2>{data.length} data rows</h2>
     <!-- DATA TABLE -->
     <div class="order-1">
@@ -385,18 +385,23 @@ const state = {
         </form>
     </nav>
     </div>
-</multi-filter-search>
+</div>
 
 <script>
-    class MultiFilterSearch extends HTMLElement {
-        // Custom Web Component. Used to encapsulate this component's code. no bleeding out
+    class MultiFilterSearch extends HTMLDivElement {
+        // Customized built-in <div> Web Component. Used to encapsulate this component's code. no bleeding out
+        // Note: if passing an object as data attr, you have to JSON.stringify it. you can then JSON parse it here
+        constructor() {
+            // Always call super first in constructor
+            super();
+        }
 
         connectedCallback() {
-            console.log("QUERY SELECTOR H2:",this.querySelector("h2"));
-            this.querySelector("h2")?.addEventListener("click", () => {
-                console.log("CLICKED:",this);
+            this.querySelector("button.toggler")?.addEventListener("click", () => {
+                console.log("CLICKED: TOGGLER");
             });
         }
     }
+    // customElements.define("multi-filter-search", MultiFilterSearch, { extends: "div" });
     customElements.define("multi-filter-search", MultiFilterSearch, { extends: "div" });
 </script>
