@@ -9,6 +9,7 @@ multi_filter_search:
       id: datadog_convention
     - name: Type
       id: type
+      filter_by: true
   data:
     - opentelemetry_convention: 'deployment.environment.name'
       datadog_convention: 'env'
@@ -31,7 +32,7 @@ Renders a MultiFilterSearch component.
 {% multifiltersearch fm_resource=$frontmatter.multi_filter_search /%}
 
 **MultiFilterSearch component using resource in props**
-{% multifiltersearch resource="sds_rules-test" /%}
+<!-- {% multifiltersearch resource="sds_rules-test" /%} -->
 
 
 

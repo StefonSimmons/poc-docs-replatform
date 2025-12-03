@@ -42,47 +42,342 @@
  */
 
 type Props = {
-resource: string;
-fm_resource: {
+  resource: string;
+  fm_resource: {
     headers: {
-        id: string;
-        name: string;
-        filter_by: boolean;
+      id: string;
+      name: string;
+      filter_by: boolean;
     }[];
     data: Record<string, any>[];
+  };
 };
-}
 
 const { resource, fm_resource } = Astro.props;
 const { pathname } = Astro.url;
-console.log("FM_RESOURCE",fm_resource);
 
 // Fail early if no data source found
-if(!fm_resource.headers.length && !fm_resource.data.length && !resource) {
-    throw new Error(`No data source provided for multifiltersearch component in file: ${pathname}`);
+if (!fm_resource.headers.length && !fm_resource.data.length && !resource) {
+  throw new Error(
+    `No data source provided for multifiltersearch component in file: ${pathname}`
+  );
 }
 
-// Initialize headers and data variables
-let headers:Props['fm_resource']['headers'] | [] = []
-let data:Props['fm_resource']['data'] = []
+/**
+ * Get the dataset from the frontmatter or the JSON file
+ * 
+ */
+const getDataset = async () => {
+  let headers: Props["fm_resource"]["headers"] | [] = [];
+  let data: Props["fm_resource"]["data"] = [];
 
-if(fm_resource && !resource) {
+  if (fm_resource && !resource) {
     // Get frontmatter dataset
     headers = fm_resource.headers;
     data = fm_resource.data;
-} else if(resource && !fm_resource.headers.length && !fm_resource.data.length) {
+  } else if (
+    resource &&
+    !fm_resource.headers.length &&
+    !fm_resource.data.length
+  ) {
     // Get JSON dataset
     const resourcePath = `../data/${resource}.json`;
     const jsonFiles = await import.meta.glob(`../data/*.json`, { eager: true });
     const jsonFile: any = Object.entries(jsonFiles).find(
       (file) => file[0] === resourcePath
-    )
-    if(!jsonFile) {
-        throw new Error(`No data source found for resource param: ${resource} in file: ${pathname}`);
+    );
+    if (!jsonFile) {
+      throw new Error(
+        `No data source found for resource param: ${resource} in file: ${pathname}`
+      );
     }
     const jsonData = jsonFile[1].default;
     headers = jsonData.multifiltersearch.headers;
     data = jsonData.multifiltersearch.data;
-    
-}
-console.log("JSON DATA",headers, data);
+  }
+  return { headers, data };
+};
+
+const { headers, data } = await getDataset();
+
+const state = {
+  headers: headers,
+  data: data,
+  dropdowns: {} as Record<string, string[]>,
+  filterKeys: headers.filter((header) => header.filter_by).map((header) => header.id),
+  searchKeys: headers.filter((header) => !header.filter_by).map((header) => header.id),
+  filterTypes: {} as Record<string, string[]>,
+  searchValue: "",
+  openedFilterForm: null as string | null,
+  filteredSet: new Set(),
+  showEmptyResultsMsg: false,
+  toggleFilterForm: function (selectedFilterFormEl: HTMLElement) {
+    // manage filter form accordian
+    const filterTypeID = selectedFilterFormEl.dataset.id;
+    if (!filterTypeID)
+      throw new Error(
+        `No filter type ID found for filter form element in file: ${pathname}`
+      );
+    this.openedFilterForm =
+      this.openedFilterForm === filterTypeID ? null : filterTypeID;
+  },
+  shouldShowRecord: function (record: HTMLElement) {
+    // Determines record display
+    // Compares user search and filter values against lookupInfo
+    const lookupInfo = record.dataset.info?.split(";"); // separate filter values from search vals
+    if (!lookupInfo)
+      throw new Error(`No lookup info found for record in file: ${pathname}`);
+    const filterInfo = lookupInfo[0].toLowerCase().split(",");
+    const searchInfo = lookupInfo.slice(1).join(" ").toLowerCase();
+
+    // User input
+    const filteredValues = Object.values(this.filterTypes);
+    const searchedValues = this.searchValue.split(" ");
+
+    // Check if record should be displayed
+    const containsFilteredValues = filteredValues.every((t, idx) =>
+      t.length ? t.some((f) => filterInfo[idx] === f.toLowerCase()) : true
+    ); // checks filter attrs match at least one filter value. allows for multiple selection of a filter type. scrict. filter value must be a child of correct parent filter type
+    const containsSearchedValues = searchedValues.every((word) =>
+      searchInfo.includes(word.toLowerCase())
+    ); // checks search attrs match a typed query
+
+    if (containsSearchedValues && containsFilteredValues) {
+      record.classList.add("show");
+      this.filteredSet.add(record.dataset.id);
+    } else {
+      record.classList.remove("show");
+    }
+
+    return containsSearchedValues && containsFilteredValues;
+  },
+  resetFilteredSet: function () {
+    // Empty filtered Set
+    this.filteredSet = new Set();
+  },
+  deleteOneSelection: function (filterType: string, filterOption: string) {
+    // delete one filterOption from selections in filter toggler
+    this.filterTypes[filterType] = this.filterTypes[filterType].filter(
+      (s) => s !== filterOption
+    );
+    this.pushState(filterType, filterOption);
+  },
+  deleteAllSelections: function (filterType: string) {
+    // delete all selections of a filter type from filter toggler and url params
+
+    this.filterTypes[filterType] = [];
+    this.openedFilterForm = null;
+    const url = new URL(window.location.href);
+
+    url.searchParams.delete(filterType);
+    window.history.pushState(null, "", url.toString());
+  },
+  initFilterSearchValues: function () {
+    // Initializes and Updates x-data filter and search properties with url param values, if any
+
+    // setup empty filterTypes object
+    this.filterTypes = this.headers
+      .filter((header) => header.filter_by)
+      .reduce(
+        (acc, header) => {
+          acc[header.id] = [];
+          return acc;
+        },
+        {} as Record<string, string[]>
+      );
+
+    // get search and filter value from url params
+    const url = new URL(window.location.href);
+    Array.from(url.searchParams.entries()).forEach(([key, value]) => {
+      if (key === "search") {
+        this.searchValue = value;
+      } else {
+        this.filterTypes[key]?.push(value);
+      }
+    });
+  },
+  pushState(filterType?: string, filterOption?: string) {
+    // Updates url with new query params for filter type and search without refreshing the page
+
+    const url = new URL(window.location.href);
+    let newURL = "";
+    if (filterType && filterOption) {
+      if (!url.searchParams.getAll(filterType).includes(filterOption)) {
+        // add one key:value param
+        url.searchParams.append(filterType, filterOption);
+      } else {
+        // remove one key:value param
+
+        function encode(match: string) {
+          // callback function to encode some special characters.
+          // accounting for how the toString url method encodes characters
+          return match === " "
+            ? "\\+"
+            : "%" + match.charCodeAt(0).toString(16).toUpperCase();
+        }
+        const regex = new RegExp(
+          `([\\&\\?])${filterType}=${filterOption.replace(/[\s()!*\[\]%,]/g, encode)}(?=\&|$)`,
+          "g"
+        );
+        newURL = url.toString().replaceAll(regex, "").replace("/&", "/?");
+      }
+      if (!this.filterTypes[filterType].length) {
+        url.searchParams.delete(filterType);
+      }
+    } else {
+      url.searchParams.set("search", this.searchValue);
+      if (!this.searchValue) {
+        url.searchParams.delete("search");
+      }
+    }
+
+    window.history.pushState(null, "", newURL || url.toString());
+  },
+  emptyResultsMsg () {
+    // Determine and return the appropriate empty results message
+
+    const filterValues = Object.values(this.filterTypes).flat().map(item => item.split(',')[0]).join(', ')
+    if(filterValues.length && this.searchValue){
+        return `No results found for query on search: '${this.searchValue}' and filter: '${filterValues}'`
+    }else{
+        return `No results found for query '${this.searchValue || filterValues}'`
+    }
+  }
+};
+---
+<!-- DATA TABLE -->
+<div class="col-12 order-1">
+    <div class="table-wrapper pb-3">
+      <table>
+        <!-- TABLE HEADER -->
+
+        <thead class="table-header">
+          <tr>
+            <!-- Range headers -->
+            { headers.map(({name}) => <th>{name}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+        { 
+            data.map((row, idx) => {
+                // build a string with lookup info for filtering and searching against. must maintain filter_info order to align with filterTypes property.
+                const filterInfo = state.filterKeys.reduce((acc,filterKey, idx) => {
+                    // Removes markdown link syntax if it exists
+                    const cleanValue = row[filterKey].replace(/\[(.*)\]\(.*\)/g)
+                    return `${acc}${cleanValue}${idx < state.filterKeys.length - 1 ? ',' : ''}`
+                }, '')
+                const searchInfo = state.searchKeys.reduce((acc,searchKey, idx) => {
+                    // Removes markdown link syntax if it exists
+                    const cleanValue = row[searchKey.toLowerCase()].replace(/\[(.*)\]\(.*\)/g)
+                    return `${acc};${cleanValue}`
+                }, '')
+                const allInfo = `${filterInfo}${searchInfo}`
+                //   build object with unique values for filter dropdowns
+                //   e.g:
+                //   dropdown: {
+                //       Recommendation Category: [],
+                //       Cloud Provider: [],
+                //       Resource_Type
+                //   }
+                headers.forEach((header) => {
+                    if(header.filter_by){
+                        if(state.dropdowns[header.name] && !state.dropdowns[header.name]?.includes(row[header.id])){
+                            state.dropdowns[header.name].push(row[header.id])
+                        }else {
+                            state.dropdowns[header.name] = [row[header.id]]
+                        }
+                    }
+                })
+                return (
+                    <tr 
+                    data-id={idx}
+                    data-info={allInfo} >
+                        { headers.map(({id}) => {
+                            return <td>{row[id]}</td>
+                        })}
+                    </tr>
+                )
+            })
+        }
+        </tbody>
+      </table>
+      <!-- hook into the app lifecycle. $watch for 'filteredSet' to change and update the 'showEmptyResultsMsg' property -->
+      <div>
+        <!-- EMPTY MESSAGE GOES HERE Conditionally -->
+      </div>
+    </div>
+  </div>
+  
+  {console.log("Dropdowns:", state.dropdowns)}
+  <!-- NAV - Keep here. scratch pad for filters need to form first -->
+  <nav id="multifilter-search-nav" class="container px-0">
+    <div class="filters__multifilter row">
+        {console.log("Filtered Set:", state.filterKeys, headers)}
+        { headers.map((header, idx) => {
+            // const header = headers.find((header) => header.id === filterKey);
+            // if (!header) return null;
+            return (
+                header.filter_by && (
+                <div class='filter-type flex-column col-12 col-md-{{cond (not idx) "12" "6" }}' data-id="{{filterKey}}" >
+                    <p class="filter-type-name fw-semibold">{ header.name }</p>
+                    <div class="filter-component position-relative">
+                        <button 
+                        data-id="{{filterKey}}"
+                        class="toggler w-100 rounded position-relative">
+                            <div class="selections d-flex">
+                                {/* All */}
+                                <template x-if="!filterTypes['{{$filter_type}}'].length">
+                                    <span class="all fw-semibold">All</span>
+                                </template>
+                                
+                                {/* { Show filter selections from `filterTypes` data in button as they are selected} */}
+                                {/* {state.filterTypes[filterKey].map((filter) => {
+                                    return (
+                                        <div class="selection-container rounded d-flex align-items-center">
+                                            <span class="selection-name" x-text="filter"></span>
+                                        </div>
+                                    )
+                                })} */}
+                            </div>
+                            {/* { Delete all selections for a filter type } */}
+                            <div class="overflow-gradient h-100 position-absolute top-0 end-0 rounded-end">
+                                <template x-if="filterTypes['{{$filter_type}}'].length">
+                                    <span class="cancel-circle-wrapper">
+                                    {/* icon here */}
+                                    </span>
+                                </template>
+                                <span class="chevron-wrapper d-flex align-items-center justify-content-center position-relative h-100">
+                                    <div class="chevron chevron-down"></div>
+                                </span>
+                            </div>
+                        </button>
+                <!-- Filter Form -->
+                <form 
+                data-id="{{$filter_type}}"
+                class="d-flex flex-column bg-white rounded position-absolute w-100"
+                x-cloak x-show.important="openedFilterForm === '{{$filter_type}}'"
+                @click.outside="openedFilterForm = null"
+                >
+                    <div class="filter-selection-container">
+                        <span>All</span>
+                    </div>
+
+                   {/* {state.filterTypes[filterKey].map((filter) => {
+                    return (
+                        <div class="filter-selection-container">
+                            <span>{filter}</span>
+                        </div>
+                    )
+                   })} */}
+                </form>
+            </div>                      
+        </div>
+        )
+    )})}
+    </div>
+    <!-- //  SEARCH FORM -->
+    <form class="search__multifilter" @submit.prevent="">
+        <input type="search" placeholder="Search here" class="w-100 px-1" x-model="searchValue" @input="resetFilteredSet" @input.debounce="pushState()">
+    </form>
+  </nav>
+</div>
