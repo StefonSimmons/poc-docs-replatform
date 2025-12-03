@@ -245,7 +245,8 @@ const state = {
   }
 };
 ---
-<div class="multifilter-search-component flex flex-col">
+<multi-filter-search class="multifilter-search-component flex flex-col">
+    <h2>{data.length} data rows</h2>
     <!-- DATA TABLE -->
     <div class="order-1">
         <div class="table-wrapper pb-7">
@@ -281,10 +282,10 @@ const state = {
                     //   }
                     headers.forEach((header) => {
                         if(header.filter_by){
-                            if(state.dropdowns[header.name] && !state.dropdowns[header.name]?.includes(row[header.id])){
-                                state.dropdowns[header.name].push(row[header.id])
-                            }else {
+                            if(!state.dropdowns[header.name]){
                                 state.dropdowns[header.name] = [row[header.id]]
+                            }else if(state.dropdowns[header.name] && !state.dropdowns[header.name]?.includes(row[header.id])){
+                                state.dropdowns[header.name].push(row[header.id])
                             }
                         }
                     })
@@ -309,9 +310,8 @@ const state = {
     </div>
     
     <!-- NAV - Keep here. scratch pad for filters need to form first -->
-    <nav id="multifilter-search-nav" class="w-full sticky top-[95px] self-start z-2 bg-white pt-3 pb-3 px-0">
+    <nav id="multifilter-search-nav" class="w-full sticky top-[64px] self-start z-2 bg-white pt-3 pb-3 px-0">
         <div class="filters__multifilter mb-3">
-            {console.log("Filtered Set:", state.filterTypes)}
             { headers.map((header, idx) => {
                 return (
                     header.filter_by && (
@@ -385,4 +385,18 @@ const state = {
         </form>
     </nav>
     </div>
-</div>
+</multi-filter-search>
+
+<script>
+    class MultiFilterSearch extends HTMLElement {
+        // Custom Web Component. Used to encapsulate this component's code. no bleeding out
+
+        connectedCallback() {
+            console.log("QUERY SELECTOR H2:",this.querySelector("h2"));
+            this.querySelector("h2")?.addEventListener("click", () => {
+                console.log("CLICKED:",this);
+            });
+        }
+    }
+    customElements.define("multi-filter-search", MultiFilterSearch, { extends: "div" });
+</script>
