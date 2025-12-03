@@ -245,143 +245,144 @@ const state = {
   }
 };
 ---
-<!-- DATA TABLE -->
-<div class="col-12 order-1">
-    <div class="table-wrapper pb-3">
-      <table>
-        <!-- TABLE HEADER -->
-
-        <thead class="table-header">
-          <tr>
-            <!-- Range headers -->
-            { headers.map(({name}) => <th>{name}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-        { 
-            data.map((row, idx) => {
-                // build a string with lookup info for filtering and searching against. must maintain filter_info order to align with filterTypes property.
-                const filterInfo = state.filterKeys.reduce((acc,filterKey, idx) => {
-                    // Removes markdown link syntax if it exists
-                    const cleanValue = row[filterKey].replace(/\[(.*)\]\(.*\)/g)
-                    return `${acc}${cleanValue}${idx < state.filterKeys.length - 1 ? ',' : ''}`
-                }, '')
-                const searchInfo = state.searchKeys.reduce((acc,searchKey, idx) => {
-                    // Removes markdown link syntax if it exists
-                    const cleanValue = row[searchKey.toLowerCase()].replace(/\[(.*)\]\(.*\)/g)
-                    return `${acc};${cleanValue}`
-                }, '')
-                const allInfo = `${filterInfo}${searchInfo}`
-                //   build object with unique values for filter dropdowns
-                //   e.g:
-                //   dropdown: {
-                //       Recommendation Category: [],
-                //       Cloud Provider: [],
-                //       Resource_Type
-                //   }
-                headers.forEach((header) => {
-                    if(header.filter_by){
-                        if(state.dropdowns[header.name] && !state.dropdowns[header.name]?.includes(row[header.id])){
-                            state.dropdowns[header.name].push(row[header.id])
-                        }else {
-                            state.dropdowns[header.name] = [row[header.id]]
-                        }
-                    }
-                })
-                return (
-                    <tr 
-                    data-id={idx}
-                    data-info={allInfo} >
-                        { headers.map(({id}) => {
-                            return <td>{row[id]}</td>
-                        })}
-                    </tr>
-                )
-            })
-        }
-        </tbody>
-      </table>
-      <!-- hook into the app lifecycle. $watch for 'filteredSet' to change and update the 'showEmptyResultsMsg' property -->
-      <div>
-        <!-- EMPTY MESSAGE GOES HERE Conditionally -->
-      </div>
-    </div>
-  </div>
-  
-  {console.log("Dropdowns:", state.dropdowns)}
-  <!-- NAV - Keep here. scratch pad for filters need to form first -->
-  <nav id="multifilter-search-nav" class="">
-    <div class="filters__multifilter row">
-        {console.log("Filtered Set:", state.filterTypes)}
-        { headers.map((header, idx) => {
-            return (
-                header.filter_by && (
-                <div class='filter-type' data-id={header.id} >
-                    <p class="filter-type-name">{ header.name }</p>
-                    <div class="filter-component">
-                        <button 
-                        data-id={header.id}
-                        class="toggler">
-                            <div class="selections">
-                                {/* All */}
-                                <span class="all">All</span>
-                                
-                                {/* { Show filter selections from `filterTypes` data in button as they are selected} */}
-                                {state.filterTypes[header.id]?.map((filter) => {
-                                    return (
-                                        <div class="selection-container">
-                                            <span class="selection-name">{filter}</span>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                            {/* { Delete all selections for a filter type } */}
-                            <div class="overflow-gradient h-100 position-absolute top-0 end-0 rounded-end">
-                                {/* <template x-if="filterTypes['{{$filter_type}}'].length">
-                                    <span class="cancel-circle-wrapper">
-                                        icon here
-                                    </span>
-                                </template> */}
-                                <span class="chevron-wrapper d-flex align-items-center justify-content-center position-relative h-100">
-                                    <div class="chevron chevron-down"></div>
-                                </span>
-                            </div>
-                        </button>
-                        {/* Filter Form */}
-                        <form 
-                        data-id={header.id}
-                        class=""
-                        >
-                            <div class="filter-selection-container">
-                                <span>All</span>
-                            </div>
-                            {
-                                state.dropdowns[header.name]?.map((filter) => {
-                                    const cleanValue = filter.replace(/\[(.*)\]\(.*\)/g, '$1')
-                                    const id = `${cleanValue}-${header.id}`
-                                    return (
-                                        <div class="filter-selection-container">
-                                            <input 
-                                            type="checkbox" 
-                                            id={id} 
-                                            value={cleanValue}
-                                            />
-                                            <label for={id} class="">
-                                                {cleanValue}
-                                            </label>
-                                        </div>
-                                    )
-                                })
+<div class="multifilter-search-component flex flex-col">
+    <!-- DATA TABLE -->
+    <div class="order-1">
+        <div class="table-wrapper pb-7">
+        <table>
+            <!-- TABLE HEADER -->
+            <thead class="table-header">
+            <tr>
+                <!-- Range headers -->
+                { headers.map(({name}) => <th>{name}</th>)}
+            </tr>
+            </thead>
+            <tbody>
+            { 
+                data.map((row, idx) => {
+                    // build a string with lookup info for filtering and searching against. must maintain filter_info order to align with filterTypes property.
+                    const filterInfo = state.filterKeys.reduce((acc,filterKey, idx) => {
+                        // Removes markdown link syntax if it exists
+                        const cleanValue = row[filterKey].replace(/\[(.*)\]\(.*\)/g)
+                        return `${acc}${cleanValue}${idx < state.filterKeys.length - 1 ? ',' : ''}`
+                    }, '')
+                    const searchInfo = state.searchKeys.reduce((acc,searchKey, idx) => {
+                        // Removes markdown link syntax if it exists
+                        const cleanValue = row[searchKey.toLowerCase()].replace(/\[(.*)\]\(.*\)/g)
+                        return `${acc};${cleanValue}`
+                    }, '')
+                    const allInfo = `${filterInfo}${searchInfo}`
+                    //   build object with unique values for filter dropdowns
+                    //   e.g:
+                    //   dropdown: {
+                    //       Recommendation Category: [],
+                    //       Cloud Provider: [],
+                    //       Resource_Type
+                    //   }
+                    headers.forEach((header) => {
+                        if(header.filter_by){
+                            if(state.dropdowns[header.name] && !state.dropdowns[header.name]?.includes(row[header.id])){
+                                state.dropdowns[header.name].push(row[header.id])
+                            }else {
+                                state.dropdowns[header.name] = [row[header.id]]
                             }
-                        </form>
-            </div>                      
+                        }
+                    })
+                    return (
+                        <tr 
+                        data-id={idx}
+                        data-info={allInfo} >
+                            { headers.map(({id}) => {
+                                return <td>{row[id]}</td>
+                            })}
+                        </tr>
+                    )
+                })
+            }
+            </tbody>
+        </table>
+        <!-- hook into the app lifecycle. $watch for 'filteredSet' to change and update the 'showEmptyResultsMsg' property -->
+        <div>
+            <!-- EMPTY MESSAGE GOES HERE Conditionally -->
         </div>
-        )
-    )})}
+        </div>
     </div>
-    <!-- //  SEARCH FORM -->
-    <form class="search__multifilter">
-        <input type="search" placeholder="Search here" class="">
-    </form>
-  </nav>
+    
+    <!-- NAV - Keep here. scratch pad for filters need to form first -->
+    <nav id="multifilter-search-nav" class="w-full sticky top-[95px] self-start z-2 bg-white pt-3 pb-3 px-0">
+        <div class="filters__multifilter mb-3">
+            {console.log("Filtered Set:", state.filterTypes)}
+            { headers.map((header, idx) => {
+                return (
+                    header.filter_by && (
+                    <div class='filter-type mb-6' data-id={header.id} >
+                        <p class="filter-type-name mb-2">{ header.name }</p>
+                        <div class="filter-component">
+                            <button 
+                            data-id={header.id}
+                            class="toggler w-full flex items-center h-10! pe-12 ps-2 rounded-lg bg-[#f6f6f6] border border-gray-300 text-left">
+                                <div class="selections flex gap-x-1 overflow-scroll">
+                                    {/* All */}
+                                    <span class="all font-semibold ms-2">All</span>
+                                    
+                                    {/* { Show filter selections from `filterTypes` data in button as they are selected} */}
+                                    {state.filterTypes[header.id]?.map((filter) => {
+                                        return (
+                                            <div class="selection-container rounded-lg flex items-center bg-[#E6D6F9] px-1">
+                                                <span class="selection-name whitespace-nowrap relative -top-[1]">{filter}</span>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                {/* { Delete all selections for a filter type } */}
+                                <div class="overflow-gradient h-100 position-absolute top-0 end-0 rounded-end">
+                                    {/* <template x-if="filterTypes['{{$filter_type}}'].length">
+                                        <span class="cancel-circle-wrapper">
+                                            icon here
+                                        </span>
+                                    </template> */}
+                                    <span class="chevron-wrapper d-flex align-items-center justify-content-center position-relative h-100">
+                                        <div class="chevron chevron-down"></div>
+                                    </span>
+                                </div>
+                            </button>
+                            {/* Filter Form */}
+                            <form 
+                            data-id={header.id}
+                            class="flex flex-col bg-white rounded-lg absolute w-100 max-h-545px overflow-y-scroll gap-x-3 p-2 mt-2 z-2 shadow-[0_0_1px_0_rgba(0,0,0,0.10),0_4px_16px_0_rgba(0,0,0,0.32)]"
+                            >
+                                <div class="filter-selection-container flex items-center ms-2">
+                                    <span>All</span>
+                                </div>
+                                {
+                                    state.dropdowns[header.name]?.map((filter) => {
+                                        const cleanValue = filter.replace(/\[(.*)\]\(.*\)/g, '$1')
+                                        const id = `${cleanValue}-${header.id}`
+                                        return (
+                                            <div class="filter-selection-container flex items-center ms-2">
+                                                <input 
+                                                class="w-4 h-4"
+                                                type="checkbox" 
+                                                id={id} 
+                                                value={cleanValue}
+                                                />
+                                                <label for={id} class="ms-2">
+                                                    {cleanValue}
+                                                </label>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </form>
+                </div>                      
+            </div>
+            )
+        )})}
+        </div>
+        <!-- //  SEARCH FORM -->
+        <form class="search__multifilter">
+            <input type="search" placeholder="Search here" class="p-2 rounded-sm border border-gray-300">
+        </form>
+    </nav>
+    </div>
 </div>
