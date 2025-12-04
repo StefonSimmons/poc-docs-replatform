@@ -108,19 +108,8 @@ const state = {
   searchKeys: headers.filter((header) => !header.filter_by).map((header) => header.id),
   filterTypes: {} as Record<string, string[]>,
   searchValue: "",
-  openedFilterForm: null as string | null,
   filteredSet: new Set(),
   showEmptyResultsMsg: false,
-  toggleFilterForm: function (selectedFilterFormEl: HTMLElement) {
-    // manage filter form accordian
-    const filterTypeID = selectedFilterFormEl.dataset.id;
-    if (!filterTypeID)
-      throw new Error(
-        `No filter type ID found for filter form element in file: ${pathname}`
-      );
-    this.openedFilterForm =
-      this.openedFilterForm === filterTypeID ? null : filterTypeID;
-  },
   shouldShowRecord: function (record: HTMLElement) {
     // Determines record display
     // Compares user search and filter values against lookupInfo
@@ -166,7 +155,6 @@ const state = {
     // delete all selections of a filter type from filter toggler and url params
 
     this.filterTypes[filterType] = [];
-    this.openedFilterForm = null;
     const url = new URL(window.location.href);
 
     url.searchParams.delete(filterType);
@@ -245,7 +233,11 @@ const state = {
   }
 };
 ---
-<div is="multi-filter-search" class="multifilter-search-component flex flex-col">
+<div 
+is="multi-filter-search" 
+class="multifilter-search-component flex flex-col" 
+data-pathname={pathname}
+>
     <h2>{data.length} data rows</h2>
     <!-- DATA TABLE -->
     <div class="order-1">
@@ -320,7 +312,8 @@ const state = {
                         <div class="filter-component">
                             <button 
                             data-id={header.id}
-                            class="toggler w-full flex items-center h-10! pe-12 ps-2 rounded-lg bg-[#f6f6f6] border border-gray-300 text-left">
+                            class="toggler w-full flex items-center h-10! pe-12 ps-2 rounded-lg bg-[#f6f6f6] border border-gray-300 text-left"
+                            >
                                 <div class="selections flex gap-x-1 overflow-scroll">
                                     {/* All */}
                                     <span class="all font-semibold ms-2">All</span>
@@ -349,7 +342,7 @@ const state = {
                             {/* Filter Form */}
                             <form 
                             data-id={header.id}
-                            class="flex flex-col bg-white rounded-lg absolute w-100 max-h-545px overflow-y-scroll gap-x-3 p-2 mt-2 z-2 shadow-[0_0_1px_0_rgba(0,0,0,0.10),0_4px_16px_0_rgba(0,0,0,0.32)]"
+                            class="hidden flex-col bg-white rounded-lg absolute w-100 max-h-545px overflow-y-scroll gap-x-3 p-2 mt-2 z-2 shadow-[0_0_1px_0_rgba(0,0,0,0.10),0_4px_16px_0_rgba(0,0,0,0.32)]"
                             >
                                 <div class="filter-selection-container flex items-center ms-2">
                                     <span>All</span>
@@ -381,7 +374,7 @@ const state = {
         </div>
         <!-- //  SEARCH FORM -->
         <form class="search__multifilter">
-            <input type="search" placeholder="Search here" class="p-2 rounded-sm border border-gray-300">
+            <input type="search" placeholder="Search here" class="w-full p-2 rounded-sm border border-gray-300">
         </form>
     </nav>
     </div>
@@ -391,17 +384,45 @@ const state = {
     class MultiFilterSearch extends HTMLDivElement {
         // Customized built-in <div> Web Component. Used to encapsulate this component's code. no bleeding out
         // Note: if passing an object as data attr, you have to JSON.stringify it. you can then JSON parse it here
+        pathname: string | undefined
+
         constructor() {
             // Always call super first in constructor
             super();
+            this.pathname = this.dataset.pathname;
         }
 
         connectedCallback() {
-            this.querySelector("button.toggler")?.addEventListener("click", () => {
-                console.log("CLICKED: TOGGLER");
+            // add event listeners to toggler buttons
+            const togglerBtns = this.querySelectorAll("button.toggler") as NodeListOf<HTMLElement> || null;
+            togglerBtns?.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    this.toggleFilterForm(btn);
+                });
             });
+            
+            
         }
-    }
+
+        /**
+         * Manage filter form accordian
+         * @param selectedFilterFormEl 
+         */
+        toggleFilterForm (selectedFilterFormEl: HTMLElement):void {
+            const filterTypeID = selectedFilterFormEl.dataset.id;
+            if (!filterTypeID)
+            throw new Error(
+                `No filter type ID found for filter form element in file: ${this.pathname}`
+            );
+            const togglerForm = this.querySelector(`form[data-id="${filterTypeID}"]`) as HTMLElement;
+            togglerForm.classList.toggle("hidden");
+            togglerForm.classList.toggle("flex");
+        }
+
+
+
+
+}
     // customElements.define("multi-filter-search", MultiFilterSearch, { extends: "div" });
     customElements.define("multi-filter-search", MultiFilterSearch, { extends: "div" });
 </script>
