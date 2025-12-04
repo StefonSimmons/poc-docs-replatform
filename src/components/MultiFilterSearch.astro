@@ -310,21 +310,21 @@ data-headers={JSON.stringify(headers)}
                 return (
                     header.filter_by && (
                     <div class='filter-type mb-6' data-id={header.id} >
-                        <p class="filter-type-name mb-2">{ header.name }</p>
+                        <p class="filter-type-name mb-2 font-semibold">{ header.name }</p>
                         <div class="filter-component">
                             <button 
                             data-id={header.id}
-                            class="toggler w-full flex items-center h-10! pe-12 ps-2 rounded-lg bg-[#f6f6f6] border border-gray-300 text-left"
+                            class="toggler cursor-pointer w-full flex items-center h-10! pe-12 ps-2 rounded-lg bg-[#f6f6f6] border border-gray-300 text-left"
                             >
                                 <div class="selections flex gap-x-1 overflow-scroll">
                                     {/* All */}
                                     <span class="all font-semibold ms-2">All</span>
-                                    
                                     {/* Show filter selections from `filterTypes` data in button as they are selected */}
-                                    {state.filterTypes[header.id]?.map((filter) => {
+                                    {state.dropdowns[header.name]?.map((filter) => {
+                                        const cleanValue = filter.replace(/\[(.*)\]\(.*\)/g, '$1')
                                         return (
-                                            <div class="selection-container rounded-lg flex items-center bg-[#E6D6F9] px-1">
-                                                <span class="selection-name whitespace-nowrap relative -top-[1]">{filter}</span>
+                                            <div data-value={cleanValue} class="hidden selection-container m-0 rounded-lg items-center bg-[#E6D6F9] px-1">
+                                                <span class="selection-name whitespace-nowrap relative -top-[1]">{cleanValue}</span>
                                             </div>
                                         )
                                     })}
@@ -344,7 +344,7 @@ data-headers={JSON.stringify(headers)}
                             {/* Filter Form */}
                             <form 
                             data-id={header.id}
-                            class="hidden flex-col bg-white rounded-lg absolute w-100 max-h-545px overflow-y-scroll gap-x-3 p-2 mt-2 z-2 shadow-[0_0_1px_0_rgba(0,0,0,0.10),0_4px_16px_0_rgba(0,0,0,0.32)]"
+                            class="toggler-form hidden flex-col bg-white rounded-lg absolute w-100 max-h-545px overflow-y-scroll gap-x-3 p-2 mt-2 z-2 shadow-[0_0_1px_0_rgba(0,0,0,0.10),0_4px_16px_0_rgba(0,0,0,0.32)]"
                             >
                                 <div class="filter-selection-container flex items-center ms-2">
                                     <span>All</span>
@@ -356,13 +356,13 @@ data-headers={JSON.stringify(headers)}
                                         return (
                                             <div class="filter-selection-container flex items-center ms-2">
                                                 <input 
-                                                class="w-4 h-4"
+                                                class="w-4 h-4 cursor-pointer"
                                                 type="checkbox" 
                                                 id={id} 
                                                 value={cleanValue}
                                                 data-filter-type={header.id}
                                                 />
-                                                <label for={id} class="ms-2">
+                                                <label for={id} class="ms-2 cursor-pointer">
                                                     {cleanValue}
                                                 </label>
                                             </div>
@@ -384,6 +384,7 @@ data-headers={JSON.stringify(headers)}
 </div>
 
 <script>
+
     class MultiFilterSearch extends HTMLDivElement {
         // Customized built-in <div> Web Component. Used to encapsulate this component's code. no bleeding out
         // Note: if passing an object as data attr, you have to JSON.stringify it. you can then JSON parse it here
@@ -407,13 +408,34 @@ data-headers={JSON.stringify(headers)}
         connectedCallback() {
             // initialize filter and search values
             this.initFilterSearchValues();
-
+            
             // add event listeners to toggler buttons
             const togglerBtns = this.querySelectorAll("button.toggler") as NodeListOf<HTMLElement> || null;
             togglerBtns?.forEach(btn => {
                 btn.addEventListener("click", () => {
                     this.toggleFilterForm(btn);
                 });
+            });
+
+            // add event listener to document to close opened toggler forms when clicking outside of elements
+            document.addEventListener("click", (e) => {
+                const target = e.target as HTMLElement;
+                const openedToggleForm = this.querySelector('form.toggler-form.flex') as HTMLElement;
+                
+                if (!openedToggleForm) return; // No form is currently open
+                
+                // Check if click is inside this component
+                if (!this.contains(target)) return;
+                
+                // Check if click is inside the form or its associated button
+                const clickedInsideForm = openedToggleForm.contains(target);
+                const clickedInsideButton = target.closest('button.toggler') !== null;
+                
+                if (!clickedInsideForm && !clickedInsideButton) {
+                    // Clicked outside - close the form
+                    openedToggleForm.classList.remove("flex");
+                    openedToggleForm.classList.add("hidden");
+                }
             });
 
             // add event listener to search input
@@ -423,12 +445,13 @@ data-headers={JSON.stringify(headers)}
                 this.updateRecordDisplay();
             });
 
-            // add event listener to filter inputs
+            // add event listener to filter toggler inputs
             const filterInputs = this.querySelectorAll(".filter-selection-container > input[type='checkbox']") as NodeListOf<HTMLInputElement>;
             filterInputs.forEach(input => {
                 input.addEventListener("change", () => {
                     const {filterType} = input.dataset;
                     const filterValue = input.value;
+
                     if(filterType && filterValue){
                         if(this.filterTypes[filterType].includes(filterValue)){
                             this.filterTypes[filterType] = this.filterTypes[filterType].filter(value => value !== filterValue);
@@ -437,12 +460,24 @@ data-headers={JSON.stringify(headers)}
                         }
                     }
                     this.updateRecordDisplay();
+
+                    if(filterType){
+                        this.updateTogglerButtonSelections(filterType, filterValue);
+                    }
                 });
+
+                // add event listener to filter toggler labels
+                const label = input.nextElementSibling as HTMLElement;
+                [input,label].forEach(el => el.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                }));
+                
+
             });
         }
 
         /**
-         * Manage filter form accordian
+         * Manage filter form accordion - ensures only one form is open at a time
          * @param selectedFilterFormEl 
          */
         toggleFilterForm (selectedFilterFormEl: HTMLElement):void {
@@ -452,9 +487,20 @@ data-headers={JSON.stringify(headers)}
                 `No filter type ID found for filter form element in file: ${this.pathname}`
             );
             const togglerForm = this.querySelector(`form[data-id="${filterTypeID}"]`) as HTMLElement;
+            const isCurrentlyOpen = togglerForm.classList.contains("flex");
             
-            togglerForm.classList.toggle("hidden");
-            togglerForm.classList.toggle("flex");
+            // Close all open forms first
+            const allForms = this.querySelectorAll('form.toggler-form') as NodeListOf<HTMLElement>;
+            allForms.forEach(form => {
+                form.classList.remove("flex");
+                form.classList.add("hidden");
+            });
+            
+            // If the clicked form wasn't already open, open it
+            if (!isCurrentlyOpen) {
+                togglerForm.classList.remove("hidden");
+                togglerForm.classList.add("flex");
+            }
         }
 
         /**
@@ -500,7 +546,19 @@ data-headers={JSON.stringify(headers)}
         }
 
         /**
-         * Initializes and Updates x-data filter and search properties with url param values, if any
+         * Updates the selections of the toggler buttons
+         */
+        updateTogglerButtonSelections(filterType: string, filterValue: string): void {
+            const selectedFilterValue = this.querySelector(`button.toggler[data-id="${filterType}"] > .selections > .selection-container[data-value="${filterValue}"]`) as HTMLElement;
+            selectedFilterValue.classList.toggle("hidden");
+            selectedFilterValue.classList.toggle("flex");
+
+            const allSelection = this.querySelector(`button.toggler[data-id="${filterType}"] > .selections > .all`) as HTMLElement;
+            allSelection.classList.toggle("hidden", this.filterTypes[filterType].length > 0);
+
+        }
+         
+        /** Initializes and Updates x-data filter and search properties with url param values, if any
          * Setup empty filterTypes object
          */
         initFilterSearchValues () {
@@ -523,7 +581,7 @@ data-headers={JSON.stringify(headers)}
             } else {
                 this.filterTypes[key]?.push(value);
             }
-            });
+            });            
         }
 
 
