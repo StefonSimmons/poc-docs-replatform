@@ -107,39 +107,39 @@ const state = {
   filterKeys: headers.filter((header) => header.filter_by).map((header) => header.id),
   searchKeys: headers.filter((header) => !header.filter_by).map((header) => header.id),
   filterTypes: {} as Record<string, string[]>,
-  searchValue: "",
-  filteredSet: new Set(),
+//   searchValue: "",
+//   filteredSet: new Set(),
   showEmptyResultsMsg: false,
-  shouldShowRecord: function (record: HTMLElement) {
-    // Determines record display
-    // Compares user search and filter values against lookupInfo
-    const lookupInfo = record.dataset.info?.split(";"); // separate filter values from search vals
-    if (!lookupInfo)
-      throw new Error(`No lookup info found for record in file: ${pathname}`);
-    const filterInfo = lookupInfo[0].toLowerCase().split(",");
-    const searchInfo = lookupInfo.slice(1).join(" ").toLowerCase();
+//   shouldShowRecord: function (record: HTMLElement) {
+//     // Determines record display
+//     // Compares user search and filter values against lookupInfo
+//     const lookupInfo = record.dataset.info?.split(";"); // separate filter values from search vals
+//     if (!lookupInfo)
+//       throw new Error(`No lookup info found for record in file: ${pathname}`);
+//     const filterInfo = lookupInfo[0].toLowerCase().split(",");
+//     const searchInfo = lookupInfo.slice(1).join(" ").toLowerCase();
 
-    // User input
-    const filteredValues = Object.values(this.filterTypes);
-    const searchedValues = this.searchValue.split(" ");
+//     // User input
+//     const filteredValues = Object.values(this.filterTypes);
+//     const searchedValues = this.searchValue.split(" ");
 
-    // Check if record should be displayed
-    const containsFilteredValues = filteredValues.every((t, idx) =>
-      t.length ? t.some((f) => filterInfo[idx] === f.toLowerCase()) : true
-    ); // checks filter attrs match at least one filter value. allows for multiple selection of a filter type. scrict. filter value must be a child of correct parent filter type
-    const containsSearchedValues = searchedValues.every((word) =>
-      searchInfo.includes(word.toLowerCase())
-    ); // checks search attrs match a typed query
+//     // Check if record should be displayed
+//     const containsFilteredValues = filteredValues.every((t, idx) =>
+//       t.length ? t.some((f) => filterInfo[idx] === f.toLowerCase()) : true
+//     ); // checks filter attrs match at least one filter value. allows for multiple selection of a filter type. scrict. filter value must be a child of correct parent filter type
+//     const containsSearchedValues = searchedValues.every((word) =>
+//       searchInfo.includes(word.toLowerCase())
+//     ); // checks search attrs match a typed query
 
-    if (containsSearchedValues && containsFilteredValues) {
-      record.classList.add("show");
-      this.filteredSet.add(record.dataset.id);
-    } else {
-      record.classList.remove("show");
-    }
+//     if (containsSearchedValues && containsFilteredValues) {
+//       record.classList.add("show");
+//       this.filteredSet.add(record.dataset.id);
+//     } else {
+//       record.classList.remove("show");
+//     }
 
-    return containsSearchedValues && containsFilteredValues;
-  },
+//     return containsSearchedValues && containsFilteredValues;
+//   },
   resetFilteredSet: function () {
     // Empty filtered Set
     this.filteredSet = new Set();
@@ -160,30 +160,30 @@ const state = {
     url.searchParams.delete(filterType);
     window.history.pushState(null, "", url.toString());
   },
-  initFilterSearchValues: function () {
-    // Initializes and Updates x-data filter and search properties with url param values, if any
+//   initFilterSearchValues: function () {
+//     // Initializes and Updates x-data filter and search properties with url param values, if any
 
-    // setup empty filterTypes object
-    this.filterTypes = this.headers
-      .filter((header) => header.filter_by)
-      .reduce(
-        (acc, header) => {
-          acc[header.id] = [];
-          return acc;
-        },
-        {} as Record<string, string[]>
-      );
+//     // setup empty filterTypes object
+//     this.filterTypes = this.headers
+//       .filter((header) => header.filter_by)
+//       .reduce(
+//         (acc, header) => {
+//           acc[header.id] = [];
+//           return acc;
+//         },
+//         {} as Record<string, string[]>
+//       );
 
-    // get search and filter value from url params
-    const url = new URL(window.location.href);
-    Array.from(url.searchParams.entries()).forEach(([key, value]) => {
-      if (key === "search") {
-        this.searchValue = value;
-      } else {
-        this.filterTypes[key]?.push(value);
-      }
-    });
-  },
+//     // get search and filter value from url params
+//     const url = new URL(window.location.href);
+//     Array.from(url.searchParams.entries()).forEach(([key, value]) => {
+//       if (key === "search") {
+//         this.searchValue = value;
+//       } else {
+//         this.filterTypes[key]?.push(value);
+//       }
+//     });
+//   },
   pushState(filterType?: string, filterOption?: string) {
     // Updates url with new query params for filter type and search without refreshing the page
 
@@ -221,7 +221,7 @@ const state = {
 
     window.history.pushState(null, "", newURL || url.toString());
   },
-  emptyResultsMsg () {
+  emptyResultsMsg: function () {
     // Determine and return the appropriate empty results message
 
     const filterValues = Object.values(this.filterTypes).flat().map(item => item.split(',')[0]).join(', ')
@@ -237,6 +237,7 @@ const state = {
 is="multi-filter-search" 
 class="multifilter-search-component flex flex-col" 
 data-pathname={pathname}
+data-headers={JSON.stringify(headers)}
 >
     <h2>{data.length} data rows</h2>
     <!-- DATA TABLE -->
@@ -283,6 +284,7 @@ data-pathname={pathname}
                     })
                     return (
                         <tr 
+                        class="record"
                         data-id={idx}
                         data-info={allInfo} >
                             { headers.map(({id}) => {
@@ -304,7 +306,7 @@ data-pathname={pathname}
     <!-- NAV - Keep here. scratch pad for filters need to form first -->
     <nav id="multifilter-search-nav" class="w-full sticky top-[64px] self-start z-2 bg-white pt-3 pb-3 px-0">
         <div class="filters__multifilter mb-3">
-            { headers.map((header, idx) => {
+            { headers.map((header) => {
                 return (
                     header.filter_by && (
                     <div class='filter-type mb-6' data-id={header.id} >
@@ -318,7 +320,7 @@ data-pathname={pathname}
                                     {/* All */}
                                     <span class="all font-semibold ms-2">All</span>
                                     
-                                    {/* { Show filter selections from `filterTypes` data in button as they are selected} */}
+                                    {/* Show filter selections from `filterTypes` data in button as they are selected */}
                                     {state.filterTypes[header.id]?.map((filter) => {
                                         return (
                                             <div class="selection-container rounded-lg flex items-center bg-[#E6D6F9] px-1">
@@ -358,6 +360,7 @@ data-pathname={pathname}
                                                 type="checkbox" 
                                                 id={id} 
                                                 value={cleanValue}
+                                                data-filter-type={header.id}
                                                 />
                                                 <label for={id} class="ms-2">
                                                     {cleanValue}
@@ -385,14 +388,26 @@ data-pathname={pathname}
         // Customized built-in <div> Web Component. Used to encapsulate this component's code. no bleeding out
         // Note: if passing an object as data attr, you have to JSON.stringify it. you can then JSON parse it here
         pathname: string | undefined
+        filterTypes: Record<string, string[]>
+        searchValue: string
+        filteredSet: Set<string | undefined>
+        headers: { id: string; name: string; filter_by: boolean | undefined }[]
+
 
         constructor() {
             // Always call super first in constructor
             super();
             this.pathname = this.dataset.pathname;
+            this.filterTypes = {};
+            this.searchValue = "";
+            this.filteredSet = new Set();
+            this.headers = JSON.parse(this.dataset.headers || "[]");
         }
 
         connectedCallback() {
+            // initialize filter and search values
+            this.initFilterSearchValues();
+
             // add event listeners to toggler buttons
             const togglerBtns = this.querySelectorAll("button.toggler") as NodeListOf<HTMLElement> || null;
             togglerBtns?.forEach(btn => {
@@ -400,8 +415,30 @@ data-pathname={pathname}
                     this.toggleFilterForm(btn);
                 });
             });
-            
-            
+
+            // add event listener to search input
+            const searchInput = this.querySelector(".search__multifilter > input[type='search']") as HTMLInputElement;
+            searchInput.addEventListener("input", () => {
+                this.searchValue = searchInput.value;
+                this.updateRecordDisplay();
+            });
+
+            // add event listener to filter inputs
+            const filterInputs = this.querySelectorAll(".filter-selection-container > input[type='checkbox']") as NodeListOf<HTMLInputElement>;
+            filterInputs.forEach(input => {
+                input.addEventListener("change", () => {
+                    const {filterType} = input.dataset;
+                    const filterValue = input.value;
+                    if(filterType && filterValue){
+                        if(this.filterTypes[filterType].includes(filterValue)){
+                            this.filterTypes[filterType] = this.filterTypes[filterType].filter(value => value !== filterValue);
+                        }else{
+                            this.filterTypes[filterType].push(filterValue);
+                        }
+                    }
+                    this.updateRecordDisplay();
+                });
+            });
         }
 
         /**
@@ -415,10 +452,79 @@ data-pathname={pathname}
                 `No filter type ID found for filter form element in file: ${this.pathname}`
             );
             const togglerForm = this.querySelector(`form[data-id="${filterTypeID}"]`) as HTMLElement;
+            
             togglerForm.classList.toggle("hidden");
             togglerForm.classList.toggle("flex");
         }
 
+        /**
+         * Determines if a record matches current filters and search
+         * @param record - The table row HTML element to check
+         * @returns true if record matches all criteria
+         */
+        matchesFilters(record: HTMLElement): boolean {
+            const lookupInfo = record.dataset.info?.split(";");
+            if (!lookupInfo) {
+                throw new Error(`No lookup info found for record in file: ${this.pathname}`);
+            }
+            
+            const filterInfo = lookupInfo[0].toLowerCase().split(",");
+            const searchInfo = lookupInfo.slice(1).join(" ").toLowerCase();
+
+            // Check filters match
+            const filteredValues = Object.values(this.filterTypes);
+            const matchesFilters = filteredValues.every((filterOptions, idx) => 
+                filterOptions.length === 0 || 
+                filterOptions.some(option => filterInfo[idx] === option.toLowerCase())
+            );
+            // Check search matches (split once, filter empty strings)
+            const searchTerms = this.searchValue.split(" ").filter(term => term.length > 0);
+            const matchesSearch = searchTerms.length === 0 || 
+                searchTerms.every(term => searchInfo.includes(term.toLowerCase()));
+
+            return matchesFilters && matchesSearch;
+        }
+
+        /**
+         * Updates the display of all table rows based on current filters/search
+         * @param filterValue - The value of the filter input element
+         * @param filterType - The type of the filter input element
+         */
+        updateRecordDisplay(): void {
+            const records = this.querySelectorAll("tbody tr.record") as NodeListOf<HTMLElement>;
+
+            records.forEach(record => {
+                const shouldShow = !this.matchesFilters(record);
+                record.classList.toggle("hidden", shouldShow);
+            });
+        }
+
+        /**
+         * Initializes and Updates x-data filter and search properties with url param values, if any
+         * Setup empty filterTypes object
+         */
+        initFilterSearchValues () {
+           
+            this.filterTypes = this.headers
+            .filter((header) => header.filter_by)
+            .reduce(
+                (acc, header) => {
+                acc[header.id] = [];
+                return acc;
+                },
+                {} as Record<string, string[]>
+            );
+
+            // get search and filter value from url params
+            const url = new URL(window.location.href);
+            Array.from(url.searchParams.entries()).forEach(([key, value]) => {
+            if (key === "search") {
+                this.searchValue = value;
+            } else {
+                this.filterTypes[key]?.push(value);
+            }
+            });
+        }
 
 
 
