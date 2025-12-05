@@ -140,26 +140,19 @@ const state = {
 
 //     return containsSearchedValues && containsFilteredValues;
 //   },
-  resetFilteredSet: function () {
-    // Empty filtered Set
-    this.filteredSet = new Set();
-  },
-  deleteOneSelection: function (filterType: string, filterOption: string) {
-    // delete one filterOption from selections in filter toggler
-    this.filterTypes[filterType] = this.filterTypes[filterType].filter(
-      (s) => s !== filterOption
-    );
-    this.pushState(filterType, filterOption);
-  },
-  deleteAllSelections: function (filterType: string) {
-    // delete all selections of a filter type from filter toggler and url params
+//   resetFilteredSet: function () {
+//     // Empty filtered Set
+//     this.filteredSet = new Set();
+//   },
+//   deleteAllSelections: function (filterType: string) {
+//     // delete all selections of a filter type from filter toggler and url params
 
-    this.filterTypes[filterType] = [];
-    const url = new URL(window.location.href);
+//     this.filterTypes[filterType] = [];
+//     const url = new URL(window.location.href);
 
-    url.searchParams.delete(filterType);
-    window.history.pushState(null, "", url.toString());
-  },
+//     url.searchParams.delete(filterType);
+//     window.history.pushState(null, "", url.toString());
+//   },
 //   initFilterSearchValues: function () {
 //     // Initializes and Updates x-data filter and search properties with url param values, if any
 
@@ -314,7 +307,7 @@ data-headers={JSON.stringify(headers)}
                         <div class="filter-component">
                             <button 
                             data-id={header.id}
-                            class="toggler cursor-pointer w-full flex items-center h-10! pe-12 ps-2 rounded-lg bg-[#f6f6f6] border border-gray-300 text-left"
+                            class="toggler cursor-pointer relative w-full flex items-center h-10! pe-12 ps-2 rounded-lg bg-[#f6f6f6] border border-gray-300 text-left"
                             >
                                 <div class="selections flex gap-x-1 overflow-scroll">
                                     {/* All */}
@@ -323,21 +316,27 @@ data-headers={JSON.stringify(headers)}
                                     {state.dropdowns[header.name]?.map((filter) => {
                                         const cleanValue = filter.replace(/\[(.*)\]\(.*\)/g, '$1')
                                         return (
-                                            <div data-value={cleanValue} class="hidden selection-container m-0 rounded-lg items-center bg-[#E6D6F9] px-1">
+                                            <div 
+                                            data-value={cleanValue} 
+                                            data-filter-type={header.id} 
+                                            class="hidden selection-container m-0 rounded-lg items-center bg-[#E6D6F9] px-1">
                                                 <span class="selection-name whitespace-nowrap relative -top-[1]">{cleanValue}</span>
+                                                {/* Delete one selection */}
+                                                <div 
+                                                class="close-light-wrapper ps-1 cursor-pointer ">
+                                                    x
+                                                </div>
                                             </div>
                                         )
                                     })}
                                 </div>
                                 {/* { Delete all selections for a filter type } */}
-                                <div class="overflow-gradient h-100 position-absolute top-0 end-0 rounded-end">
-                                    {/* <template x-if="filterTypes['{{$filter_type}}'].length">
-                                        <span class="cancel-circle-wrapper">
-                                            icon here
-                                        </span>
-                                    </template> */}
-                                    <span class="chevron-wrapper d-flex align-items-center justify-content-center position-relative h-100">
-                                        <div class="chevron chevron-down"></div>
+                                <div class="overflow-gradient absolute top-0 right-0 rounded-end grid grid-cols-3 items-center m-0 h-full w-[70px] ps-2">
+                                    <span data-filter-type={header.id} class="cancel-circle-wrapper col-start-2 flex items-center justify-center rounded-full bg-purple-800 w-4 h-4 cursor-pointer ">
+                                        <span class="text-xs text-white inline relative -top-px">x</span>        
+                                    </span>
+                                    <span class="chevron-wrapper flex items-center justify-center relative h-full">
+                                        <div class="chevron chevron-down border-l-2 border-b-2 border-purple-800 p-1 w-[3px] h-[3px] -rotate-45 relative -top-[2px]"></div>
                                     </span>
                                 </div>
                             </button>
@@ -460,8 +459,7 @@ data-headers={JSON.stringify(headers)}
                         }
                     }
                     this.updateRecordDisplay();
-
-                    if(filterType){
+                    if(filterType && filterValue){
                         this.updateTogglerButtonSelections(filterType, filterValue);
                     }
                 });
@@ -471,13 +469,36 @@ data-headers={JSON.stringify(headers)}
                 [input,label].forEach(el => el.addEventListener("click", (e) => {
                     e.stopPropagation();
                 }));
-                
+            });
 
+            // add event listener to close-light-wrapper
+            const selectionContainer = this.querySelectorAll(`.selection-container`) as NodeListOf<HTMLElement>;
+            selectionContainer.forEach(selection => {
+                const close = selection.querySelector(`.close-light-wrapper`) as HTMLElement;
+                close.addEventListener("click", () => {
+                    if(!selection.dataset.filterType || !selection.dataset.value){
+                        throw new Error(`Required selection attributes not found for close-light-wrapper in file: ${this.pathname}`);
+                    }
+                    this.deleteOneSelection(selection.dataset.filterType, selection.dataset.value);
+                })
+            });
+
+            // add event listener to delete all
+            const deleteAlls = this.querySelectorAll(`.cancel-circle-wrapper`) as NodeListOf<HTMLElement>;
+            deleteAlls.forEach(d => {
+                d.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    if(!d.dataset.filterType){
+                        throw new Error(`Required filter type attribute not found for delete all element in file: ${this.pathname}`);
+                    }
+                    this.deleteAllSelections(d.dataset.filterType);
+                });
             });
         }
 
         /**
          * Manage filter form accordion - ensures only one form is open at a time
+         * Triggered on Button click
          * @param selectedFilterFormEl 
          */
         toggleFilterForm (selectedFilterFormEl: HTMLElement):void {
@@ -486,8 +507,8 @@ data-headers={JSON.stringify(headers)}
             throw new Error(
                 `No filter type ID found for filter form element in file: ${this.pathname}`
             );
-            const togglerForm = this.querySelector(`form[data-id="${filterTypeID}"]`) as HTMLElement;
-            const isCurrentlyOpen = togglerForm.classList.contains("flex");
+            const togglerForm = this.querySelector(`form.toggler-form[data-id="${filterTypeID}"]`) as HTMLElement;
+            const isCurrentFormOpen = togglerForm.classList.contains("flex");
             
             // Close all open forms first
             const allForms = this.querySelectorAll('form.toggler-form') as NodeListOf<HTMLElement>;
@@ -497,7 +518,7 @@ data-headers={JSON.stringify(headers)}
             });
             
             // If the clicked form wasn't already open, open it
-            if (!isCurrentlyOpen) {
+            if (!isCurrentFormOpen) {
                 togglerForm.classList.remove("hidden");
                 togglerForm.classList.add("flex");
             }
@@ -546,16 +567,17 @@ data-headers={JSON.stringify(headers)}
         }
 
         /**
-         * Updates the selections of the toggler buttons
+         * Updates the visibility of selections of the toggler buttons
+         * @param filterType - The dropdown filter type. Parent of filter value 
+         * @param filterValue - The value of the filter selection within the filter type
          */
         updateTogglerButtonSelections(filterType: string, filterValue: string): void {
-            const selectedFilterValue = this.querySelector(`button.toggler[data-id="${filterType}"] > .selections > .selection-container[data-value="${filterValue}"]`) as HTMLElement;
-            selectedFilterValue.classList.toggle("hidden");
-            selectedFilterValue.classList.toggle("flex");
+            const selectedFilter = this.querySelector(`button.toggler[data-id="${filterType}"] > .selections > .selection-container[data-value="${filterValue}"]`) as HTMLElement;
+            selectedFilter.classList.toggle("hidden");
+            selectedFilter.classList.toggle("flex");
 
             const allSelection = this.querySelector(`button.toggler[data-id="${filterType}"] > .selections > .all`) as HTMLElement;
             allSelection.classList.toggle("hidden", this.filterTypes[filterType].length > 0);
-
         }
          
         /** Initializes and Updates x-data filter and search properties with url param values, if any
@@ -584,7 +606,33 @@ data-headers={JSON.stringify(headers)}
             });            
         }
 
+        /**
+         * Removes a selection from the toggler button
+         * Triggered on .close-light-wrapper click
+         * @param filterType - The dropdown filter type. Parent of filter value 
+         * @param filterValue - 
+         */
+        deleteOneSelection (filterType: string, filterValue: string): void {
+            const filterInput = this.querySelector(`input[id="${filterValue}-${filterType}"]:checked`) as HTMLInputElement;
+            if(filterInput){
+                // dispatch a change event to the filter input to update the display
+                filterInput.dispatchEvent(new Event("change"));
+                filterInput.checked = false;
+            }
+        }
 
+        deleteAllSelections (filterType: string) {
+            // delete all selections of a filter type from filter toggler and url params
+            const allCheckedFilterInputs = this.querySelectorAll(`.filter-selection-container > input[data-filter-type="${filterType}"]:checked`) as NodeListOf<HTMLInputElement>;
+            allCheckedFilterInputs.forEach(input => {
+                input.dispatchEvent(new Event("change"));
+                input.checked = false;
+            });
+            const url = new URL(window.location.href);
+
+            url.searchParams.delete(filterType);
+            window.history.pushState(null, "", url.toString());
+        }
 
 }
     // customElements.define("multi-filter-search", MultiFilterSearch, { extends: "div" });
