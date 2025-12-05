@@ -324,10 +324,7 @@ data-headers={JSON.stringify(headers)}
             this.headers = JSON.parse(this.dataset.headers || "[]");
         }
 
-        connectedCallback() {
-            // initialize filter and search values
-            this.initFilterSearchValues();
-            
+        connectedCallback() {            
             // add event listeners to toggler buttons
             const togglerBtns = this.querySelectorAll("button.toggler") as NodeListOf<HTMLElement> || null;
             togglerBtns?.forEach(btn => {
@@ -370,26 +367,29 @@ data-headers={JSON.stringify(headers)}
             // add event listener to filter form inputs
             const filterInputs = this.querySelectorAll(".filter-selection-container > input[type='checkbox']") as NodeListOf<HTMLInputElement>;
             filterInputs.forEach(input => {
-                input.addEventListener("change", () => {
+                input.addEventListener("change", (e) => {
                     const {filterType} = input.dataset;
                     const filterValue = input.value;
+                    const isCustomEvent = e instanceof CustomEvent;
+                    const isInitialLoad = isCustomEvent && e.detail.initialLoad;
 
-                    if(filterType && filterValue){
-                        if(this.filterTypes[filterType].includes(filterValue)){
-                            this.filterTypes[filterType] = this.filterTypes[filterType].filter(value => value !== filterValue);
-                        }else{
-                            this.filterTypes[filterType].push(filterValue);
-                        }
+                    if(!filterType || !filterValue){
+                        throw new Error(`Required filter type and filter value not found for filter input element in file: ${this.pathname}`);
                     }
+
+                    if(!isInitialLoad){
+                        // update the filterTypes object with the new filter value
+                        this.updateFilterTypes(filterType, filterValue);
+                    }
+
                     this.updateRecordDisplay();
-
-                    // update the url with the new filter options
-                    this.pushState(filterType, filterValue);
-
-                    // update the toggler button selections
-                    if(filterType && filterValue){
-                        this.updateTogglerButtonSelections(filterType, filterValue);
+                    
+                    if(!isInitialLoad){
+                        // update the url with the new filter options
+                        this.pushState(filterType, filterValue);
                     }
+                    // update the toggler button selections
+                    this.updateTogglerButtonSelections(filterType, filterValue);
                 });
 
                 // add event listener to filter toggler labels
@@ -398,6 +398,9 @@ data-headers={JSON.stringify(headers)}
                     e.stopPropagation();
                 }));
             });
+
+            // initialize filter and search values. Call this after the change event listener
+            this.initFilterSearchValues();
 
             // add event listener to close-light-wrapper
             const selectionContainer = this.querySelectorAll(`.selection-container`) as NodeListOf<HTMLElement>;
@@ -501,6 +504,21 @@ data-headers={JSON.stringify(headers)}
         }
 
         /**
+         * Updates the filterTypes object with the new filter value
+         * @param filterType - The type of the filter input element
+         * @param filterValue - The value of the filter input element
+         */
+        updateFilterTypes(filterType: string, filterValue: string): void {
+            if(filterType && filterValue){
+                if(this.filterTypes[filterType].includes(filterValue)){
+                    this.filterTypes[filterType] = this.filterTypes[filterType].filter(value => value !== filterValue);
+                }else{
+                    this.filterTypes[filterType].push(filterValue);
+                }
+            }
+        }
+
+        /**
          * Updates the visibility of selections of the toggler buttons
          * @param filterType - The dropdown filter type. Parent of filter value 
          * @param filterValue - The value of the filter selection within the filter type
@@ -514,11 +532,11 @@ data-headers={JSON.stringify(headers)}
             allSelection.classList.toggle("hidden", this.filterTypes[filterType].length > 0);
         }
          
-        /** Initializes and Updates x-data filter and search properties with url param values, if any
+        /** Initializes and Updates filter and search properties with url param values, if any
          * Setup empty filterTypes object
          */
         initFilterSearchValues () {
-           
+            // setup filterTypes object with empty arrays
             this.filterTypes = this.headers
             .filter((header) => header.filter_by)
             .reduce(
@@ -532,11 +550,20 @@ data-headers={JSON.stringify(headers)}
             // get search and filter value from url params
             const url = new URL(window.location.href);
             Array.from(url.searchParams.entries()).forEach(([key, value]) => {
-            if (key === "search") {
-                this.searchValue = value;
-            } else {
-                this.filterTypes[key]?.push(value);
-            }
+                if (key === "search") {
+                    this.searchValue = value;
+                    // trigger input update
+                    const searchInput = this.querySelector(".search__multifilter > input[type='search']") as HTMLInputElement;
+                    searchInput.value = this.searchValue;
+                    this.updateRecordDisplay();
+
+                } else {
+                    this.filterTypes[key]?.push(value);
+
+                    const filterInput = this.querySelector(`input[data-filter-type="${key}"][value="${value}"]`) as HTMLInputElement;
+                    filterInput.dispatchEvent(new CustomEvent("change", { detail: {initialLoad: true}}));
+                    filterInput.checked = true;
+                }
             });            
         }
 
@@ -550,7 +577,7 @@ data-headers={JSON.stringify(headers)}
             const filterInput = this.querySelector(`input[id="${filterValue}-${filterType}"]:checked`) as HTMLInputElement;
             if(filterInput){
                 // dispatch a change event to the filter input to update the display
-                filterInput.dispatchEvent(new Event("change"));
+                filterInput.dispatchEvent(new CustomEvent("change", { detail: {initialLoad: false}}));
                 filterInput.checked = false;
             }
         }
@@ -563,7 +590,7 @@ data-headers={JSON.stringify(headers)}
             // delete all selections of a filter type from filter toggler and url params
             const allCheckedFilterInputs = this.querySelectorAll(`.filter-selection-container > input[data-filter-type="${filterType}"]:checked`) as NodeListOf<HTMLInputElement>;
             allCheckedFilterInputs.forEach(input => {
-                input.dispatchEvent(new Event("change"));
+                input.dispatchEvent(new CustomEvent("change", { detail: {initialLoad: false}}));
                 input.checked = false;
             });
             const url = new URL(window.location.href);
