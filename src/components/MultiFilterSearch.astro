@@ -107,43 +107,43 @@ const state = {
   filterKeys: headers.filter((header) => header.filter_by).map((header) => header.id),
   searchKeys: headers.filter((header) => !header.filter_by).map((header) => header.id),
   filterTypes: {} as Record<string, string[]>,
-  pushState(filterType?: string, filterOption?: string) {
-    // Updates url with new query params for filter type and search without refreshing the page
+//   pushState(filterType?: string, filterOption?: string) {
+//     // Updates url with new query params for filter type and search without refreshing the page
 
-    const url = new URL(window.location.href);
-    let newURL = "";
-    if (filterType && filterOption) {
-      if (!url.searchParams.getAll(filterType).includes(filterOption)) {
-        // add one key:value param
-        url.searchParams.append(filterType, filterOption);
-      } else {
-        // remove one key:value param
+//     const url = new URL(window.location.href);
+//     let newURL = "";
+//     if (filterType && filterOption) {
+//       if (!url.searchParams.getAll(filterType).includes(filterOption)) {
+//         // add one key:value param
+//         url.searchParams.append(filterType, filterOption);
+//       } else {
+//         // remove one key:value param
 
-        function encode(match: string) {
-          // callback function to encode some special characters.
-          // accounting for how the toString url method encodes characters
-          return match === " "
-            ? "\\+"
-            : "%" + match.charCodeAt(0).toString(16).toUpperCase();
-        }
-        const regex = new RegExp(
-          `([\\&\\?])${filterType}=${filterOption.replace(/[\s()!*\[\]%,]/g, encode)}(?=\&|$)`,
-          "g"
-        );
-        newURL = url.toString().replaceAll(regex, "").replace("/&", "/?");
-      }
-      if (!this.filterTypes[filterType].length) {
-        url.searchParams.delete(filterType);
-      }
-    } else {
-      url.searchParams.set("search", this.searchValue);
-      if (!this.searchValue) {
-        url.searchParams.delete("search");
-      }
-    }
+//         function encode(match: string) {
+//           // callback function to encode some special characters.
+//           // accounting for how the toString url method encodes characters
+//           return match === " "
+//             ? "\\+"
+//             : "%" + match.charCodeAt(0).toString(16).toUpperCase();
+//         }
+//         const regex = new RegExp(
+//           `([\\&\\?])${filterType}=${filterOption.replace(/[\s()!*\[\]%,]/g, encode)}(?=\&|$)`,
+//           "g"
+//         );
+//         newURL = url.toString().replaceAll(regex, "").replace("/&", "/?");
+//       }
+//       if (!this.filterTypes[filterType].length) {
+//         url.searchParams.delete(filterType);
+//       }
+//     } else {
+//       url.searchParams.set("search", this.searchValue);
+//       if (!this.searchValue) {
+//         url.searchParams.delete("search");
+//       }
+//     }
 
-    window.history.pushState(null, "", newURL || url.toString());
-  }
+//     window.history.pushState(null, "", newURL || url.toString());
+//   }
 };
 ---
 <div 
@@ -362,9 +362,12 @@ data-headers={JSON.stringify(headers)}
             searchInput.addEventListener("input", () => {
                 this.searchValue = searchInput.value;
                 this.updateRecordDisplay();
+
+                // update the url with the new search value
+                this.pushState();
             });
 
-            // add event listener to filter toggler inputs
+            // add event listener to filter form inputs
             const filterInputs = this.querySelectorAll(".filter-selection-container > input[type='checkbox']") as NodeListOf<HTMLInputElement>;
             filterInputs.forEach(input => {
                 input.addEventListener("change", () => {
@@ -379,6 +382,11 @@ data-headers={JSON.stringify(headers)}
                         }
                     }
                     this.updateRecordDisplay();
+
+                    // update the url with the new filter options
+                    this.pushState(filterType, filterValue);
+
+                    // update the toggler button selections
                     if(filterType && filterValue){
                         this.updateTogglerButtonSelections(filterType, filterValue);
                     }
@@ -583,6 +591,54 @@ data-headers={JSON.stringify(headers)}
             }
             emptyResultsMsgElement.textContent = message;
             
+        }
+
+
+        /**
+         * Updates url with new query params for filter type and search without refreshing the page
+         * @param filterType 
+         * @param filterOption 
+         */
+        pushState (filterType?: string, filterOption?: string): void {
+            const url = new URL(window.location.href);
+            let newURL = "";
+
+            if (filterType && filterOption) {
+                if (!url.searchParams.getAll(filterType).includes(filterOption)) {
+                    // add one key:value param
+                    url.searchParams.append(filterType, filterOption);
+                } else {
+                    // remove one key:value param
+                    const regex = new RegExp(
+                    `([\\&\\?])${filterType}=${filterOption.replace(/[\s()!*\[\]%,]/g, this.encode)}(?=\&|$)`,
+                    "g"
+                    );
+                    newURL = url.toString().replaceAll(regex, "").replace("/&", "/?");
+                }
+                if (!this.filterTypes[filterType].length) {
+                    // delete the key:value param if no filter options are selected
+                    url.searchParams.delete(filterType);
+                }
+            } else {
+                // set the search value if it exists
+                url.searchParams.set("search", this.searchValue);
+                if (!this.searchValue) {
+                    url.searchParams.delete("search");
+                }
+            }
+
+            window.history.pushState(null, "", newURL || url.toString());
+        }
+
+        /**
+         * callback function to encode some special characters. remove one key:value param
+         * accounting for how the toString url method encodes characters
+         * @param match - the string to encode
+         */
+        private encode(match: string) {
+            return match === " "
+                ? "\\+"
+                : "%" + match.charCodeAt(0).toString(16).toUpperCase();
         }
 
 }
