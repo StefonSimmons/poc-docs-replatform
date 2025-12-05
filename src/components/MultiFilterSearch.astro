@@ -107,76 +107,6 @@ const state = {
   filterKeys: headers.filter((header) => header.filter_by).map((header) => header.id),
   searchKeys: headers.filter((header) => !header.filter_by).map((header) => header.id),
   filterTypes: {} as Record<string, string[]>,
-//   searchValue: "",
-//   filteredSet: new Set(),
-  showEmptyResultsMsg: false,
-//   shouldShowRecord: function (record: HTMLElement) {
-//     // Determines record display
-//     // Compares user search and filter values against lookupInfo
-//     const lookupInfo = record.dataset.info?.split(";"); // separate filter values from search vals
-//     if (!lookupInfo)
-//       throw new Error(`No lookup info found for record in file: ${pathname}`);
-//     const filterInfo = lookupInfo[0].toLowerCase().split(",");
-//     const searchInfo = lookupInfo.slice(1).join(" ").toLowerCase();
-
-//     // User input
-//     const filteredValues = Object.values(this.filterTypes);
-//     const searchedValues = this.searchValue.split(" ");
-
-//     // Check if record should be displayed
-//     const containsFilteredValues = filteredValues.every((t, idx) =>
-//       t.length ? t.some((f) => filterInfo[idx] === f.toLowerCase()) : true
-//     ); // checks filter attrs match at least one filter value. allows for multiple selection of a filter type. scrict. filter value must be a child of correct parent filter type
-//     const containsSearchedValues = searchedValues.every((word) =>
-//       searchInfo.includes(word.toLowerCase())
-//     ); // checks search attrs match a typed query
-
-//     if (containsSearchedValues && containsFilteredValues) {
-//       record.classList.add("show");
-//       this.filteredSet.add(record.dataset.id);
-//     } else {
-//       record.classList.remove("show");
-//     }
-
-//     return containsSearchedValues && containsFilteredValues;
-//   },
-//   resetFilteredSet: function () {
-//     // Empty filtered Set
-//     this.filteredSet = new Set();
-//   },
-//   deleteAllSelections: function (filterType: string) {
-//     // delete all selections of a filter type from filter toggler and url params
-
-//     this.filterTypes[filterType] = [];
-//     const url = new URL(window.location.href);
-
-//     url.searchParams.delete(filterType);
-//     window.history.pushState(null, "", url.toString());
-//   },
-//   initFilterSearchValues: function () {
-//     // Initializes and Updates x-data filter and search properties with url param values, if any
-
-//     // setup empty filterTypes object
-//     this.filterTypes = this.headers
-//       .filter((header) => header.filter_by)
-//       .reduce(
-//         (acc, header) => {
-//           acc[header.id] = [];
-//           return acc;
-//         },
-//         {} as Record<string, string[]>
-//       );
-
-//     // get search and filter value from url params
-//     const url = new URL(window.location.href);
-//     Array.from(url.searchParams.entries()).forEach(([key, value]) => {
-//       if (key === "search") {
-//         this.searchValue = value;
-//       } else {
-//         this.filterTypes[key]?.push(value);
-//       }
-//     });
-//   },
   pushState(filterType?: string, filterOption?: string) {
     // Updates url with new query params for filter type and search without refreshing the page
 
@@ -213,16 +143,6 @@ const state = {
     }
 
     window.history.pushState(null, "", newURL || url.toString());
-  },
-  emptyResultsMsg: function () {
-    // Determine and return the appropriate empty results message
-
-    const filterValues = Object.values(this.filterTypes).flat().map(item => item.split(',')[0]).join(', ')
-    if(filterValues.length && this.searchValue){
-        return `No results found for query on search: '${this.searchValue}' and filter: '${filterValues}'`
-    }else{
-        return `No results found for query '${this.searchValue || filterValues}'`
-    }
   }
 };
 ---
@@ -289,9 +209,9 @@ data-headers={JSON.stringify(headers)}
             }
             </tbody>
         </table>
-        <!-- hook into the app lifecycle. $watch for 'filteredSet' to change and update the 'showEmptyResultsMsg' property -->
+        <!-- Empty Results Message -->
         <div>
-            <!-- EMPTY MESSAGE GOES HERE Conditionally -->
+            <span class="empty-results-msg font-semibold"></span>
         </div>
         </div>
     </div>
@@ -564,6 +484,12 @@ data-headers={JSON.stringify(headers)}
                 const shouldShow = !this.matchesFilters(record);
                 record.classList.toggle("hidden", shouldShow);
             });
+            // records that are hidden
+            const hiddenRecords = this.querySelectorAll("tbody tr.record.hidden") as NodeListOf<HTMLElement>;
+            const allRecordsVisible = !!(records.length - hiddenRecords.length);
+
+            // show the appropriate empty results message, if any
+            this.showEmptyResultsMsg(allRecordsVisible);
         }
 
         /**
@@ -621,6 +547,10 @@ data-headers={JSON.stringify(headers)}
             }
         }
 
+        /**
+         * Deletes all selections of a filter type from filter toggler and url params
+         * @param filterType - The dropdown filter type. Parent of filter value 
+         */
         deleteAllSelections (filterType: string) {
             // delete all selections of a filter type from filter toggler and url params
             const allCheckedFilterInputs = this.querySelectorAll(`.filter-selection-container > input[data-filter-type="${filterType}"]:checked`) as NodeListOf<HTMLInputElement>;
@@ -634,7 +564,28 @@ data-headers={JSON.stringify(headers)}
             window.history.pushState(null, "", url.toString());
         }
 
+        /**
+         * Determines and returns the appropriate empty results message dependent on number of visible records
+         * @param allRecordsVisible - boolean used to determine if a query (filter or search) lead to results/records
+         */ 
+        showEmptyResultsMsg (allRecordsVisible: boolean): void {
+            const filterValues = Object.values(this.filterTypes).flat().map(item => item.split(',')[0]).join(', ');
+            const emptyResultsMsgElement = this.querySelector('.empty-results-msg') as HTMLElement;
+            let message = ''
+
+            // If all records are hidden 
+            if(!allRecordsVisible){
+                if(this.searchValue && filterValues){
+                    message = `No results found for query on search: '${this.searchValue}' and filter: '${filterValues}'`
+                }else{
+                    message = `No results found for query '${this.searchValue || filterValues}'`
+                }
+            }
+            emptyResultsMsgElement.textContent = message;
+            
+        }
+
 }
-    // customElements.define("multi-filter-search", MultiFilterSearch, { extends: "div" });
+    // register this web component with the DOM
     customElements.define("multi-filter-search", MultiFilterSearch, { extends: "div" });
 </script>
