@@ -76,6 +76,18 @@ export default defineMarkdocConfig({
                 fm_resource: { type: Object, default: {"headers": [], "data": []} },
             }
         },
+        appsecintegration: {
+            render: component('./src/components/AppSecIntegration.astro'),
+            attributes: {
+                link: { type: String, required: true, errorLevel: 'error' },
+                name: { type: String, required: true, errorLevel: 'error' },
+                src: { type: String, default: '' },
+                avatar: { type: String, default: '' },
+            }
+        },
+        appsecintegrations: {
+            render: component('./src/components/AppSecIntegrationWrapper.astro'),
+        },
     },
     nodes: {
         fence: {
