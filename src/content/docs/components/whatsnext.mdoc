@@ -16,6 +16,22 @@ further_reading:
 Renders a list of links relevant to the parent page. Typically used at the end of a page.
 
 **Basic WhatsNext with description and 4 links**
+```mdoc {% title="Markdoc" %}
+{% whatsnext desc="Additional helpful documentation, links, and articles:" %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    One thing
+  {% /nextlink %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    Second thing
+  {% /nextlink %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    Third thing
+  {% /nextlink %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    Fourth thing
+  {% /nextlink %}
+{% /whatsnext %}
+```
 {% whatsnext desc="Additional helpful documentation, links, and articles:" %}
   {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
     One thing
@@ -32,5 +48,9 @@ Renders a list of links relevant to the parent page. Typically used at the end o
 {% /whatsnext %}
 
 **WhatsNext using "further_reading" frontmatter param**
+```mdoc {% title="Markdoc" %}
+{% whatsnext further_reading=$frontmatter.further_reading /%}
+```
+
 {% whatsnext further_reading=$frontmatter.further_reading /%}
 
