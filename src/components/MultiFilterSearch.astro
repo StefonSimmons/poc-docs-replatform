@@ -1,44 +1,30 @@
 ---
 /**
- * Astro component that renders a table with search and optional filtering capabilities.
- * Uses vanilla JavaScript for client-side interactivity. Supports URL state management for search/filter params.
- *
- * @param headers: array.<{id:string, name:string, filter_by:boolean}> - header/field info.
- *   - id: must be unique in the array. must match a key in "data" object
- *   - name: field/header display name
- *   - filter_by: (optional) if true, creates a filter dropdown and enables filtering for that field.
- * @param data: array.<object> - table details. each key in the object must match a unique id in the "headers" array.
- * @param resource: (optional) string - path to JSON file with multifiltersearch data structure
- *
+ * Renders a table with search and optional filtering capabilities.
+ * Uses vanilla JavaScript for client-side interactivity. Supports URL state management for search and filter.
+ * @param resource: string - Reference to a JSON dataset in `/src/data/` directory (without .json extension)
+ * @param fm_resource: object - Dataset passed directly as a prop (from frontmatter or inline)
+ * NOTE: Provide either `resource` OR `fm_resource`, not both.
+
+ * Dataset Structure: 
+ * multifiltersearch: object.<{headers, data}> - holds the header and details for the searchable table
+ *   - multifiltersearch.headers: array.<{id:string, name:string, filter_by:boolean}> - header/field info.
+ *     - id: must be unique in the array. must match a key in "data" object
+ *     - name: field/header display name
+ *     - filter_by: (optional) if true, creates a filter dropdown and enables filtering for that field.
+ *   - multifiltersearch.data: array.<object> - table details. each key in the object must match a unique id in the "header" object.     
  * @example
- * // Using props directly:
- * <Multi
- *   headers={[
- *     { id: 'name', name: 'Name', filter_by: false },
- *     { id: 'category', name: 'Category', filter_by: true },
- *     { id: 'description', name: 'Description', filter_by: false }
- *   ]}
- *   data={[
- *     { name: 'Item 1', category: 'Type A', description: 'Description 1' },
- *     { name: 'Item 2', category: 'Type B', description: 'Description 2' }
- *   ]}
- * />
- *
- * // Using a resource file:
- * <Multi resource="data/my-data.json" />
- *
- * // JSON structure for resource file:
  * {
  *   "multifiltersearch": {
  *     "headers": [...],
  *     "data": [...]
  *   }
  * }
- * // Or simplified:
- * {
- *   "headers": [...],
- *   "data": [...]
- * }
+ * // Using frontmatter in .mdoc file:
+ * {% multifiltersearch fm_resource=$frontmatter.multi_filter_search /%}
+ * 
+ * // Using a JSON resource file:
+ * {% multifiltersearch resource="sds_rules-test" /%}
  */
 
 type Props = {
@@ -56,7 +42,7 @@ type Props = {
 const { resource, fm_resource } = Astro.props;
 const { pathname } = Astro.url;
 
-// Fail early if no data source found
+// Fail early if no data source found provided
 if (!fm_resource.headers.length && !fm_resource.data.length && !resource) {
   throw new Error(
     `No data source provided for multifiltersearch component in file: ${pathname}`
@@ -64,8 +50,8 @@ if (!fm_resource.headers.length && !fm_resource.data.length && !resource) {
 }
 
 /**
- * Get the dataset from the frontmatter or the JSON file
- * 
+ * Get the componentn dataset from the prop or the JSON file
+ * @returns object {headers: {id:string, name:string, filter_by?:boolean}[], data: Record<string:any>[]}
  */
 const getDataset = async () => {
   let headers: Props["fm_resource"]["headers"] | [] = [];
@@ -98,52 +84,57 @@ const getDataset = async () => {
   return { headers, data };
 };
 
+/**
+ * Build a string with lookup info for filtering and searching against. must maintain filter_info order to align with filterTypes property.
+ * @param row 
+ * @returns string
+ */
+const getLookupInfoString = (row: Record<string, any>): string => { 
+    const filterInfo = datasetConfig.filterKeys.reduce((acc,filterKey, idx) => {
+        // Removes markdown link syntax if it exists
+        const cleanValue = row[filterKey].replace(/\[(.*)\]\(.*\)/g)
+        return `${acc}${cleanValue}${idx < datasetConfig.filterKeys.length - 1 ? ',' : ''}`
+    }, '')
+
+    const searchInfo = datasetConfig.searchKeys.reduce((acc,searchKey) => {
+        // Removes markdown link syntax if it exists
+        const cleanValue = row[searchKey.toLowerCase()].replace(/\[(.*)\]\(.*\)/g)
+        return `${acc};${cleanValue}`
+    }, '')
+    return `${filterInfo}${searchInfo}`
+}
+
+/**
+ * Builds the dropdowns object with unique values for filter dropdowns
+ * @param row
+ * @example:
+ * dropdown: {
+ *   Recommendation Category: [<unique values from `data`>],
+ *   Cloud Provider: [<unique values from `data`>],
+ *   Resource_Type: [<unique values from `data`>]
+ * } 
+ */
+const buildDropdowns = (row: Record<string, any>): void=> {
+    
+    headers.forEach((header) => {
+        if(header.filter_by){
+            if(!datasetConfig.dropdowns[header.name]){
+                datasetConfig.dropdowns[header.name] = [row[header.id]]
+            }else if(datasetConfig.dropdowns[header.name] && !datasetConfig.dropdowns[header.name]?.includes(row[header.id])){
+                datasetConfig.dropdowns[header.name].push(row[header.id])
+            }
+        }
+    })
+}
+
 const { headers, data } = await getDataset();
 
-const state = {
+const datasetConfig = {
   headers: headers,
   data: data,
-  dropdowns: {} as Record<string, string[]>,
   filterKeys: headers.filter((header) => header.filter_by).map((header) => header.id),
   searchKeys: headers.filter((header) => !header.filter_by).map((header) => header.id),
-  filterTypes: {} as Record<string, string[]>,
-//   pushState(filterType?: string, filterOption?: string) {
-//     // Updates url with new query params for filter type and search without refreshing the page
-
-//     const url = new URL(window.location.href);
-//     let newURL = "";
-//     if (filterType && filterOption) {
-//       if (!url.searchParams.getAll(filterType).includes(filterOption)) {
-//         // add one key:value param
-//         url.searchParams.append(filterType, filterOption);
-//       } else {
-//         // remove one key:value param
-
-//         function encode(match: string) {
-//           // callback function to encode some special characters.
-//           // accounting for how the toString url method encodes characters
-//           return match === " "
-//             ? "\\+"
-//             : "%" + match.charCodeAt(0).toString(16).toUpperCase();
-//         }
-//         const regex = new RegExp(
-//           `([\\&\\?])${filterType}=${filterOption.replace(/[\s()!*\[\]%,]/g, encode)}(?=\&|$)`,
-//           "g"
-//         );
-//         newURL = url.toString().replaceAll(regex, "").replace("/&", "/?");
-//       }
-//       if (!this.filterTypes[filterType].length) {
-//         url.searchParams.delete(filterType);
-//       }
-//     } else {
-//       url.searchParams.set("search", this.searchValue);
-//       if (!this.searchValue) {
-//         url.searchParams.delete("search");
-//       }
-//     }
-
-//     window.history.pushState(null, "", newURL || url.toString());
-//   }
+  dropdowns: {} as Record<string, string[]>
 };
 ---
 <div 
@@ -152,49 +143,22 @@ class="multifilter-search-component flex flex-col"
 data-pathname={pathname}
 data-headers={JSON.stringify(headers)}
 >
-    <h2>{data.length} data rows</h2>
     <!-- DATA TABLE -->
     <div class="order-1">
         <div class="table-wrapper pb-7">
-        <table>
+        <table class="px-4">
             <!-- TABLE HEADER -->
             <thead class="table-header">
-            <tr>
-                <!-- Range headers -->
-                { headers.map(({name}) => <th>{name}</th>)}
-            </tr>
+                <tr>
+                    <!-- Range headers -->
+                    { headers.map(({name}) => <th>{name}</th>)}
+                </tr>
             </thead>
             <tbody>
             { 
                 data.map((row, idx) => {
-                    // build a string with lookup info for filtering and searching against. must maintain filter_info order to align with filterTypes property.
-                    const filterInfo = state.filterKeys.reduce((acc,filterKey, idx) => {
-                        // Removes markdown link syntax if it exists
-                        const cleanValue = row[filterKey].replace(/\[(.*)\]\(.*\)/g)
-                        return `${acc}${cleanValue}${idx < state.filterKeys.length - 1 ? ',' : ''}`
-                    }, '')
-                    const searchInfo = state.searchKeys.reduce((acc,searchKey, idx) => {
-                        // Removes markdown link syntax if it exists
-                        const cleanValue = row[searchKey.toLowerCase()].replace(/\[(.*)\]\(.*\)/g)
-                        return `${acc};${cleanValue}`
-                    }, '')
-                    const allInfo = `${filterInfo}${searchInfo}`
-                    //   build object with unique values for filter dropdowns
-                    //   e.g:
-                    //   dropdown: {
-                    //       Recommendation Category: [],
-                    //       Cloud Provider: [],
-                    //       Resource_Type
-                    //   }
-                    headers.forEach((header) => {
-                        if(header.filter_by){
-                            if(!state.dropdowns[header.name]){
-                                state.dropdowns[header.name] = [row[header.id]]
-                            }else if(state.dropdowns[header.name] && !state.dropdowns[header.name]?.includes(row[header.id])){
-                                state.dropdowns[header.name].push(row[header.id])
-                            }
-                        }
-                    })
+                    const allInfo = getLookupInfoString(row)
+                    buildDropdowns(row)
                     return (
                         <tr 
                         class="record"
@@ -216,13 +180,12 @@ data-headers={JSON.stringify(headers)}
         </div>
     </div>
     
-    <!-- NAV - Keep here. scratch pad for filters need to form first -->
+    <!-- NAV - Keep here. Forming dropdown data first-->
     <nav id="multifilter-search-nav" class="w-full sticky top-[64px] self-start z-2 bg-white pt-3 pb-3 px-0">
-        <div class="filters__multifilter mb-3">
-            { headers.map((header) => {
+        <div class="filters__multifilter flex flex-wrap mb-3">
+            { headers.filter((header) => header.filter_by).map((header, idx) => {
                 return (
-                    header.filter_by && (
-                    <div class='filter-type mb-6' data-id={header.id} >
+                    <div class={`filter-type flex flex-col mt-0 mb-6 ${idx ? 'w-1/2' : 'w-full'} px-4`} data-id={header.id} >
                         <p class="filter-type-name mb-2 font-semibold">{ header.name }</p>
                         <div class="filter-component">
                             <button 
@@ -233,7 +196,7 @@ data-headers={JSON.stringify(headers)}
                                     {/* All */}
                                     <span class="all font-semibold ms-2">All</span>
                                     {/* Show filter selections from `filterTypes` data in button as they are selected */}
-                                    {state.dropdowns[header.name]?.map((filter) => {
+                                    {datasetConfig.dropdowns[header.name]?.map((filter) => {
                                         const cleanValue = filter.replace(/\[(.*)\]\(.*\)/g, '$1')
                                         return (
                                             <div 
@@ -269,7 +232,7 @@ data-headers={JSON.stringify(headers)}
                                     <span>All</span>
                                 </div>
                                 {
-                                    state.dropdowns[header.name]?.map((filter) => {
+                                    datasetConfig.dropdowns[header.name]?.map((filter) => {
                                         const cleanValue = filter.replace(/\[(.*)\]\(.*\)/g, '$1')
                                         const id = `${cleanValue}-${header.id}`
                                         return (
@@ -291,11 +254,10 @@ data-headers={JSON.stringify(headers)}
                             </form>
                 </div>                      
             </div>
-            )
         )})}
         </div>
         <!-- //  SEARCH FORM -->
-        <form class="search__multifilter">
+        <form class="search__multifilter px-4">
             <input type="search" placeholder="Search here" class="w-full p-2 rounded-sm border border-gray-300">
         </form>
     </nav>
