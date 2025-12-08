@@ -1,5 +1,5 @@
 ---
-title: MultiFilterSearch [in progress]
+title: MultiFilterSearch III 
 description: MultiFilterSearch component.
 multi_filter_search:
   headers:
@@ -7,7 +7,6 @@ multi_filter_search:
       id: opentelemetry_convention
     - name: Datadog convention
       id: datadog_convention
-      filter_by: true
     - name: Type
       id: type
   data:
@@ -20,22 +19,18 @@ multi_filter_search:
     - opentelemetry_convention: 'service.version'
       datadog_convention: 'version'
       type: Unified service tagging
-    - opentelemetry_convention: 'service.version'
+    - opentelemetry_convention: 'service.env.github'
       datadog_convention: 'env'
       type: Unified service tagging
 ---
 
-<!-- TODO: For the component itself i can probably extract the alpine pieces and have it run server side with a mix of tailwind. Alternatively I could use the alpinejs integration -->
 
-Renders a MultiFilterSearch component.
+Renders a MultiFilterSearch component using content frontmatter. *No filtering*.
 
-## Examples
+## Example
 
-**MultiFilterSearch component using fm_resource in frontmatter**
+**MultiFilterSearch component using `fm_resource` parameter**
 {% multifiltersearch fm_resource=$frontmatter.multi_filter_search /%}
-
-**MultiFilterSearch component using resource in props**
-<!-- {% multifiltersearch resource="sds_rules-test" /%} -->
 
 
 
