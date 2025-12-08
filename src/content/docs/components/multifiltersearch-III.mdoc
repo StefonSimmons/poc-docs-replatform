@@ -28,6 +28,32 @@ multi_filter_search:
 Renders a MultiFilterSearch component using content frontmatter. *No filtering*.
 
 ## Example
+```md {% title="Markdoc" %}
+---
+multi_filter_search:
+  headers:
+    - name: OpenTelemetry convention
+      id: opentelemetry_convention
+    - name: Datadog convention
+      id: datadog_convention
+    - name: Type
+      id: type
+  data:
+    - opentelemetry_convention: 'deployment.environment.name'
+      datadog_convention: 'env'
+      type: Unified service tagging
+    - opentelemetry_convention: 'service.name'
+      datadog_convention: 'service'
+      type: Unified service tagging
+    - opentelemetry_convention: 'service.version'
+      datadog_convention: 'version'
+      type: Unified service tagging
+    - opentelemetry_convention: 'service.env.github'
+      datadog_convention: 'env'
+      type: Unified service tagging
+---
+{% multifiltersearch fm_resource=$frontmatter.multi_filter_search /%}
+```
 
 **MultiFilterSearch component using `fm_resource` parameter**
 {% multifiltersearch fm_resource=$frontmatter.multi_filter_search /%}

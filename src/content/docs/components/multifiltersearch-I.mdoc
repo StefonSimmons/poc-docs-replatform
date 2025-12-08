@@ -4,10 +4,14 @@ description: MultiFilterSearch component.
 ---
 
 
-Renders a MultiFilterSearch component **using JSON data source**. Filters on 1 field.
+Renders a MultiFilterSearch component **using JSON data source**. Filters on 1 field. Reference to a JSON dataset in `/src/data/` directory (without .json extension)
 
 ## Example
+See dataset used for this example in [`/src/data/sds_rules-test.json`](https://github.com/StefonSimmons/poc-docs-replatform/src/data/sds_rules-test.json)
 
+```md {% title="Markdoc" %}
+{% multifiltersearch resource="<json-resource-name>" /%}
+```
 **MultiFilterSearch component using `resource` parameter**
 {% multifiltersearch resource="sds_rules-test" /%}
 
