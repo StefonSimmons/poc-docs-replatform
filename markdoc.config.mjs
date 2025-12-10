@@ -88,6 +88,20 @@ export default defineMarkdocConfig({
         appsecintegrations: {
             render: component('./src/components/AppSecIntegrationWrapper.astro'),
         },
+        tabgroup: {
+            render: component('./src/components/TabGroup.astro'),
+            attributes: {
+                syncKey: { type: String },
+            }
+        },
+        tab: {
+            render: component('./src/components/Tab.astro'),
+            attributes: {
+                label: { type: String, required: true, errorLevel: 'error' },
+            }
+        }
+
+
     },
     nodes: {
         fence: {

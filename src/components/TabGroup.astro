@@ -1,0 +1,71 @@
+---
+interface Props {
+    syncKey: string;
+}
+
+const { syncKey } = Astro.props as Props;
+---
+<!-- Renders a custom tab group component with multiple tab items. -->
+<div is="tab-group" class="tab-group">
+    <ul class="tab-labels p-0 flex flex-row border-b-2 border-gray-300"></ul>
+    <slot />
+</div>
+
+<script>
+    class TabGroup extends HTMLDivElement {
+        tabLabels: NodeListOf<Element>;
+        tabContents: NodeListOf<Element>;
+        tabLabelsElement: Element | null;
+        initialTabID: string | null;
+
+        constructor() {
+            super();
+            this.tabLabels = this.querySelectorAll('.tab-label');
+            this.tabContents = this.querySelectorAll('.tab-content');
+            this.tabLabelsElement = this.querySelector('.tab-labels');
+            this.initialTabID = this.tabLabels[0].getAttribute('data-id');
+        }
+        connectedCallback() {
+            // Add event listeners to tab labels and append them to the tab labels element
+            if(!this.tabLabelsElement) throw new Error('No .tab-labels element found to append .tab-label element(s) to');
+            this.tabLabels.forEach((tabLabel, index) => {
+                tabLabel.addEventListener('click', () => {
+                    const relatedTabContent = this.tabContents[index];
+                    this.setActiveTab(tabLabel, relatedTabContent);
+                });
+                this.tabLabelsElement?.appendChild(tabLabel);
+            });
+            
+            if(this.initialTabID) {
+                const initialTab = this.querySelector(`.tab-label[data-id="${this.initialTabID}"]`);
+                const initialTabContent = this.querySelector(`.tab-content[data-id="${this.initialTabID}"]`);
+                if(initialTab && initialTabContent) {
+                    this.setActiveTab(initialTab, initialTabContent);
+                }
+            }
+        }
+        /**
+         * Manages Tab visibility
+         * @param tabLabel - The tab label element to set active
+         * @param tabContent - The tab content element to
+         */
+        setActiveTab(tabLabel: Element, tabContent: Element) {
+            const activeTabLabelClass = 'active font-semibold border-b-2 border-purple-700 -mb-[2px]';
+            const activeTabContentClass = 'active block';
+            const inactiveTabContentClass = 'hidden';
+
+            this.tabLabels.forEach(tl => {
+                tl.classList.remove(...activeTabLabelClass.split(' '));
+            });
+            tabLabel.classList.add(...activeTabLabelClass.split(' '));
+
+            this.tabContents.forEach(tc => {
+                tc.classList.remove(...activeTabContentClass.split(' '));
+                tc.classList.add(inactiveTabContentClass);
+            });
+            tabContent.classList.remove(inactiveTabContentClass);
+            tabContent.classList.add(...activeTabContentClass.split(' '));
+        }
+    }
+    customElements.define('tab-group', TabGroup, { extends: 'div' });
+</script>

@@ -1,0 +1,17 @@
+---
+interface Props {
+    label: string;
+}
+
+const { label } = Astro.props as Props;
+
+---
+<!-- Renders a custom tab item component. -->
+<li 
+class=`tab-label list-none m-0 px-5 py-1`
+data-id={label.toLowerCase().replaceAll(' ', '-')}>
+    <span>{label}</span>
+</li>
+<div class="tab-content hidden" data-id={label.toLowerCase().replaceAll(' ', '-')}>
+    <slot />
+</div>
