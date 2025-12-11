@@ -2,7 +2,6 @@ import { defineCollection, z } from "astro:content";
 import { docsLoader } from "@astrojs/starlight/loaders";
 import { docsSchema } from "@astrojs/starlight/schema";
 import { remoteLoader } from "../loaders";
-import { glob } from "astro/loaders";
 
 /**
  * This file exports a collections object that defines the collections for the project.

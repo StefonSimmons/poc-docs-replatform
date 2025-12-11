@@ -1,0 +1,6 @@
+otel,dd,description,filter,transform
+system.cpu.load_average.15m,system.load.15,Average CPU Load over 15 minutes.,,
+system.cpu.load_average.1m,system.load.1,Average CPU Load over 1 minute.,,
+system.cpu.load_average.5m,system.load.5,Average CPU Load over 5 minutes.,,
+system.cpu.logical.count,system.cpu.num_cores,Number of available logical CPUs.,,
+system.cpu.utilization,system.cpu.idle,"Difference in system.cpu.time since the last measurement per logical CPU, divided by the elapsed time (value in interval [0,1]).",`state`: `idle`,× 100

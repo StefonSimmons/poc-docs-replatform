@@ -89,15 +89,23 @@ export default defineMarkdocConfig({
             render: component('./src/components/AppSecIntegrationWrapper.astro'),
         },
         tabgroup: {
+            // Custom TabGroup component
             render: component('./src/components/TabGroup.astro'),
             attributes: {
                 syncKey: { type: String },
             }
         },
         tab: {
+            // Custom Tab component
             render: component('./src/components/Tab.astro'),
             attributes: {
                 label: { type: String, required: true, errorLevel: 'error' },
+            }
+        },
+        mappingtable: {
+            render: component('./src/components/MappingTable.astro'),
+            attributes: {
+                resource: { type: String, required: true, errorLevel: 'error' },
             }
         }
 

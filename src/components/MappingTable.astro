@@ -1,0 +1,67 @@
+---
+import { parse as parseCSV } from 'csv-parse/sync';
+import { marked } from 'marked';
+const { resource } = Astro.props;
+if(!resource) throw new Error(`No resource provided for mappingtable component in file: ${Astro.url.pathname}`);
+
+type CSVJSONData = {
+    [key: string]: string;
+}[];
+
+const getDataset = async (): Promise<CSVJSONData> => {
+    const resourcePath = `../data/semantic-core/${resource}.csv`;
+    const csvFiles = await import.meta.glob(`../data/semantic-core/*.csv`, { eager: true, query: '?raw', import: 'default' });
+    if(!csvFiles[resourcePath]) throw new Error(`CSV file not found: ${resourcePath}`);
+    const csvFileString = csvFiles[resourcePath] as string;
+    const csvJSONData = parseCSV(csvFileString, { columns: true });
+    return csvJSONData as CSVJSONData;
+}
+
+const dataset = await getDataset();
+
+const headers = dataset.reduce((acc, curr) => {
+    //extract unique headers
+    const keys = Object.keys(curr) as string[];
+    if(acc.every((accKey:string) => !keys.includes(accKey))) {
+        acc.push(...keys);
+    }
+    return acc;
+}, [] as string[])
+
+
+---
+<!--     
+    Renders an HTML table from a CSV file located in the assets/_data/semantic-core directory (Global resource). Can be extended for other tables
+    CSV file should be a 2D array with the first array/row as the header. This file fetching could also be done in a custom loader.
+
+    @param resource: string - name of the CSV file. 
+-->
+
+<div class="table-wrapper overflow-x-auto">
+    <table class="table-fixed">
+        <thead>
+            <tr>
+            { 
+                headers.map(header => {
+                    return <th>{header.toUpperCase()}</th>
+                }) 
+            }
+            </tr>
+        </thead>
+        <tbody>
+        {
+            dataset.map((row, index) => {
+                return (
+                <tr data-id={index.toString()}>
+                    {
+                        headers.map(header => {
+                            return <td set:html={marked.parse(row[header] || '')} />
+                        })
+                    }
+                </tr>)
+            })
+        }
+        </tbody>
+
+    </table>
+</div>
