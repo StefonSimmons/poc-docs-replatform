@@ -8,15 +8,204 @@ Renders a tab group component with multiple tab items. This is a Starlight compo
 
 ## Examples
 
-**Default TabGroup**
+**2 components with 3 tab items each. Default Custom TabGroup. No syncKey param.**
+
+
+```mdoc {% title="Markdoc" %}
 {% tabgroup %}
-    {% tab label="Tab 1" %}
-    Content for Tab 1
+    {% tab label="WebOps Platform" %}
+    - Hosting, Infrastructure, and CI/CD
+    - Build images
+    - Governance / Security practices
     {% /tab %}
-    {% tab label="Tab 2" %}
-    Content for Tab 2
+    {% tab label="WebOps Frontend" %}
+    - Design System
+    - Styling / Tailwind 
+    - Templates / Component-based workflow  
     {% /tab %}
-    {% tab label="Tab 3" %}
-    Content for Tab 3
+    {% tab label="WebOps Enablement" %}
+    - Global elements (header, footer, nav)
+    - Corpsite i18n / l10n
+    - Typesense
+    {% /tab %}
+{% /tabgroup %}
+{%tabgroup %}
+    {% tab label="WebOps Platform" %}
+    - David
+    - Brian
+    - Jen 
+    {% /tab %}
+    {% tab label="WebOps Frontend" %}
+    - Lori
+    - Carlos
+    - Aaron
+    {% /tab %}
+    {% tab label="WebOps Enablement" %}
+    - Tim
+    - Colin
+    - Matt
+    {% /tab %}
+{% /tabgroup %}
+```
+<br/>
+
+{% tabgroup %}
+    {% tab label="WebOps Platform" %}
+    - Hosting, Infrastructure, and CI/CD
+    - Build images
+    - Governance / Security practices
+    {% /tab %}
+    {% tab label="WebOps Frontend" %}
+    - Design System
+    - Styling / Tailwind 
+    - Templates / Component-based workflow  
+    {% /tab %}
+    {% tab label="WebOps Enablement" %}
+    - Global elements (header, footer, nav)
+    - Corpsite i18n / l10n
+    - Typesense
+    {% /tab %}
+{% /tabgroup %}
+{%tabgroup %}
+    {% tab label="WebOps Platform" %}
+    - David
+    - Brian
+    - Jen 
+    {% /tab %}
+    {% tab label="WebOps Frontend" %}
+    - Lori
+    - Carlos
+    - Aaron
+    {% /tab %}
+    {% tab label="WebOps Enablement" %}
+    - Tim
+    - Colin
+    - Matt
+    {% /tab %}
+{% /tabgroup %}
+
+
+**3 components with 3 tab items each. Custom TabGroup with syncKey param.**
+
+```mdoc {% title="Markdoc" meta="{1 19 38 50}" %}
+{% tabgroup syncKey="webops_teams" %}
+    {% tab label="WebOps Platform" %}
+    - Hosting, Infrastructure, and CI/CD
+    - Build images
+    - Governance / Security practices
+    {% /tab %}
+    {% tab label="WebOps Frontend" %}
+    - Design System
+    - Styling / Tailwind 
+    - Templates / Component-based workflow  
+    {% /tab %}
+    {% tab label="WebOps Enablement" %}
+    - Global elements (header, footer, nav)
+    - Corpsite i18n / l10n
+    - Typesense
+    {% /tab %}
+{% /tabgroup %}
+
+{%tabgroup syncKey="webops_teams" %}
+    {% tab label="WebOps Platform" %}
+    - David
+    - Brian
+    - Jen 
+    {% /tab %}
+    {% tab label="WebOps Frontend" %}
+    - Lori
+    - Carlos
+    - Aaron
+    {% /tab %}
+    {% tab label="WebOps Enablement" %}
+    - Tim
+    - Colin
+    - Matt
+    {% /tab %}
+{% /tabgroup %}
+
+
+{% tabgroup syncKey="team_responsibilites" %}
+    {% tab label="WebOps" %}
+    - stuff
+    {% /tab %}
+    {% tab label="Docs" %}
+    - some thing 
+    {% /tab %}
+    {% tab label="Advocacy" %}
+    - something
+    {% /tab %}
+{% /tabgroup %}
+
+{%tabgroup syncKey="team_responsibilites" %}
+    {% tab label="WebOps" %}
+    - thing
+    {% /tab %}
+    {% tab label="Docs" %}
+    - other
+    {% /tab %}
+    {% tab label="Advocacy" %}
+    - someone
+    {% /tab %}
+{% /tabgroup %}
+```
+{% tabgroup syncKey="webops_teams" %}
+    {% tab label="WebOps Platform" %}
+    - Hosting, Infrastructure, and CI/CD
+    - Build images
+    - Governance / Security practices
+    {% /tab %}
+    {% tab label="WebOps Frontend" %}
+    - Design System
+    - Styling / Tailwind 
+    - Templates / Component-based workflow  
+    {% /tab %}
+    {% tab label="WebOps Enablement" %}
+    - Global elements (header, footer, nav)
+    - Corpsite i18n / l10n
+    - Typesense
+    {% /tab %}
+{% /tabgroup %}
+
+{%tabgroup syncKey="webops_teams" %}
+    {% tab label="WebOps Platform" %}
+    - David
+    - Brian
+    - Jen 
+    {% /tab %}
+    {% tab label="WebOps Frontend" %}
+    - Lori
+    - Carlos
+    - Aaron
+    {% /tab %}
+    {% tab label="WebOps Enablement" %}
+    - Tim
+    - Colin
+    - Matt
+    {% /tab %}
+{% /tabgroup %}
+
+
+{% tabgroup syncKey="team_responsibilites" %}
+    {% tab label="WebOps" %}
+    - stuff
+    {% /tab %}
+    {% tab label="Docs" %}
+    - some thing 
+    {% /tab %}
+    {% tab label="Advocacy" %}
+    - something
+    {% /tab %}
+{% /tabgroup %}
+
+{%tabgroup syncKey="team_responsibilites" %}
+    {% tab label="WebOps" %}
+    - thing
+    {% /tab %}
+    {% tab label="Docs" %}
+    - other
+    {% /tab %}
+    {% tab label="Advocacy" %}
+    - someone
     {% /tab %}
 {% /tabgroup %}

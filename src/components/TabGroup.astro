@@ -6,7 +6,7 @@ interface Props {
 const { syncKey } = Astro.props as Props;
 ---
 <!-- Renders a custom tab group component with multiple tab items. -->
-<div is="tab-group" class="tab-group">
+<div is="tab-group" class="tab-group" data-sync-key={syncKey}>
     <ul class="tab-labels p-0 flex flex-row border-b-2 border-gray-300"></ul>
     <slot />
 </div>
@@ -31,40 +31,91 @@ const { syncKey } = Astro.props as Props;
             this.tabLabels.forEach((tabLabel, index) => {
                 tabLabel.addEventListener('click', () => {
                     const relatedTabContent = this.tabContents[index];
-                    this.setActiveTab(tabLabel, relatedTabContent);
+                    this.manageTabVisibility(tabLabel, relatedTabContent);
                 });
                 this.tabLabelsElement?.appendChild(tabLabel);
             });
             
-            if(this.initialTabID) {
-                const initialTab = this.querySelector(`.tab-label[data-id="${this.initialTabID}"]`);
-                const initialTabContent = this.querySelector(`.tab-content[data-id="${this.initialTabID}"]`);
-                if(initialTab && initialTabContent) {
-                    this.setActiveTab(initialTab, initialTabContent);
-                }
-            }
+            this.setInitialTab();
+            
         }
+
         /**
          * Manages Tab visibility
          * @param tabLabel - The tab label element to set active
          * @param tabContent - The tab content element to
          */
-        setActiveTab(tabLabel: Element, tabContent: Element) {
+        manageTabVisibility(tabLabel: Element, tabContent: Element) {
+            const syncKey = this.getAttribute('data-sync-key');
             const activeTabLabelClass = 'active font-semibold border-b-2 border-purple-700 -mb-[2px]';
             const activeTabContentClass = 'active block';
             const inactiveTabContentClass = 'hidden';
+            let syncableActiveTabLabels: Element[] = [];
+            let allSyncableTabLabels: Element[] = [];
+            let allSyncableTabContents: Element[] = [];
+            let syncableActiveTabContents: Element[] = [];
 
-            this.tabLabels.forEach(tl => {
-                tl.classList.remove(...activeTabLabelClass.split(' '));
-            });
-            tabLabel.classList.add(...activeTabLabelClass.split(' '));
+            if(syncKey) {
+                const tabLabelID = tabLabel.getAttribute('data-id');
+                const syncableTabGroups = document.querySelectorAll(`.tab-group[data-sync-key="${syncKey}"]`);
+                syncableTabGroups.forEach(stg => {
+                    allSyncableTabLabels.push(...stg.querySelectorAll(`.tab-label`));
+                    allSyncableTabContents.push(...stg.querySelectorAll(`.tab-content`));
+                    syncableActiveTabLabels.push(...stg.querySelectorAll(`.tab-label[data-id="${tabLabelID}"]`));
+                    syncableActiveTabContents.push(...stg.querySelectorAll(`.tab-content[data-id="${tabLabelID}"]`));
+                });
+            }
+            if(syncableActiveTabLabels.length) {
+                allSyncableTabLabels.forEach(stl => {
+                    stl.classList.remove(...activeTabLabelClass.split(' '));
+                });
+            }else{
+                this.tabLabels.forEach(tl => {
+                    tl.classList.remove(...activeTabLabelClass.split(' '));
+                });
+            }
+            if(syncableActiveTabLabels.length) {
+                syncableActiveTabLabels.forEach(stl => {
+                    stl.classList.add(...activeTabLabelClass.split(' '));
+                });
+            }else{
+                tabLabel.classList.add(...activeTabLabelClass.split(' '));
+            }
 
-            this.tabContents.forEach(tc => {
-                tc.classList.remove(...activeTabContentClass.split(' '));
-                tc.classList.add(inactiveTabContentClass);
-            });
-            tabContent.classList.remove(inactiveTabContentClass);
-            tabContent.classList.add(...activeTabContentClass.split(' '));
+
+            if(syncableActiveTabContents.length) {
+                allSyncableTabContents.forEach(stc => {
+                    stc.classList.remove(...activeTabContentClass.split(' '));
+                    stc.classList.add(inactiveTabContentClass);
+                });
+            }else{
+                this.tabContents.forEach(tc => {
+                    tc.classList.remove(...activeTabContentClass.split(' '));
+                    tc.classList.add(inactiveTabContentClass);
+                });
+            }
+            if(syncableActiveTabContents.length) {
+                syncableActiveTabContents.forEach(stc => {
+                    stc.classList.remove(inactiveTabContentClass);
+                    stc.classList.add(...activeTabContentClass.split(' '));
+                });
+            }else{
+                tabContent.classList.remove(inactiveTabContentClass);
+                tabContent.classList.add(...activeTabContentClass.split(' '));
+            }
+        }
+
+        /**
+         * Sets the initial tab
+         */
+        setInitialTab() {
+            if(this.initialTabID) {
+                const initialTab = this.querySelector(`.tab-label[data-id="${this.initialTabID}"]`);
+                const initialTabContent = this.querySelector(`.tab-content[data-id="${this.initialTabID}"]`);
+                if(initialTab && initialTabContent) {
+                    this.manageTabVisibility(initialTab, initialTabContent);
+                }
+            }
         }
     }
     customElements.define('tab-group', TabGroup, { extends: 'div' });
