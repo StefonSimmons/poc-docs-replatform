@@ -41,7 +41,7 @@ const { syncKey } = Astro.props as Props;
         }
 
         /**
-         * Manages Tab visibility
+         * Manages Tab visibility for Synced and Non-synced items.
          * @param tabLabel - The tab label element to set active
          * @param tabContent - The tab content element to
          */
@@ -69,37 +69,26 @@ const { syncKey } = Astro.props as Props;
                 allSyncableTabLabels.forEach(stl => {
                     stl.classList.remove(...activeTabLabelClass.split(' '));
                 });
-            }else{
-                this.tabLabels.forEach(tl => {
-                    tl.classList.remove(...activeTabLabelClass.split(' '));
-                });
-            }
-            if(syncableActiveTabLabels.length) {
                 syncableActiveTabLabels.forEach(stl => {
                     stl.classList.add(...activeTabLabelClass.split(' '));
                 });
-            }else{
-                tabLabel.classList.add(...activeTabLabelClass.split(' '));
-            }
-
-
-            if(syncableActiveTabContents.length) {
                 allSyncableTabContents.forEach(stc => {
                     stc.classList.remove(...activeTabContentClass.split(' '));
                     stc.classList.add(inactiveTabContentClass);
                 });
-            }else{
-                this.tabContents.forEach(tc => {
-                    tc.classList.remove(...activeTabContentClass.split(' '));
-                    tc.classList.add(inactiveTabContentClass);
-                });
-            }
-            if(syncableActiveTabContents.length) {
                 syncableActiveTabContents.forEach(stc => {
                     stc.classList.remove(inactiveTabContentClass);
                     stc.classList.add(...activeTabContentClass.split(' '));
                 });
             }else{
+                this.tabLabels.forEach(tl => {
+                    tl.classList.remove(...activeTabLabelClass.split(' '));
+                });
+                tabLabel.classList.add(...activeTabLabelClass.split(' '));
+                this.tabContents.forEach(tc => {
+                    tc.classList.remove(...activeTabContentClass.split(' '));
+                    tc.classList.add(inactiveTabContentClass);
+                });
                 tabContent.classList.remove(inactiveTabContentClass);
                 tabContent.classList.add(...activeTabContentClass.split(' '));
             }
