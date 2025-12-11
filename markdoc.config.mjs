@@ -107,6 +107,13 @@ export default defineMarkdocConfig({
             attributes: {
                 resource: { type: String, required: true, errorLevel: 'error' },
             }
+        },
+        productavailability: {
+            render: component('./src/components/ProductAvailability.astro'),
+            attributes: {
+                products: { type: Array, required: true, errorLevel: 'error' },
+                names: { type: String, default: ''},
+            }
         }
 
 

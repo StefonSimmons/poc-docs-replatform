@@ -31,6 +31,11 @@ export const collections = {
           })),
           data: z.array(z.record(z.string(), z.any()))
         }).optional(),
+        products: z.array(z.object({
+          name: z.string(),
+          url: z.string(),
+          icon: z.string(),
+        })).optional(),
       }),
     }),
   }),
