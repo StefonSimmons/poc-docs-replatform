@@ -11,9 +11,10 @@ type Props = {
     title: string;
     headerLevel: keyof typeof headingStyles;
     expanded: boolean;
+    inline: boolean;
 }
 
-const { title, headerLevel , expanded } = Astro.props;
+const { title, headerLevel , expanded, inline } = Astro.props;
 
 ---
 <!-- 
@@ -24,7 +25,7 @@ Renders a resusable interactive <detail> html tag that can be expanded or collap
 @param expanded: boolean - Whether the collapsible content is expanded by default.
 -->
 
-<details class="collapsible-section border border-gray-300 rounded-md p-4" open={expanded}>
+<details class={`collapsible-section ${!inline ? "border border-gray-300 rounded-md p-4" : "p-0 border-none"}`} open={expanded}>
     <summary class="collapsible-header flex items-center" tabindex="0" aria-expanded={expanded}>
         <span class={`${headingStyles[headerLevel]} font-semibold`}>{title}</span>
     </summary>

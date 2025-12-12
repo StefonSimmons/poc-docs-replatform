@@ -134,6 +134,7 @@ export default defineMarkdocConfig({
                 title: { type: String, required: true, errorLevel: 'error' },
                 headerLevel: { type: String, default: 'h3', matches: ['h3', 'h4', 'h5', 'h6'] },
                 expanded: { type: Boolean, default: false },
+                inline: { type: Boolean, default: false },
             }
         }
 
