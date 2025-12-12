@@ -16,12 +16,18 @@ products:
     icon: cloud-security-management
 ---
 
-Renders a list of products related to the current page. Use the "names" parameter to specify and show a subset of products.
+Renders a list of products related to the current page. Use the "names" parameter to specify and show a subset of products. Still need to add icons support
 
 ## Examples
 
 **Default Product Availability**
+```mdoc {% title="Markdoc" %}
+{% productavailability products=$frontmatter.products /%}
+```
 {% productavailability products=$frontmatter.products /%}
 
 **Product Availability with names parameter**
+```mdoc {% title="Markdoc" %}
+{% productavailability products=$frontmatter.products names="Cloud SIEM,DDSQL Editor" /%}
+```
 {% productavailability products=$frontmatter.products names="Cloud SIEM,DDSQL Editor" /%}
