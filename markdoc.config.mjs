@@ -41,7 +41,8 @@ export default defineMarkdocConfig({
             render: component('./src/components/WhatsNext.astro'),
             attributes: {
                 further_reading: { type: Array, default: [] },
-                desc: { type: String, default: 'Additional helpful documentation, links, and articles:' }
+                desc: { type: String, default: 'Additional helpful documentation, links, and articles:' },
+                header: { type: String }
             }
         },
         nextlink: {
@@ -49,6 +50,7 @@ export default defineMarkdocConfig({
             attributes: {
                 href: { type: String, required: true, errorLevel: 'error' },
                 tag: { type: String, default: '' },
+                hasArrow: { type: Boolean, default: true },
             }
         },
         platforms: {
@@ -122,6 +124,9 @@ export default defineMarkdocConfig({
                 defaultSource: { type: String, required: true, errorLevel: 'error' },
                 hasFunction: { type: Boolean },
             }
+        },
+        cloudsiemcontentpacks: {
+            render: component('./src/components/CloudSiemContentPacks.astro'),
         }
 
 

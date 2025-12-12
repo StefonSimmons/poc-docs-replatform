@@ -7,17 +7,23 @@ further_reading:
     tag: Click here
   - link: https://www.datadoghq.com
     text: Two further reading link
-    tag: Click here
   - link: https://www.datadoghq.com
     text: Three further reading link
     tag: Learn More
 ---
 
-Renders a list of links relevant to the parent page. Typically used at the end of a page.
+Renders a list of links relevant to the parent content page. Typically used at the end of a page.
 
-**Basic WhatsNext with description and 4 links**
+## Parameters
+* **desc**: string - The description of the links. Default: "Additional helpful documentation, links, and articles:".
+* **further_reading**: array of objects - The links to render. Each object should have a `link`, `text`, and optional`tag` property.
+* **header**: string - The `<h2>` header of the links.
+
+## Examples
+
+**Basic WhatsNext with custom description and 4 nextlink components**
 ```mdoc {% title="Markdoc" %}
-{% whatsnext desc="Additional helpful documentation, links, and articles:" %}
+{% whatsnext desc="Custom description" %}
   {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
     One thing
   {% /nextlink %}
@@ -32,7 +38,7 @@ Renders a list of links relevant to the parent page. Typically used at the end o
   {% /nextlink %}
 {% /whatsnext %}
 ```
-{% whatsnext desc="Additional helpful documentation, links, and articles:" %}
+{% whatsnext desc="Custom description" %}
   {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
     One thing
   {% /nextlink %}
@@ -46,11 +52,34 @@ Renders a list of links relevant to the parent page. Typically used at the end o
     Fourth thing
   {% /nextlink %}
 {% /whatsnext %}
+<br/>
 
-**WhatsNext using "further_reading" frontmatter param**
+**Basic WhatsNext with default description, custom header and 2 nextlink components**
 ```mdoc {% title="Markdoc" %}
-{% whatsnext further_reading=$frontmatter.further_reading /%}
+{% whatsnext header="Custom header" %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    One thing
+  {% /nextlink %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    Second thing
+  {% /nextlink %}
+{% /whatsnext %}
+```
+{% whatsnext header="Custom header" %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    One thing
+  {% /nextlink %}
+  {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+    Second thing
+  {% /nextlink %}
+{% /whatsnext %}
+
+<br/>
+
+**WhatsNext using "further_reading" frontmatter param and custom header and default description**
+```mdoc {% title="Markdoc" %}
+{% whatsnext header="Custom Component Header" further_reading=$frontmatter.further_reading /%}
 ```
 
-{% whatsnext further_reading=$frontmatter.further_reading /%}
+{% whatsnext header="Custom Component Header" further_reading=$frontmatter.further_reading /%}
 
