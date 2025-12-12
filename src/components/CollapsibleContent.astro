@@ -1,0 +1,34 @@
+---
+
+const headingStyles = {
+    'h3': 'text-lg',
+    'h4': 'text-base',
+    'h5': 'text-sm',
+    'h6': 'text-xs',
+}
+
+type Props = {
+    title: string;
+    headerLevel: keyof typeof headingStyles;
+    expanded: boolean;
+}
+
+const { title, headerLevel , expanded } = Astro.props;
+
+---
+<!-- 
+Renders a resusable interactive <detail> html tag that can be expanded or collapsed.
+
+@param title: string - The title of the collapsible content.
+@param headerLevel: string - The header level of the collapsible content. Must match one of (h3,h4,h5,or h6)
+@param expanded: boolean - Whether the collapsible content is expanded by default.
+-->
+
+<details class="collapsible-section border border-gray-300 rounded-md p-4" open={expanded}>
+    <summary class="collapsible-header flex items-center" tabindex="0" aria-expanded={expanded}>
+        <span class={`${headingStyles[headerLevel]} font-semibold`}>{title}</span>
+    </summary>
+    <div class="collapsible-content">
+        <slot />
+    </div>
+</details>
