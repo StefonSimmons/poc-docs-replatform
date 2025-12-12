@@ -1,19 +1,25 @@
 ---
 import whatsNextArrow from '../assets/images/list-group-whats-next-arrow-1.png';
 
-const { href, tag } = Astro.props;
+const { href, tag, hasArrow } = Astro.props;
 const fragment = new URL(href, Astro.site).hash;
 let link = href;
 
+
 if (!href.startsWith('http') || !href.startsWith('/')) {
-    // if href is a relative path, append it to the site URL
-    link = href.startsWith('/') ? new URL(href.slice(1), Astro.site).href : new URL(href, Astro.site).href;
+  // if href is a relative path, append it to the site URL
+  link = href.startsWith('/') ? new URL(href.slice(1), Astro.site).href : new URL(href, Astro.site).href;
 }
 
 if (fragment && !link.endsWith(fragment)) {
-    link += fragment;
+  // if fragment is not already in the link, append it
+  link += fragment;
 }
 
+if(href.startsWith("#")){
+  // if href is a fragment, set link to href
+  link = href;
+}
 ---
 <!-- 
 Renders a link with an arrow pointing to the right
@@ -26,5 +32,7 @@ Renders a link with an arrow pointing to the right
         <span class="pe-[20px] text-[#555] group-hover:text-ddpurple">{tag.toUpperCase()}</span>
     }
   </span>
-  <img class="max-h-6!" src={whatsNextArrow.src} alt="arrow pointing to the right" />
+  { hasArrow &&
+    <img class="max-h-6!" src={whatsNextArrow.src} alt="arrow pointing to the right" />
+  }
 </a>
