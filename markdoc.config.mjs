@@ -114,6 +114,14 @@ export default defineMarkdocConfig({
                 products: { type: Array, required: true, errorLevel: 'error' },
                 names: { type: String, default: ''},
             }
+        },
+        serverlessinitenvvarssidecar: {
+            render: component('./src/components/ServerlessInitEnvVarsSidecar.astro'),
+            attributes: {
+                language: { type: String, required: true, errorLevel: 'error' },
+                defaultSource: { type: String, required: true, errorLevel: 'error' },
+                hasFunction: { type: Boolean },
+            }
         }
 
 
