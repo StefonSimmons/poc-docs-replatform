@@ -1,0 +1,155 @@
+{
+  "authentication": [
+    {
+      "content_pack_id": "1password",
+      "name": "1Password",
+      "description": "Monitor account activity with 1Password Events Reporting.",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=1password",
+      "ocsf_pipelines": true,
+      "documentation_href": "https://docs.datadoghq.com/integrations/1password/",
+      "threat_detection": "1password",
+      "dashboard": true
+    },
+    {
+      "content_pack_id": "audit-trail",
+      "name": "Datadog Audit Trail",
+      "description": "Gain visibility into user and configuration changes across Datadog to monitor activity, detect unauthorized modifications, and support compliance and governance requirements.",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=audit-trail",
+      "ocsf_pipelines": false,
+      "documentation_href": "https://docs.datadoghq.com/account_management/audit_trail/",
+      "dashboard": true
+    },
+    {
+      "content_pack_id": "auth0",
+      "name": "Auth0",
+      "description": "Monitor and generate signals around Auth0 user activity.",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=auth0",
+      "ocsf_pipelines": true,
+      "documentation_href": "https://docs.datadoghq.com/integrations/auth0/",
+      "threat_detection": "auth0",
+      "dashboard": true,
+      "workflow_automation": true
+    }
+  ],
+  "cloud_audit": [
+    {
+      "content_pack_id": "aws-cloudtrail",
+      "name": "AWS CloudTrail",
+      "description": "Monitor security and compliance levels of your AWS operations.",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=aws-cloudtrail",
+      "ocsf_pipelines": true,
+      "documentation_href": "https://docs.datadoghq.com/security/cloud_siem/guide/aws-config-guide-for-cloud-siem/",
+      "investigator": "aws",
+      "threat_detection": "cloudtrail",
+      "dashboard": true,
+      "workflow_automation": true
+    },
+    {
+      "content_pack_id": "azure",
+      "name": "Azure Security",
+      "description": "Protect your Azure environment by tracking attacker activity.",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=azure",
+      "ocsf_pipelines": false,
+      "documentation_href": "https://docs.datadoghq.com/security/cloud_siem/guide/azure-config-guide-for-cloud-siem",
+      "investigator": "azure",
+      "threat_detection": "azure",
+      "dashboard": true,
+      "workflow_automation": true
+    }
+  ],
+  "cloud_developer_tools": [
+    {
+      "content_pack_id": "hcp-terraform",
+      "name": "HCP Terraform",
+      "description": "Collect activity and audit logs from Terraform",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=hcp-terraform",
+      "ocsf_pipelines": false,
+      "documentation_href": "https://docs.datadoghq.com/integrations/hcp_terraform/",
+      "dashboard": true
+    },
+    {
+      "content_pack_id": "snowflake",
+      "name": "Snowflake",
+      "description": "Collect snowflake logs to monitor for threats, conduct hunts, and perform investigations.",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=snowflake",
+      "ocsf_pipelines": true,
+      "documentation_href": "https://docs.datadoghq.com/integrations/snowflake_web/",
+      "threat_detection": "snowflake",
+      "dashboard": true
+    },
+    {
+      "content_pack_id": "sonatype-nexus",
+      "name": "Sonatype Nexus",
+      "description": "Collect instance health and repository analytics from Sonatype Nexus to monitor software artifact infrastructure.",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=sonatype-nexus",
+      "ocsf_pipelines": false,
+      "documentation_href": "https://docs.datadoghq.com/integrations/sonatype-nexus/",
+      "dashboard": true
+    }
+  ],
+  "cloud_security": [
+    {
+      "content_pack_id": "falco",
+      "name": "Falco",
+      "description": "Detect runtime threats across containers, Kubernetes, and cloud workloads using enriched alert logs from Falco.",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=falco",
+      "ocsf_pipelines": false,
+      "documentation_href": "https://docs.datadoghq.com/integrations/falco/",
+      "threat_detection": "falco",
+      "dashboard": true
+    },
+    {
+      "content_pack_id": "google-security-command-center",
+      "name": "Google Security Command Center",
+      "description": "Track and analyze Google Security Command Center findings.",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=google-security-command-center",
+      "ocsf_pipelines": false,
+      "documentation_href": "https://docs.datadoghq.com/integrations/google_cloud_security_command_center/",
+      "threat_detection": "google.security.command.center",
+      "dashboard": true
+    },
+    {
+      "content_pack_id": "microsoft-graph",
+      "name": "Microsoft Graph",
+      "description": "Collect security logs and alerts from Defender, Purview, Entra ID, and Sentinel",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=microsoft-graph",
+      "ocsf_pipelines": false,
+      "documentation_href": "https://docs.datadoghq.com/integrations/microsoft_graph/",
+      "threat_detection": "microsoft-graph",
+      "dashboard": true,
+      "workflow_automation": true
+    }
+  ],
+  "collaboration": [
+    {
+      "content_pack_id": "slack",
+      "name": "Slack",
+      "description": "View, analyze, and monitor Slack audit logs.",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=slack",
+      "ocsf_pipelines": true,
+      "documentation_href": "https://docs.datadoghq.com/integrations/slack/?tab=datadogforslack#enterprise-grid-audit-logs",
+      "threat_detection": "slack",
+      "dashboard": true
+    },
+    {
+      "content_pack_id": "zendesk",
+      "name": "Zendesk",
+      "description": "Ingest Zendesk audit and access logs to monitor user and admin activity.",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=zendesk",
+      "ocsf_pipelines": false,
+      "documentation_href": "https://docs.datadoghq.com/integrations/zendesk/",
+      "threat_detection": "zendesk",
+      "dashboard": true
+    },
+    {
+      "content_pack_id": "zoom-activity-logs",
+      "name": "Zoom Activity Logs",
+      "description": "Collect and monitor Zoom activity",
+      "app_link": "https://app.datadoghq.com/security/content-packs?contentPackId=zoom-activity-logs",
+      "ocsf_pipelines": false,
+      "documentation_href": "https://docs.datadoghq.com/integrations/zoom_activity_logs/",
+      "threat_detection": "zoom",
+      "dashboard": true
+    }
+  ]
+}
