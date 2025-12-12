@@ -6,6 +6,13 @@ interface Props {
 const { syncKey } = Astro.props as Props;
 ---
 <!-- Renders a custom tab group component with multiple tab items. -->
+
+<style>
+    :global(a) {
+        color: black;
+    }
+</style>
+
 <div is="tab-group" class="tab-group" data-sync-key={syncKey}>
     <ul class="tab-labels p-0 flex flex-row border-b-2 border-gray-300"></ul>
     <slot />
