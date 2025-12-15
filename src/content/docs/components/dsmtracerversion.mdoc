@@ -12,12 +12,12 @@ Renders the minimal and recommended tracer versions for DSM. Only supports the f
 
 ## Example
 
-**DSM Tracer Version Component in a paragraph**
+**DSM Tracer Version Components in `<p>` tags**
 ```mdoc {% title="Markdoc" %}
-{% dsmtracerversion lang="java" lib="aws-java-sdk-sqs-v1" type="minimal" /%}
-{% dsmtracerversion lang="go" lib="confluent-kafka-go" type="recommended" /%}
-{% dsmtracerversion lang="ruby" lib="ruby-kafka" type="minimal" /%}
-{% dsmtracerversion lang="python" lib="confluent-kafka" type="recommended" /%}
+<p>{% dsmtracerversion lang="java" lib="aws-java-sdk-sqs-v1" type="minimal" /%}</p>
+<p>{% dsmtracerversion lang="go" lib="confluent-kafka-go" type="recommended" /%}</p>
+<p>{% dsmtracerversion lang="ruby" lib="ruby-kafka" type="minimal" /%}</p>
+<p>{% dsmtracerversion lang="python" lib="confluent-kafka" type="recommended" /%}</p>
 ```
 
 <br/>
