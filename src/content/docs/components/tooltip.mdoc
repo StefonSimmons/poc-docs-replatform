@@ -6,23 +6,35 @@ description: Tooltip component.
 Renders a tooltip component.
 
 ## Parameters
-* **text**: string - The text to display in the tooltip.
+* **text**: string - The glossary term to display.
 * **tooltip**: string - The tooltip text.
-* **glossary**: string - The glossary term to link to.
-* **textCase**: string - The case to apply to the `text` parameter. Must be one of: sentence, title, lower, upper.
+* **glossary**: string - The glossary term to display. Indicates that there is a glossary term to display. Overwrites `text`. If present, `tooltip` is ignored. Must be a valid glossary term file in `/glossary/terms/{glossary}` (expects `glossary` file name to be in snake case).
+* **textCase**: string - required -The case to apply to the `text` or `glossary` parameter. Must be one of: title, lower, upper. Default: sentence.
 
 ## Example
 
-**Tooltip component**
+**Tooltip component with `glossary` parameter**
 ```mdoc {% title="Markdoc" %}
 {% tooltip glossary="preview" textCase="title" /%}
 ```
 {% tooltip glossary="preview" textCase="title" /%}
 
-<br />
+<br/>
+<br/>
 
-**Tooltip component with glossary**
+**Tooltip component with `glossary` parameter**
+```mdoc {% title="Markdoc" %}
+{% tooltip glossary="trace root span" textCase="title" /%}
+```
+{% tooltip glossary="trace root span" textCase="title" /%}
+
+<br/>
+<br/>
+
+**Tooltip component with `text` and `tooltip`**
 ```mdoc {% title="Markdoc" %}
 {% tooltip text="Persistent volumes" tooltip="Storage resources within a cluster, provisioned by administrators or dynamically, that persist data independently of pod lifecycles." textCase="title" /%}
 ```
-{% tooltip text="Persistent volumes" tooltip="Storage resources within a cluster, provisioned by administrators or dynamically, that persist data independently of pod lifecycles." textCase="title" /%}
+{% tooltip text="Persistent volumes" tooltip="Storage resources within a cluster, provisioned by administrators or dynamically, that persist data independently of pod lifecycles." textCase="title" /%} 
+<br/>
+{% tooltip tooltip="Persistent volumes" textCase="upper" /%} 

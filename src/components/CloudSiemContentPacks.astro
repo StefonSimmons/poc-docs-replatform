@@ -18,7 +18,7 @@ const data = Object.entries(await getDataset());
  * Converts string to title case
  * @param str - The string to convert to title case
  */
-const toTitleCase = (str: string) => {
+export const toTitleCase = (str: string) => {
     return str.replaceAll("_", " ").replace(/\b\w/g, char => char.toUpperCase());
 }
 ---

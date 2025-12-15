@@ -1,5 +1,6 @@
 ---
 import { getEntry, render } from 'astro:content';
+import { toTitleCase } from './CloudSiemContentPacks.astro';
 
 type Props = {
     text: string;
@@ -11,28 +12,24 @@ type Props = {
 const { text, tooltip, glossary, textCase }:Props = Astro.props;
 
 let displayText = text;
-let glossaryTermEntry
-let shortDefinition
 let fullDefinitionLink
+let tooltipContent = tooltip;
 
 if(glossary) {
-    const glossaryTermPath = `glossary/terms/${glossary.replace(" ", "_")}`;
-    glossaryTermEntry = await getEntry('docs', glossaryTermPath ) as any;
+    const snakeCaseGlossaryTerm = glossary.toLowerCase().replaceAll(" ", "_");
+    const glossaryTermPath = `glossary/terms/${snakeCaseGlossaryTerm}`;
+    const glossaryTermEntry = await getEntry('docs', glossaryTermPath ) as any;
+    
     if(!glossaryTermEntry) throw new Error(`No glossary term entry found for ${glossaryTermPath}`);
 
-    shortDefinition = glossaryTermEntry.data.short_definition;
-    if(!shortDefinition) throw new Error(`No \`short_definition\` frontmatter found for glossary term in ${glossaryTermPath}`);
+    tooltipContent = glossaryTermEntry.data.short_definition;
 
-    fullDefinitionLink = `/glossary/#${glossary.replace(" ", "_")}`;
+    fullDefinitionLink = `/glossary/#${snakeCaseGlossaryTerm}`;
     displayText = glossary
-}else{
-
 }
 
-if(textCase === 'sentence') {
-    displayText = displayText.charAt(0).toUpperCase() + displayText.slice(1);
-} else if(textCase === 'title') {
-    displayText = displayText.charAt(0).toUpperCase() + displayText.slice(1);
+if(textCase === 'title') {
+    displayText = toTitleCase(displayText);
 } else if(textCase === 'lower') {
     displayText = displayText.toLowerCase();
 } else if(textCase === 'upper') {
@@ -41,26 +38,31 @@ if(textCase === 'sentence') {
 
 const anchorizedDisplayText = displayText.toLowerCase().replaceAll(' ', '-');
 
-console.log('displayText:', displayText);
 ---
-<div is="tooltip-component" class="inline">
-{ shortDefinition || (text && tooltip) ? 
-    <span class="tooltip-container relative ">
-        <button class="tooltip-trigger bg-transparent underline decoration-dotted underline-offset-2 p-0 m-0 cursor-help" aria-describedby={`tooltip-${anchorizedDisplayText}`}>{displayText}</button>
-        <span id={`tooltip-${anchorizedDisplayText}`} class="tooltip-content hidden absolute bg-blue-700 text-white p-2 rounded-md max-w-xs z-10" role="tooltip">
-            {shortDefinition}
-            { fullDefinitionLink &&
-                <a href={fullDefinitionLink} class="tooltip-full-link" aria-label="View full definition">Glossary</a>
-            }
-        </span>
+<!-- 
+Renders a tooltip component.
+
+@param text: string - The glossary term to display.
+@param tooltip: string - The tooltip text.
+@param glossary: string - The glossary term to display. Indicates that there is a glossary term to display. Overwrites `text`. If present, `tooltip` is ignored. Must be a valid glossary term file in `/glossary/terms/{glossary anchorized}`.
+@param textCase: string - The case to apply to the `text` parameter. Must be one of: sentence, title, lower, upper.
+
+-->
+<span is="tooltip-component" class="tooltip-container relative">
+    <button class="tooltip-trigger bg-transparent underline decoration-dotted underline-offset-2 p-0 m-0 cursor-help" aria-describedby={`tooltip-${anchorizedDisplayText}`}>{displayText}</button>
+    <span 
+    id={`tooltip-${anchorizedDisplayText}`}
+    class="tooltip-content hidden absolute left-15 bg-blue-700 text-white leading-1.5 p-2 rounded-md max-w-xs w-max z-10 bg-linear-to-br from-violet-900 to-fuchsia-500" 
+    role="tooltip">
+        <span class="text-sm">{tooltipContent}</span>
+        { fullDefinitionLink &&
+            <a href={fullDefinitionLink} class="tooltip-full-link text-white/80 underline-offset-4 text-xs block font-semibold text-right hover:text-white" aria-label="View full definition">Glossary →</a>
+        }
     </span>
-    :
-    <span>{displayText}</span>
-}
-</div>
+</span>
 
 <script>
-    class Tooltip extends HTMLDivElement {
+    class Tooltip extends HTMLSpanElement {
         constructor() {
             super();
         }
@@ -76,5 +78,5 @@ console.log('displayText:', displayText);
         }
     }
 
-    customElements.define('tooltip-component', Tooltip, { extends: 'div' });
+    customElements.define('tooltip-component', Tooltip, { extends: 'span' });
 </script>
