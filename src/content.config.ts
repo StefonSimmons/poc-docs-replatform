@@ -36,6 +36,7 @@ export const collections = {
           url: z.string(),
           icon: z.string(),
         })).optional(),
+        short_definition: z.string().optional(),
       }),
     }),
   }),

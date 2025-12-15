@@ -1,0 +1,80 @@
+---
+import { getEntry, render } from 'astro:content';
+
+type Props = {
+    text: string;
+    tooltip: string;
+    glossary: string;
+    textCase: 'sentence' | 'title' | 'lower' | 'upper';
+}
+
+const { text, tooltip, glossary, textCase }:Props = Astro.props;
+
+let displayText = text;
+let glossaryTermEntry
+let shortDefinition
+let fullDefinitionLink
+
+if(glossary) {
+    const glossaryTermPath = `glossary/terms/${glossary.replace(" ", "_")}`;
+    glossaryTermEntry = await getEntry('docs', glossaryTermPath ) as any;
+    if(!glossaryTermEntry) throw new Error(`No glossary term entry found for ${glossaryTermPath}`);
+
+    shortDefinition = glossaryTermEntry.data.short_definition;
+    if(!shortDefinition) throw new Error(`No \`short_definition\` frontmatter found for glossary term in ${glossaryTermPath}`);
+
+    fullDefinitionLink = `/glossary/#${glossary.replace(" ", "_")}`;
+    displayText = glossary
+}else{
+
+}
+
+if(textCase === 'sentence') {
+    displayText = displayText.charAt(0).toUpperCase() + displayText.slice(1);
+} else if(textCase === 'title') {
+    displayText = displayText.charAt(0).toUpperCase() + displayText.slice(1);
+} else if(textCase === 'lower') {
+    displayText = displayText.toLowerCase();
+} else if(textCase === 'upper') {
+    displayText = displayText.toUpperCase();
+}
+
+const anchorizedDisplayText = displayText.toLowerCase().replaceAll(' ', '-');
+
+console.log('displayText:', displayText);
+---
+<div is="tooltip-component" class="inline">
+{ shortDefinition || (text && tooltip) ? 
+    <span class="tooltip-container relative ">
+        <button class="tooltip-trigger bg-transparent underline decoration-dotted underline-offset-2 p-0 m-0 cursor-help" aria-describedby={`tooltip-${anchorizedDisplayText}`}>{displayText}</button>
+        <span id={`tooltip-${anchorizedDisplayText}`} class="tooltip-content hidden absolute bg-blue-700 text-white p-2 rounded-md max-w-xs z-10" role="tooltip">
+            {shortDefinition}
+            { fullDefinitionLink &&
+                <a href={fullDefinitionLink} class="tooltip-full-link" aria-label="View full definition">Glossary</a>
+            }
+        </span>
+    </span>
+    :
+    <span>{displayText}</span>
+}
+</div>
+
+<script>
+    class Tooltip extends HTMLDivElement {
+        constructor() {
+            super();
+        }
+        connectedCallback() {
+            const tooltipContent = this.querySelector('.tooltip-content') as HTMLElement;
+            if(!tooltipContent) throw new Error('No tooltip content found');
+            this.addEventListener('mouseenter', () => {
+                tooltipContent.classList.remove('hidden');
+            });
+            this.addEventListener('mouseleave', () => {
+                tooltipContent.classList.add('hidden');
+            });
+        }
+    }
+
+    customElements.define('tooltip-component', Tooltip, { extends: 'div' });
+</script>

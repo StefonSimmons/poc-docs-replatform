@@ -1,0 +1,28 @@
+---
+title: Tooltip
+description: Tooltip component.
+---
+
+Renders a tooltip component.
+
+## Parameters
+* **text**: string - The text to display in the tooltip.
+* **tooltip**: string - The tooltip text.
+* **glossary**: string - The glossary term to link to.
+* **textCase**: string - The case to apply to the `text` parameter. Must be one of: sentence, title, lower, upper.
+
+## Example
+
+**Tooltip component**
+```mdoc {% title="Markdoc" %}
+{% tooltip glossary="preview" textCase="title" /%}
+```
+{% tooltip glossary="preview" textCase="title" /%}
+
+<br />
+
+**Tooltip component with glossary**
+```mdoc {% title="Markdoc" %}
+{% tooltip text="Persistent volumes" tooltip="Storage resources within a cluster, provisioned by administrators or dynamically, that persist data independently of pod lifecycles." textCase="title" /%}
+```
+{% tooltip text="Persistent volumes" tooltip="Storage resources within a cluster, provisioned by administrators or dynamically, that persist data independently of pod lifecycles." textCase="title" /%}

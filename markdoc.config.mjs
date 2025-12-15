@@ -144,6 +144,15 @@ export default defineMarkdocConfig({
                 lib: { type: String, required: true, errorLevel: 'error' },
                 type: { type: String, required: true, errorLevel: 'error', matches: ['minimal', 'recommended'] },
             }
+        },
+        tooltip: {
+            render: component('./src/components/Tooltip.astro'),
+            attributes: {
+                text: { type: String, default: '' },
+                tooltip: { type: String, default: '' },
+                glossary: { type: String, default: '' },
+                textCase: { type: String, required: true, errorLevel: 'error', default: 'sentence', matches: ['sentence', 'title', 'lower', 'upper'] },
+            }
         }
 
 
