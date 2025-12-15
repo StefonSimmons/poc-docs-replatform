@@ -1,0 +1,49 @@
+---
+title: DSM Tracer Version
+description: DSM Tracer Version component.
+---
+
+Renders the minimal and recommended tracer versions for DSM. Only supports the following languages: java, python, dotnet, nodejs, go, ruby.
+
+## Parameters
+* **lang**: string - The language of the function. Must be one of: java, python, dotnet, nodejs, go, ruby.
+* **lib**: string - The library name.
+* **type**: string - The type of version (minimal or recommended).
+
+## Example
+
+**DSM Tracer Version Component in a paragraph**
+```mdoc {% title="Markdoc" %}
+{% dsmtracerversion lang="java" lib="aws-java-sdk-sqs-v1" type="minimal" /%}
+{% dsmtracerversion lang="go" lib="confluent-kafka-go" type="recommended" /%}
+{% dsmtracerversion lang="ruby" lib="ruby-kafka" type="minimal" /%}
+{% dsmtracerversion lang="python" lib="confluent-kafka" type="recommended" /%}
+```
+
+<br/>
+<p>{% dsmtracerversion lang="java" lib="aws-java-sdk-sqs-v1" type="minimal" /%}</p>
+<p>{% dsmtracerversion lang="go" lib="confluent-kafka-go" type="recommended" /%}</p>
+<p>{% dsmtracerversion lang="ruby" lib="ruby-kafka" type="minimal" /%}</p>
+<p>{% dsmtracerversion lang="python" lib="confluent-kafka" type="recommended" /%}</p>
+
+<br/>
+
+**DSM Tracer Version Component in a table**
+
+```mdoc {% title="Markdoc" %}
+| Technology | Library                 | Minimal tracer version | Recommended tracer version |
+|------------|-------------------------|------------------------|----------------------------|
+| Kafka      | [confluent-kafka-go][8] | {% dsmtracerversion lang="go" lib="confluent-kafka-go" type="minimal" /%} | {% dsmtracerversion lang="go" lib="confluent-kafka-go" type="recommended" /%} |
+| Kafka      | [Sarama][9] | {% dsmtracerversion lang="go" lib="sarama" type="minimal" /%} | {% dsmtracerversion lang="go" lib="sarama" type="recommended" /%} |
+
+[8]: https://github.com/confluentinc/confluent-kafka-go
+[9]: https://github.com/Shopify/sarama
+```
+
+| Technology | Library                 | Minimal tracer version | Recommended tracer version |
+|------------|-------------------------|------------------------|----------------------------|
+| Kafka      | [confluent-kafka-go][8] | {% dsmtracerversion lang="go" lib="confluent-kafka-go" type="minimal" /%} | {% dsmtracerversion lang="go" lib="confluent-kafka-go" type="recommended" /%} |
+| Kafka      | [Sarama][9] | {% dsmtracerversion lang="go" lib="sarama" type="minimal" /%} | {% dsmtracerversion lang="go" lib="sarama" type="recommended" /%} |
+
+[8]: https://github.com/confluentinc/confluent-kafka-go
+[9]: https://github.com/Shopify/sarama

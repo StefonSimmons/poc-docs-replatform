@@ -136,6 +136,14 @@ export default defineMarkdocConfig({
                 expanded: { type: Boolean, default: false },
                 inline: { type: Boolean, default: false },
             }
+        },
+        dsmtracerversion: {
+            render: component('./src/components/DSMTracerVersion.astro'),
+            attributes: {
+                lang: { type: String, required: true, errorLevel: 'error', matches: ['java', 'python', 'dotnet', 'nodejs', 'go', 'ruby'] },
+                lib: { type: String, required: true, errorLevel: 'error' },
+                type: { type: String, required: true, errorLevel: 'error', matches: ['minimal', 'recommended'] },
+            }
         }
 
 
