@@ -162,6 +162,12 @@ export default defineMarkdocConfig({
                 collapsible: { type: Boolean, default: false },
                 disable_copy: { type: Boolean, default: false }
             }
+        },
+        versions: {
+            render: component('./src/components/Versions.astro'),
+            attributes: {
+                key: { type: String, required: true, errorLevel: 'error' }
+            }
         }
 
 
