@@ -3,16 +3,23 @@ title: CodeBlock
 description: CodeBlock component.
 ---
 
- Renders a code block with a title and a code snippet.
+Renders a `<code>` html tag with a title and a code snippet.
 
-`meta` param syntax:
-- "{n}" - highlights line n
-- "{n-m}" - highlights lines n-m
-- "{n m}" - highlights lines n and m
-- "{n n-m}" - highlights lines n and n-m
-- "{n-m n}" - highlights lines n-m and n
-- "{n-m n-m}" - highlights lines n-m and n-m
-- "'word' 'another word'" - only used for one-line code snippets. highlights words 'word' and 'another word'
+## Parameters
+* **meta**: string - optional - The meta parameter to use for the code block.
+    * **meta** syntax:
+        * `"{n}"` - highlights line n
+        * `"{n-m}"` - highlights lines n-m
+        * `"{n m}"` - highlights lines n and m
+        * `"{n n-m}"` - highlights lines n and n-m
+        * `"{n-m n}"` - highlights lines n-m and n
+        * `"{n-m n-m}"` - highlights lines n-m and n-m
+        * `"'word' 'another word'"` - *only for single-line code snippets* - highlights the text `word` and `another word`
+* **code**: string - optional - The code snippet to use for the code block.
+* **lang**: string - optional - The language of the code block.
+* **title**: string - optional - The title of the code block.
+* **disable_copy**: boolean - optional - Whether to disable the copy button. default: false
+* **wrap**: boolean - optional - Whether to wrap the code block. default: false
 
 ## Examples
 

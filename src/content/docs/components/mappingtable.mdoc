@@ -3,7 +3,10 @@ title: Mapping Table
 description: Iterations of the `mappingtable` component.
 ---
 
-Renders an html table with a header and a body from a csv file. Right now it only supports csv files located in the `src/data/semantic-core` directory, but this can be more flexible in the future.
+Renders an html `<table>` with a header and a body from a csv file. Expects the csv file to be located in `src/data/semantic-core/*.csv`, and to be a 2D array with the first array/row as the header.
+
+## Parameters
+* **resource**: string - required - The name of the csv file to use for the mapping table.
 
 
 ## Examples
