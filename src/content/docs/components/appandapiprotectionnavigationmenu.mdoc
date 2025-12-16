@@ -3,13 +3,20 @@ title: App and API Protection Navigation Menu
 description: App and API Protection Navigation Menu component.
 ---
 
-Renders static content related to the App and API Protection.
+Renders dynamic content related to App and API Protection enablement.
 
+## Parameters
+* **language**: string - required - The language of the service to enable App and API Protection for
 
 ## Example
 
 **App and API Protection Navigation Menu**
 ```mdoc {% title="Markdoc" %}
-{% appandapiprotectionnavigationmenu /%}
+{% appandapiprotectionnavigationmenu language="Java" /%}
 ```
-{% appandapiprotectionnavigationmenu /%}
+{% appandapiprotectionnavigationmenu language="Java" /%}
+
+```mdoc {% title="Markdoc" %}
+{% appandapiprotectionnavigationmenu language="Python" /%}
+```
+{% appandapiprotectionnavigationmenu language="Python" /%}
