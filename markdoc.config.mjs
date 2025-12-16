@@ -168,6 +168,9 @@ export default defineMarkdocConfig({
             attributes: {
                 key: { type: String, required: true, errorLevel: 'error' }
             }
+        },
+        appandapiprotectionnavigationmenu: {
+            render: component('./src/components/AppAndApiProtectionNavigationMenu.astro'),
         }
 
 
