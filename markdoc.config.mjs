@@ -153,6 +153,15 @@ export default defineMarkdocConfig({
                 glossary: { type: String, default: '' },
                 textCase: { type: String, required: true, errorLevel: 'error', matches: ['title', 'lower', 'upper'] },
             }
+        },
+        agentconfig: {
+            render: component('./src/components/AgentConfig.astro'),
+            attributes: {
+                type: { type: String, required: true, errorLevel: 'error' },
+                filename: { type: String, default: 'Code example' },
+                collapsible: { type: Boolean, default: false },
+                disable_copy: { type: Boolean, default: false }
+            }
         }
 
 
