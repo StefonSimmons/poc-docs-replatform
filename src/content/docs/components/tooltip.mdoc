@@ -9,7 +9,7 @@ Renders a tooltip component.
 * **text**: string - The glossary term to display.
 * **tooltip**: string - The tooltip text.
 * **glossary**: string - The glossary term to display. Indicates that there is a glossary term to display. Overwrites `text`. If present, `tooltip` is ignored. Must be a valid glossary term file in `/glossary/terms/{glossary}` (expects `glossary` file name to be in snake case).
-* **textCase**: string - required -The case to apply to the `text` or `glossary` parameter. Must be one of: title, lower, upper. Default: sentence.
+* **textCase**: string - required -The case to apply to the `text` or `glossary` parameter. Must be one of: title, lower, upper.
 
 ## Example
 
@@ -36,5 +36,3 @@ Renders a tooltip component.
 {% tooltip text="Persistent volumes" tooltip="Storage resources within a cluster, provisioned by administrators or dynamically, that persist data independently of pod lifecycles." textCase="title" /%}
 ```
 {% tooltip text="Persistent volumes" tooltip="Storage resources within a cluster, provisioned by administrators or dynamically, that persist data independently of pod lifecycles." textCase="title" /%} 
-<br/>
-{% tooltip tooltip="Persistent volumes" textCase="upper" /%} 

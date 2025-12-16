@@ -6,7 +6,7 @@ type Props = {
     text: string;
     tooltip: string;
     glossary: string;
-    textCase: 'sentence' | 'title' | 'lower' | 'upper';
+    textCase: 'title' | 'lower' | 'upper';
 }
 
 const { text, tooltip, glossary, textCase }:Props = Astro.props;
@@ -44,8 +44,8 @@ Renders a tooltip component.
 
 @param text: string - The glossary term to display.
 @param tooltip: string - The tooltip text.
-@param glossary: string - The glossary term to display. Indicates that there is a glossary term to display. Overwrites `text`. If present, `tooltip` is ignored. Must be a valid glossary term file in `/glossary/terms/{glossary anchorized}`.
-@param textCase: string - The case to apply to the `text` parameter. Must be one of: sentence, title, lower, upper.
+@param glossary: string - The glossary term to display. Indicates that there is a glossary term to display. Overwrites `text`. If present, `tooltip` is ignored. Must be a valid glossary term file in `/glossary/terms/{glossary}` (expects `glossary` file name to be in snake case).
+@param textCase: string - required -The case to apply to the `text` or `glossary` parameter. Must be one of: title, lower, upper.
 
 -->
 <span is="tooltip-component" class="tooltip-container relative">

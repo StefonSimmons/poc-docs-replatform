@@ -151,7 +151,7 @@ export default defineMarkdocConfig({
                 text: { type: String, default: '' },
                 tooltip: { type: String, default: '' },
                 glossary: { type: String, default: '' },
-                textCase: { type: String, required: true, errorLevel: 'error', default: 'sentence', matches: ['sentence', 'title', 'lower', 'upper'] },
+                textCase: { type: String, required: true, errorLevel: 'error', matches: ['title', 'lower', 'upper'] },
             }
         }
 
