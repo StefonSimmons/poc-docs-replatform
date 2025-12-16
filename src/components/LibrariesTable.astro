@@ -1,0 +1,133 @@
+---
+
+type Props = {
+    library: 'Classic' | 'Serverless' | 'Tracing' | 'Community' | 'Log' 
+}
+
+type ClassicLibrary = {
+    name: string;
+    link: string;
+    dogstatsd?: boolean;
+    authors: string;
+    notes: string;
+    official?: boolean;
+}
+
+type ServerlessLibrary = {
+    name: string;
+    link: string;
+    official?: boolean;
+    authors: string;
+    notes: string;
+    api?: boolean;
+}
+
+type TracingLibrary = {
+    name: string;
+    link: string;
+    official?: boolean;
+    authors: string;
+    notes: string;
+}
+
+type CommunityLibrary = {
+    name: string;
+    link: string;
+    authors: string;
+    notes: string;
+}
+
+type LogLibrary = {
+    name: string;
+    link: string;
+    authors: string;
+    notes: string;
+}
+
+type LibraryTypeMap = {
+    Classic: ClassicLibrary;
+    Serverless: ServerlessLibrary;
+    Tracing: TracingLibrary;
+    Community: CommunityLibrary;
+    Log: LogLibrary;
+}
+
+type LibrariesData= {
+    [K in keyof LibraryTypeMap]: Record<string, LibraryTypeMap[K][]>[];
+}
+
+// type Libraries = Record<string, LibraryItem[]>;
+// record[string, LibraryDetails[]]
+const { library } = Astro.props as Props;
+
+const getDataset = async () => {
+    const libraries = await import('../data/libraries-test.yaml').then((module) => module.default) as LibrariesData;
+    const libraryRows = libraries[library] as Record<string, LibraryTypeMap[typeof library][]>[]
+
+    if(!libraryRows) throw new Error(`Library ${library} not found`);
+    // const libraryiesArray = Object.entries(libraries);
+
+    // const data = libraryiesArray.reduce((acc, curr) => {
+    //     const [library, items] = curr;
+    //     const libraryKeys = Object.values(items).map((item) => {
+    //         return Object.entries(item)[0][1].map((item) => Object.keys(item))
+    //     })
+    //     acc[library] = [...new Set(libraryKeys.flat(2))];
+
+    //     return acc
+    // }, {});
+    // console.log("UNIQUEdata:",data);
+
+    const dataset = libraryRows.map((row:Record<string, LibraryTypeMap[typeof library][]>) => Object.entries(row)[0]);
+    return dataset;
+}
+
+
+const dataset = await getDataset() as [string, LibraryTypeMap[typeof library][]][];
+---
+
+
+<div class="table-responsive-container">
+  <div class="table-scroll">
+    <table class="table table-responsive">
+      <thead>
+        <tr>
+          <th>{library === "Community" ? "Category" : "Language"}</th>
+          <th>Library</th>
+          {library !== "Community" && <th>Official</th>}
+          <th>Author</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {
+        dataset.map(([language, langData]: [string, LibraryTypeMap[typeof library][]]) => {
+            return langData.map((row:LibraryTypeMap[typeof library], rowIndex:number) => {
+                return (
+                    <tr>
+                        <td>{!rowIndex && (<strong>{language}</strong>)}</td>
+                        <td><a href={row.link}>{row.name}</a></td>
+                        {
+                            library === "Classic" ?
+                            <td>
+                                {row.official && "Official"}
+                                {row.dogstatsd && "DogStatsD"}
+                                {row.api && "API"}
+                            </td> 
+                            :
+                            library !== "Community" &&
+                            <td>{row.official && <i class="icon-check-bold">✔️</i>}</td>
+
+                        }
+                        <td>{row.authors}</td>
+                        <td>{row.notes}</td>
+                    </tr>
+                )
+            })
+        }) 
+      }
+      </tbody>
+    </table>
+  </div>
+</div>

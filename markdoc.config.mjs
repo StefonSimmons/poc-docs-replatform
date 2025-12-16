@@ -174,6 +174,12 @@ export default defineMarkdocConfig({
             attributes: {
                 language: { type: String, required: true, errorLevel: 'error' }
             }
+        },
+        librariestable: {
+            render: component('./src/components/LibrariesTable.astro'),
+            attributes: {
+                library: { type: String, required: true, errorLevel: 'error', matches: ['Classic', 'Serverless', 'Tracing', 'Community', 'Log'] }
+            }
         }
 
 
