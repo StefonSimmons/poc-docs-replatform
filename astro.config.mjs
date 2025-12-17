@@ -9,7 +9,7 @@ import yaml from '@rollup/plugin-yaml';
 // https://astro.build/config
 export default defineConfig({
   // site: "https://docs.datadoghq.com",
-  site: "http://localhost:4321",
+  site: process.env.SITE_URL || "http://localhost:4321",
   experimental: {
     liveContentCollections: true,
   },
