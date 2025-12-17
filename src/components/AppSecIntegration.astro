@@ -3,6 +3,13 @@
 import { Image } from 'astro:assets';
 const { link, name, src, avatar } = Astro.props;
 ---
+<!-- 
+Renders a list of AppSec integrations as a linked image card.
+@param link: string - The link to the AppSec integration docs.
+@param name: string - The name of the AppSec integration.
+@param src: string - The path to the local AppSec integration logo.
+@param avatar: string - The avatar name of the AppSec integration. Avatar will be looked up here `https://static.datadoghq.com/static/images/logos/${avatar}_avatar.svg`
+-->
 
 <div class="flex justify-center items-center m-0 py-4 px-10 border border-gray-300 rounded-sm hover:shadow-[0_0_4px_1px_rgba(0,0,0,0.4)] hover:scale-105 transition-all duration-250">
   <a href={link} aria-label={`${name} datadog integration docs link`} class="no-underline text-black">
