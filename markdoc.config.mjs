@@ -32,8 +32,6 @@ export default defineMarkdocConfig({
                 hide_img: { type: Boolean, default: false },
                 cta: { type: String, default: '' },
                 header: { type: String, default: null }, 
-                d_toggle: { type: Boolean, default: false }, 
-                d_target : { type: String, default: ''},
                 custom_class: { type: String, default: ''}
             },
         },

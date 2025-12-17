@@ -133,15 +133,15 @@ const dataset = await getDataset() as [string, LibraryItem[]][];
                             library === "Community" ? 
                             <td>{!rowIndex && (<strong>{key}</strong>)}</td>
                             <td><a href={row.link}>{row.name}</a></td>
-                            <td>{(row as ClassicLibrary).authors}</td>
-                            <td>{(row as ClassicLibrary).notes}</td>
+                            <td>{(row as CommunityLibrary).authors}</td>
+                            <td>{(row as CommunityLibrary).notes}</td>
                             :
                             library === "Serverless" ?
                             <td>{!rowIndex && (<strong>{key}</strong>)}</td>
                             <td><a href={row.link}>{row.name}</a></td>
                             <td>{(row as ServerlessLibrary).official && <i class="icon-check-bold">✔️</i>}</td>
-                            <td>{(row as ClassicLibrary).authors}</td>
-                            <td>{(row as ClassicLibrary).notes}</td> 
+                            <td>{(row as ServerlessLibrary).authors}</td>
+                            <td>{(row as ServerlessLibrary).notes}</td> 
                             :
                             library === "Tracing" ?
                             <td>{!rowIndex && (<strong>{key}</strong>)}</td>
