@@ -1,0 +1,24 @@
+---
+type Props = {
+    type: 'info' | 'warning' | 'error' | 'success';
+}
+const { type }: Props = Astro.props;
+
+const variantClasses = {
+    info: 'alert-info after:content-["NOTE"] after:text-blue-700  border-blue-700',
+    warning: 'alert-warning after:content-["WARNING"] after:text-yellow-700  border-yellow-700',
+    error: 'alert-error after:content-["ERROR"] after:text-red-700  border-red-700',
+    success: 'alert-success after:content-["SUCCESS"] after:text-green-700  border-green-700',
+}
+---
+<style>
+    .alert {
+        a {
+            color: black
+        }
+    }
+</style>
+<div class={`alert ${variantClasses[type]} relative pt-7 px-4 after:absolute after:left-4 after:top-2 after:text-xs after:font-semibold border-l-3`}>
+
+    <slot />
+</div>

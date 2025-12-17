@@ -1,0 +1,51 @@
+---
+title: Alert
+description: Alert component.
+---
+
+Renders an Alert component.
+
+## Parameters
+* **type**: string - the type of alert. Must match `"info"`, `"warning"`, `"error"`, or `"success"`. Default value: `"info"`
+
+## Examples
+
+**Alert**
+```mdoc {% title="Markdoc" %}
+{% alert type="info" %}
+This is an alert.
+{% /alert %}
+```
+{% alert type="info" %}
+This is an alert.
+{% /alert %}
+
+**Alert with type "warning"**
+```mdoc {% title="Markdoc" %}
+{% alert type="warning" %}
+This is a warning alert.
+{% /alert %}
+```
+{% alert type="warning" %}
+This is a warning alert.
+{% /alert %}
+
+**Alert with type "error"**
+```mdoc {% title="Markdoc" %}
+{% alert type="error" %}
+This is an error alert.
+{% /alert %}
+```
+{% alert type="error" %}
+This is an error alert.
+{% /alert %}
+
+**Alert with type "success"**
+```mdoc {% title="Markdoc" %}
+{% alert type="success" %}
+This is a success alert.
+{% /alert %}
+```
+{% alert type="success" %}
+This is a success alert.
+{% /alert %}

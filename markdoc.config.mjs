@@ -181,6 +181,15 @@ export default defineMarkdocConfig({
         },
         uninstallagent: {
             render: component('./src/components/UninstallAgent.astro')
+        },
+        cswbillingnote: {
+            render: component('./src/components/CSWBillingNote.astro')
+        },
+        alert: {
+            render: component('./src/components/Alert.astro'),
+            attributes: {
+                type: { type: String, default: 'info', matches: ['info', 'warning', 'error', 'success'] }
+            }
         }
 
 
