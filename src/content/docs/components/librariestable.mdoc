@@ -6,21 +6,24 @@ description: Libraries Table component.
 Renders a table of libraries for a given language.
 
 ## Parameters
-* **library**: string - The name of the library to display.
+* **library**: string - The name of the library to display. Must be one of (Classic, Serverless, Tracing, Community, Log)
 
 ## Example
+
+**Classic Libraries Table**
 ```mdoc {% title="Markdoc" %}
 {% librariestable library="Classic" /%}
 ```
 {% librariestable library="Classic" /%}
 
-
-<!-- ```mdoc {% title="Markdoc" %}
+**Community Libraries Table**
+```mdoc {% title="Markdoc" %}
 {% librariestable library="Community" /%}
 ```
 {% librariestable library="Community" /%}
 
-
+**Tracing Libraries Table**
 ```mdoc {% title="Markdoc" %}
 {% librariestable library="Tracing" /%}
-``` -->
+```
+{% librariestable library="Tracing" /%}
