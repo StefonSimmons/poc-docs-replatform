@@ -1,7 +1,7 @@
 ---
 import ddBitsLearnLogo from '../assets/images/learning-center-bits-logo-2.png';
 
-const {url, type, header, cta, hide_img, d_toggle, d_target, custom_class } = Astro.props;
+const {url, type, header, cta, hide_img, custom_class } = Astro.props;
 
 // callout cta variants
 const calloutVariants:{[key:string]: string} = {
@@ -23,7 +23,12 @@ const anchorStyleVariants:{[key:string]: string} = {
 
 <!--
 Renders a callout box with a header, content body, and a CTA button.
-
+@param url: string - the URL to link to.
+@param type: string - type of callout. Must match `"learn"` or `"default"`. Default value: `"default"`
+@param header: string - the header text. An `<h5>` tag.
+@param cta: string - the button text. 
+@param hide_img: boolean - determines if the bits learn logo  will be shown when `type` is `"learn"`
+@param custom_class: string - a string of class names to apply to the `cta` button
 -->
 
 <div class=`${calloutStyleVariants[type]} flex flex-col p-4 border shadow-xs`>
@@ -40,8 +45,6 @@ Renders a callout box with a header, content body, and a CTA button.
         <a href={url}
         target="_blank"
         class={`flex justify-center self-end rounded-[5px] font-semibold border border-ddpurple no-underline mt-4 ${anchorStyleVariants[type]} ${custom_class}`}
-        data-bs-toggle={d_toggle}
-        data-bs-target={d_target}
         >
             {cta_text}
         </a>
