@@ -8,7 +8,7 @@ const getPlatformPages = async () => {
 const platformPages = await getPlatformPages();
 ---
 <ul>
-    {platformPages.filter( page => page.id !== 'index').map( page => {
+    {platformPages.map( page => {
         return (
             <li><a href={`/supported_platforms/${page.id}`}>{ page.data.title }</a></li>
         )

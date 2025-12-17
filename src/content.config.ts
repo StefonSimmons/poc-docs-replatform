@@ -42,7 +42,7 @@ export const collections = {
     }),
   }),
   supported_platforms: defineCollection({
-    loader: glob({pattern: "*.mdoc", base:"./src/content/docs/supported_platforms"}),
+    loader: glob({pattern: "[^index]*.mdoc", base:"./src/content/docs/supported_platforms"}),
     schema: docsSchema(),
   }),
   remote_integrations: defineCollection({
