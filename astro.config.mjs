@@ -58,6 +58,10 @@ export default defineConfig({
           // Autogenerate a group of links for the 'guides' directory within /content/docs.
           autogenerate: { directory: "guides" },
         },
+        {
+          label: "Supported Platforms",
+          autogenerate: { directory: "supported_platforms" }
+        }
       ],
       customCss: [
         // Path to your Tailwind base styles:

@@ -2,6 +2,7 @@ import { defineCollection, z } from "astro:content";
 import { docsLoader } from "@astrojs/starlight/loaders";
 import { docsSchema } from "@astrojs/starlight/schema";
 import { remoteLoader } from "../loaders";
+import { glob } from "astro/loaders";
 
 /**
  * This file exports a collections object that defines the collections for the project.
@@ -39,6 +40,10 @@ export const collections = {
         short_definition: z.string().optional(),
       }),
     }),
+  }),
+  supported_platforms: defineCollection({
+    loader: glob({pattern: "*.mdoc", base:"./src/content/docs/supported_platforms"}),
+    schema: docsSchema(),
   }),
   remote_integrations: defineCollection({
     loader: remoteLoader({

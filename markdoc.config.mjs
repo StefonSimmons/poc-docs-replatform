@@ -180,6 +180,9 @@ export default defineMarkdocConfig({
             attributes: {
                 library: { type: String, required: true, errorLevel: 'error', matches: ['Classic', 'Serverless', 'Tracing', 'Community', 'Log'] }
             }
+        },
+        uninstallagent: {
+            render: component('./src/components/UninstallAgent.astro')
         }
 
 
