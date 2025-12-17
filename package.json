@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "start": "export GITHUB_TOKEN=$(ddtool auth github token) && astro dev",
-    "build": "astro build",
+    "build": "export GITHUB_TOKEN=$(ddtool auth github token) && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check"
