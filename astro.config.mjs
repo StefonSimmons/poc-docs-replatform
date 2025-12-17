@@ -15,7 +15,8 @@ export default defineConfig({
   },
   output: 'static',
   adapter: vercel({
-    imageService: true
+    imageService: true,
+    excludeFiles: ['./src/pages/integrations-ssr-gql/*', './src/pages/integrations-ssr-rest/*']
   }),
   integrations: [
     starlight({
