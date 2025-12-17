@@ -185,6 +185,9 @@ export default defineMarkdocConfig({
         cswbillingnote: {
             render: component('./src/components/CSWBillingNote.astro')
         },
+        appandapiprotection: {
+            render: component('./src/components/AppAndApiProtection.astro')
+        },
         alert: {
             render: component('./src/components/Alert.astro'),
             attributes: {
