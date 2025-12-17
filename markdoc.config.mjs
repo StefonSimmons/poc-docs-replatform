@@ -168,7 +168,7 @@ export default defineMarkdocConfig({
             }
         },
         appandapiprotectionnavigationmenu: {
-            render: component('./src/components/AppAndApiProtectionNavigationMenu.astro'),
+            render: component('./src/components/AppAndApiProtectionNavigation.astro'),
             attributes: {
                 language: { type: String, required: true, errorLevel: 'error' }
             }

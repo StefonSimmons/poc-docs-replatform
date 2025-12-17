@@ -14,7 +14,9 @@ export default defineConfig({
     liveContentCollections: true,
   },
   output: 'static',
-  adapter: vercel(),
+  adapter: vercel({
+    imageService: true
+  }),
   integrations: [
     starlight({
       // Starlight content lives within content/docs/. This is pretty strict outside of remote content.
