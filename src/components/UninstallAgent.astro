@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+
+const getPlatformPages = async () => {
+    const platformPages = await getCollection('supported_platforms');
+    return platformPages;
+}
+const platformPages = await getPlatformPages();
+---
+<ul>
+    {platformPages.filter( page => page.id !== 'index').map( page => {
+        return (
+            <li><a href={`/supported_platforms/${page.id}`}>{ page.data.title }</a></li>
+        )
+    })
+    }
+</ul>
