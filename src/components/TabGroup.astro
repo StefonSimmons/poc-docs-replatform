@@ -5,7 +5,10 @@ interface Props {
 
 const { syncKey } = Astro.props as Props;
 ---
-<!-- Renders a custom tab group component with multiple tab items. -->
+<!-- 
+Renders a custom tab group component with multiple tab items.
+@param syncKey: string - The key to use to sync the `tab` components across multiple `tabgroup` components. If not provided, the `tab` components will not be synced.
+-->
 <style>
     .tab-group {        
         a {
