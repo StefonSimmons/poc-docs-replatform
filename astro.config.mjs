@@ -18,6 +18,9 @@ export default defineConfig({
     imageService: true,
     excludeFiles: ['./src/pages/**/*.astro']
   }),
+  image: {
+    remotePatterns: [{ protocol: "https" }],
+  },
   integrations: [
     starlight({
       // Starlight content lives within content/docs/. This is pretty strict outside of remote content.
