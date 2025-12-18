@@ -10,9 +10,30 @@ More needs to be added to the component. In particular, logic for determininig t
 Also see region-redirect.js for additional logic.
 -->
 
+## Parameters
+* **key**: string - The key of the region parameter. Must be one of: us, eu, ap, ca.
+* **code**: string - The code of the region parameter. Must be one of: us, eu, ap, ca.
+* **link**: string - The link of the region parameter. Must be a valid URL.
+* **text**: string - The text of the region parameter.
+
 ## Examples
 
 **Basic RegionParam component**
+``` {% title="Markdoc" %}
+{% regionparam key="us" code="us" link="https://www.datadoghq.com" text="United States" /%}
+{% regionparam key="eu" code="eu" link="https://www.datadoghq.com" text="Europe" /%}
+{% regionparam key="ap" code="ap" link="https://www.datadoghq.com" text="Asia Pacific" /%}
+{% regionparam key="ca" code="ca" link="https://www.datadoghq.com" text="Canada" /%}
+{% regionparam key="us" code="us" link="https://www.datadoghq.com" text="United States" /%}
+{% regionparam key="eu" code="eu" link="https://www.datadoghq.com" text="Europe" /%}
+{% regionparam key="ap" code="ap" link="https://www.datadoghq.com" text="Asia Pacific" /%}
+{% regionparam key="ca" code="ca" link="https://www.datadoghq.com" text="Canada" /%}
+{% regionparam key="us" code="us" link="https://www.datadoghq.com" text="United States" /%}
+{% regionparam key="eu" code="eu" link="https://www.datadoghq.com" text="Europe" /%}
+{% regionparam key="ap" code="ap" link="https://www.datadoghq.com" text="Asia Pacific" /%}
+{% regionparam key="ca" code="ca" link="https://www.datadoghq.com" text="Canada" /%}
+```
+
 {% regionparam key="us" code="us" link="https://www.datadoghq.com" text="United States" /%}
 {% regionparam key="eu" code="eu" link="https://www.datadoghq.com" text="Europe" /%}
 {% regionparam key="ap" code="ap" link="https://www.datadoghq.com" text="Asia Pacific" /%}

@@ -13,7 +13,7 @@ Renders the minimal and recommended tracer versions for DSM. Only supports the f
 ## Example
 
 **DSM Tracer Version Components in `<p>` tags**
-```mdoc {% title="Markdoc" %}
+``` {% title="Markdoc" %}
 <p>{% dsmtracerversion lang="java" lib="aws-java-sdk-sqs-v1" type="minimal" /%}</p>
 <p>{% dsmtracerversion lang="go" lib="confluent-kafka-go" type="recommended" /%}</p>
 <p>{% dsmtracerversion lang="ruby" lib="ruby-kafka" type="minimal" /%}</p>
@@ -30,7 +30,7 @@ Renders the minimal and recommended tracer versions for DSM. Only supports the f
 
 **DSM Tracer Version Component in a table**
 
-```mdoc {% title="Markdoc" %}
+``` {% title="Markdoc" %}
 | Technology | Library                 | Minimal tracer version | Recommended tracer version |
 |------------|-------------------------|------------------------|----------------------------|
 | Kafka      | [confluent-kafka-go][8] | {% dsmtracerversion lang="go" lib="confluent-kafka-go" type="minimal" /%} | {% dsmtracerversion lang="go" lib="confluent-kafka-go" type="recommended" /%} |

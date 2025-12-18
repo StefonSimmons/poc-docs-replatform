@@ -54,7 +54,7 @@ Renders a resusable interactive `<detail>` html tag that can be expanded or coll
 <br/>
 
 **CollapsibleContent expanded by default.**
-````mdoc {% title="Markdoc" %}
+```` {% title="Markdoc" %}
 {% collapsiblecontent title="Single Step " headerLevel="h3" expanded=true %}
    Follow these steps to enable Single Step Instrumentation across your entire cluster using Helm. This enables tracing for all applications written in supported languages.
 
@@ -81,7 +81,7 @@ Renders a resusable interactive `<detail>` html tag that can be expanded or coll
 
 **Custom CollapsibleContent component within a Markdoc table**
 
-```mdoc {% title="Markdoc" meta="{3-5}"%}
+``` {% title="Markdoc" meta="{3-5}"%}
 | <div style="width:200px"></div>| AWS CodePipeline | Azure Pipelines | Buildkite | CircleCI | Codefresh | GitHub Actions | GitLab | Jenkins | TeamCity | Other CI Providers |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | {% collapsiblecontent title="Logs collection" headerLevel="h5" inline=true %}Retrieval of pipeline or job logs from the CI provider. Logs are displayed on the <strong>Logs</strong> tab in the Pipeline Execution view.{% /collapsiblecontent %}  | dummy data | dummy data |  | dummy data |  | dummy data | dummy data | dummy data |  |  |

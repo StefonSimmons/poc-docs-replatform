@@ -22,7 +22,7 @@ Renders a list of links relevant to the parent content page. Typically used at t
 ## Examples
 
 **Basic WhatsNext with custom description and 4 nextlink components**
-```mdoc {% title="Markdoc" %}
+``` {% title="Markdoc" %}
 {% whatsnext desc="Custom description" %}
   {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
     One thing
@@ -55,7 +55,7 @@ Renders a list of links relevant to the parent content page. Typically used at t
 <br/>
 
 **Basic WhatsNext with default description, custom header and 2 nextlink components**
-```mdoc {% title="Markdoc" %}
+``` {% title="Markdoc" %}
 {% whatsnext header="Custom header" %}
   {% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
     One thing
@@ -77,7 +77,7 @@ Renders a list of links relevant to the parent content page. Typically used at t
 <br/>
 
 **WhatsNext using "further_reading" frontmatter param and custom header and default description**
-```mdoc {% title="Markdoc" %}
+``` {% title="Markdoc" %}
 {% whatsnext header="Custom Component Header" further_reading=$frontmatter.further_reading /%}
 ```
 
