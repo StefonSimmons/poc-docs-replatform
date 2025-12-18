@@ -10,3 +10,9 @@
     --font-sans: 'NationalWeb-Bold', sans-serif;
     --font-mono: 'Boto Mono', monospace;
 }
+
+summary {
+    .group-label {
+        text-transform: capitalize;
+    }
+}
