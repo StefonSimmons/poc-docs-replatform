@@ -76,17 +76,20 @@ export default defineMarkdocConfig({
                 fm_resource: { type: Object, default: {"headers": [], "data": []} },
             }
         },
-        appsecintegration: {
-            render: component('./src/components/AppSecIntegration.astro'),
+        imagelink: {
+            render: component('./src/components/ImageLink.astro'),
             attributes: {
                 link: { type: String, required: true, errorLevel: 'error' },
-                name: { type: String, required: true, errorLevel: 'error' },
+                name: { type: String },
                 src: { type: String, default: '' },
                 avatar: { type: String, default: '' },
             }
         },
-        appsecintegrations: {
-            render: component('./src/components/AppSecIntegrationWrapper.astro'),
+        imagelinkwrapper: {
+            render: component('./src/components/ImageLinkWrapper.astro'),
+            attributes: {
+                align: { type: String, default: 'left', matches: ['left', 'center', 'right'] },
+            }
         },
         tabgroup: {
             // Custom TabGroup component

@@ -1,0 +1,44 @@
+---
+import {Image} from 'astro:assets';
+
+const { link, name, src, avatar } = Astro.props;
+
+const getDataset = async (): Promise<ImageMetadata> => {
+  const imageFiles = await import.meta.glob('../assets/images/integrations_logos/*', { eager: true });
+  if(!imageFiles[src]) throw new Error(`No image file found for path: ${src}`);
+  const imageFile: any = imageFiles[src];
+  return imageFile.default as ImageMetadata;
+};
+
+let sourceString: string = `https://static.datadoghq.com/static/images/logos/${avatar}_avatar.svg`;
+let source: ImageMetadata | null = null;
+if(src){
+  source = await getDataset();
+  sourceString = source.src;
+}
+
+---
+<!-- 
+Renders a link as an image card.
+@param link: string - The relative or external path to navigate to.
+@param name: string - The name that appears on the bottom of the image card.
+@param src: string - The relative path to the image that appears on the image card.
+@param avatar: string - The `avatar` name of the image. If no `src` defined, `avatar` will be looked up here `https://static.datadoghq.com/static/images/logos/${avatar}_avatar.svg`
+-->
+<a href={link} aria-label={`${name} datadog integration docs link`} class="no-underline text-black">
+  <div class="flex justify-center items-center h-[140px] w-[140px] m-0 px-2 border border-gray-300 rounded-sm hover:shadow-[0_0_4px_1px_rgba(0,0,0,0.4)] hover:scale-105 transition-all duration-250">
+    <div class="card-body text-center">
+      {
+        <Image 
+        class="mx-auto my-auto" 
+        src={sourceString} 
+        alt={`${name} logo`} 
+        width={source?.width || 80}
+        height={80} 
+        layout='constrained'
+        />
+      }
+      <span class="title mt-1 font-semibold">{name}</span>
+    </div>
+  </div>
+</a>

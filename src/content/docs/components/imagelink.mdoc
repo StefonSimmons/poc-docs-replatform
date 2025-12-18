@@ -1,0 +1,69 @@
+---
+title: ImageLink
+description: Iterations of the `ImageLink` component.
+---
+
+Renders a link as an image card.
+## `imagelinkwrapper` Parameters
+* **align**: string - The alignment of the image links. Must match `"left"`, `"center"`, or `"right"`. Default value: `"left"`
+
+## `imagelink` Parameters
+* **link**: string - The relative or external path to navigate to.
+* **src**: string - The relative path to the image that appears on the image card.
+* **name**: string - The name that appears on the bottom of the image card.
+* **avatar**: string - The `avatar` name of the image. If no `src` defined, `avatar` will be looked up here `https://static.datadoghq.com/static/images/logos/${avatar}_avatar.svg`
+
+
+## Examples
+
+**AppSec Integration as images**
+```mdoc {% title="Markdoc" %}
+{% imagelinkwrapper %}
+  {% imagelink name="Python" avatar="python" link="./python" /%}
+  {% imagelink name="Node.js" avatar="node" link="https://docs.datadoghq.com/integrations/nodejs" /%}
+  {% imagelink name="Java" avatar="java" link="https://docs.datadoghq.com/integrations/java" /%}
+  {% imagelink name="Go" avatar="go" link="https://docs.datadoghq.com/integrations/go" /%}
+  {% imagelink name="Ruby" avatar="ruby" link="https://docs.datadoghq.com/integrations/ruby" /%}
+  {% imagelink name=".NET" avatar="dotnet" link="https://docs.datadoghq.com/integrations/dotnet" /%}
+  {% imagelink name="PHP" avatar="php" link="https://docs.datadoghq.com/integrations/php" /%}
+{% /imagelinkwrapper %}
+```
+
+{% imagelinkwrapper %}
+  {% imagelink name="Python" avatar="python" link="./python" /%}
+  {% imagelink name="Node.js" avatar="node" link="https://docs.datadoghq.com/integrations/nodejs" /%}
+  {% imagelink name="Java" avatar="java" link="https://docs.datadoghq.com/integrations/java" /%}
+  {% imagelink name="Go" avatar="go" link="https://docs.datadoghq.com/integrations/go" /%}
+  {% imagelink name="Ruby" avatar="ruby" link="https://docs.datadoghq.com/integrations/ruby" /%}
+  {% imagelink name=".NET" avatar="dotnet" link="https://docs.datadoghq.com/integrations/dotnet" /%}
+  {% imagelink name="PHP" avatar="php" link="https://docs.datadoghq.com/integrations/php" /%}
+{% /imagelinkwrapper %}
+
+
+**RUM Feature Flag Tracking as images**
+``` {% title="Markdoc" %}
+{% imagelinkwrapper align="center" %}
+  {% imagelink src="../assets/images/integrations_logos/amplitude_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#amplitude-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/configcat_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#configcat-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/devcycle_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#devcycle-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/eppo_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#eppo-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/flagsmith_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#flagsmith-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/growthbook_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#growthbook-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/kameleoon.png" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#kameleoon-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/launchdarkly_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#launchdarkly-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/split_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#split-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/statsig_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#statusig-integration" /%}
+{% /imagelinkwrapper %}
+```
+{% imagelinkwrapper align="center" %}
+  {% imagelink src="../assets/images/integrations_logos/amplitude_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#amplitude-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/configcat_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#configcat-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/devcycle_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#devcycle-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/eppo_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#eppo-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/flagsmith_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#flagsmith-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/growthbook_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#growthbook-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/kameleoon.png" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#kameleoon-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/launchdarkly_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#launchdarkly-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/split_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#split-integration" /%}
+  {% imagelink src="../assets/images/integrations_logos/statsig_large.svg" link="/real_user_monitoring/feature_flag_tracking/setup/?tab=browser#statusig-integration" /%}
+{% /imagelinkwrapper %}
