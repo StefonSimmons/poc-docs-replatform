@@ -188,6 +188,9 @@ export default defineMarkdocConfig({
         appandapiprotection: {
             render: component('./src/components/AppAndApiProtection.astro')
         },
+        wpbillingnote: {
+            render: component('./src/components/WPBillingNote.astro')
+        },
         alert: {
             render: component('./src/components/Alert.astro'),
             attributes: {

@@ -7,6 +7,9 @@ const getPlatformPages = async () => {
 }
 const platformPages = await getPlatformPages();
 ---
+<!-- 
+    Renders a list of links to the supported platforms pages.
+-->
 <ul>
     {platformPages.map( page => {
         return (
