@@ -25,7 +25,7 @@ Renders a link as an image card.
 @param src: string - The relative path to the image that appears on the image card.
 @param avatar: string - The `avatar` name of the image. If no `src` defined, `avatar` will be looked up here `https://static.datadoghq.com/static/images/logos/${avatar}_avatar.svg`
 -->
-<a href={link} aria-label={`${name} datadog integration docs link`} class="no-underline text-black">
+<a href={link} title={`link to ${link}`} aria-label={`link to ${link}`} class="no-underline text-black">
   <div class="flex justify-center items-center h-[140px] w-[140px] m-0 px-2 border border-gray-300 rounded-sm hover:shadow-[0_0_4px_1px_rgba(0,0,0,0.4)] hover:scale-105 transition-all duration-250">
     <div class="card-body text-center">
       {
