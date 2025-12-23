@@ -1,4 +1,4 @@
-import Alert from '../components/Alert.astro';
+import Alert from './Alert.astro';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { expect, test, describe } from 'vitest';
 

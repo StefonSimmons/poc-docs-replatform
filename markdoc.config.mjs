@@ -25,7 +25,7 @@ export default defineMarkdocConfig({
             },
         },
         callout: {
-            render: component('./src/components/Callout.astro'),
+            render: component('./src/components/Callout/Callout.astro'),
             attributes: {
                 url: { type: String, default: ''}, 
                 type: { type: String, default: 'default', matches: ['default', 'learn'], errorLevel: 'error'},
@@ -195,7 +195,7 @@ export default defineMarkdocConfig({
             render: component('./src/components/WPBillingNote.astro')
         },
         alert: {
-            render: component('./src/components/Alert.astro'),
+            render: component('./src/components/Alert/Alert.astro'),
             attributes: {
                 type: { type: String, default: 'info', matches: ['info', 'warning', 'error', 'success'] }
             }
