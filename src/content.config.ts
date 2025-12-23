@@ -1,11 +1,48 @@
 import { defineCollection, z } from "astro:content";
 import { docsLoader } from "@astrojs/starlight/loaders";
 import { docsSchema } from "@astrojs/starlight/schema";
-import { remoteLoader } from "../loaders.ts";
+import { remoteLoader } from "../loaders";
+import { glob } from "astro/loaders";
 
+/**
+ * This file exports a collections object that defines the collections for the project.
+ * A collection is a group of documents that share the same schema.
+ * Each collection is defined using the defineCollection function.
+ */
+
+/**
+ * Starlight needs the docsLoader(). This puts limits on Astro, unfortunately. we're unable to add content outside the `content/docs` path. For more: https://github.com/withastro/starlight/discussions/1257
+ */
 export const collections = {
   docs: defineCollection({
     loader: docsLoader(),
+    schema: docsSchema({
+      // need to extend the built-in docs schema in order to make these frontmatter params available as variables
+      extend: z.object({
+        further_reading: z.array(z.object({
+          link: z.string(),
+          text: z.string(),
+          tag: z.string().optional(),
+        })).optional(),
+        multi_filter_search: z.object({
+          headers: z.array(z.object({
+            name: z.string(),
+            id: z.string(),
+            filter_by: z.boolean().optional()
+          })),
+          data: z.array(z.record(z.string(), z.any()))
+        }).optional(),
+        products: z.array(z.object({
+          name: z.string(),
+          url: z.string(),
+          icon: z.string(),
+        })).optional(),
+        short_definition: z.string().optional(),
+      }),
+    }),
+  }),
+  supported_platforms: defineCollection({
+    loader: glob({pattern: "[^index]*.mdoc", base:"./src/content/docs/supported_platforms"}),
     schema: docsSchema(),
   }),
   remote_integrations: defineCollection({

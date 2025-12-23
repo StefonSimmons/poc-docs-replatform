@@ -1,0 +1,33 @@
+---
+title: Product Availability
+description: Iterations of the `productavailability` component.
+products:
+  - name: DDSQL Editor
+    url: /ddsql_editor/
+    icon: ddsql
+  - name: Notebooks
+    url: /notebooks/
+    icon: notebook
+  - name: Cloud SIEM
+    url: /cloud_siem/
+    icon: siem
+  - name: Workload Protection
+    url: /workload_protection/
+    icon: cloud-security-management
+---
+
+Renders a list of products related to the current page. Use the "names" parameter to specify and show a subset of products. Still need to add icons support
+
+## Examples
+
+**Default Product Availability**
+``` {% title="Markdoc" %}
+{% productavailability products=$frontmatter.products /%}
+```
+{% productavailability products=$frontmatter.products /%}
+
+**Product Availability with names parameter**
+``` {% title="Markdoc" %}
+{% productavailability products=$frontmatter.products names="Cloud SIEM,DDSQL Editor" /%}
+```
+{% productavailability products=$frontmatter.products names="Cloud SIEM,DDSQL Editor" /%}

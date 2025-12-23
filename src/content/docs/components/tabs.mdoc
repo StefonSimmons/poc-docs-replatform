@@ -1,0 +1,188 @@
+---
+title: Tabs [starlight component]
+description: Iterations of the `tabs` component.
+---
+
+Renders a tabs component with multiple tab items. This is a Starlight component. [See Starlight Tabs component documentation](https://starlight.astro.build/components/tabs/).
+
+
+## Examples
+
+**4 components with 3 tab items each. Tab items are synced using the syncKey param**
+
+{% tabs syncKey="http_codes" %}
+{% tabitem label="200" %}
+
+OK
+
+{% /tabitem %}
+{% tabitem label="304" %}
+
+Not Modified
+1st tab
+
+{% /tabitem %}
+{% tabitem label="429" %}
+
+Too many requests 1st tab
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% /tabs %}
+
+
+{% tabs syncKey="http_codes" %}
+{% tabitem label="200" %}
+
+OK
+
+{% /tabitem %}
+{% tabitem label="304" %}
+
+Not Modified
+2nd tab
+
+{% /tabitem %}
+{% tabitem label="429" %}
+
+Too many requests 2nd tab
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% /tabs %}
+
+{% tabs syncKey="http_codes" %}
+{% tabitem label="200" %}
+
+OK
+
+{% /tabitem %}
+{% tabitem label="304" %}
+
+Not Modified
+3rd tab
+{% /tabitem %}
+{% tabitem label="429" %}
+
+Too many requests 3rd tab
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% /tabs %}
+
+{% tabs syncKey="http_codes" %}
+{% tabitem label="200" %}
+
+OK
+
+{% /tabitem %}
+{% tabitem label="304" %}
+
+Not Modified
+4th tab
+{% /tabitem %}
+{% tabitem label="429" %}
+
+Too many requests 4th tab
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% /tabs %}
+
+<br></br>
+
+**4 components with 4 tab items each. Tab items are not in sync. No syncKey param.**
+
+{% tabs %}
+{% tabitem label="200" %}
+
+OK
+
+| Field | Type | Description |
+| :----- | :---- | :----------- |
+| data | object | Domain Allowlist email data |
+| data.type | enum | Domain Allowlist type. Allowed enum values: `domain_allowlist`. Default: `domain_allowlist`.
+
+{% /tabitem %}
+{% tabitem label="403" %}
+
+Forbidden
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% tabitem label="404" %}
+
+Not Found
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% tabitem label="429" %}
+
+Too many requests
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% /tabs %}
+
+
+
+{% tabs %}
+{% tabitem label="200" %}
+
+OK
+
+| Field | Type | Description |
+| :----- | :---- | :----------- |
+| data | object | Domain Allowlist email data |
+| data.type | enum | Domain Allowlist type. Allowed enum values: `domain_allowlist`. Default: `domain_allowlist`.
+
+{% /tabitem %}
+{% tabitem label="403" %}
+
+Forbidden
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% tabitem label="404" %}
+
+Not Found
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% tabitem label="429" %}
+
+Too many requests
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| errors \[_required_\] | [string] | List of errors |
+
+{% /tabitem %}
+{% /tabs %}

@@ -1,0 +1,32 @@
+---
+const {meta, code, lang, disable_copy, wrap, title} = Astro.props;
+
+import { Code } from '@astrojs/starlight/components';
+
+// converts meta prop to an array. e.g. '{4 7 10}' --> [4, 7, 10] or '{5 6-10}' --> [5, 6, 7, 8, 9, 10]
+const metaRange = meta.replace(/[{}]/g, '').split(' ').map((ln:string) => {
+    if (ln.includes('-')) {
+        // convert range to array
+        const [start, end] = ln.split('-').map(Number);
+        const rangeLen = end - start + 1;
+        return Array.from({length:rangeLen}, (_, i) => start + i);
+    }else if (isNaN(Number(ln))){
+        // return as is if not a number
+        return ln
+    }
+    
+    return Number(ln);
+}).flat()
+
+const newMeta = meta ? metaRange : undefined
+---
+
+<!--
+Renders a Code Block with line highlighting defined by the meta prop
+for specs, see docs-astro/markdoc.config.mjs config file
+
+for more details, see:
+- docs-astro/markdoc.config.mjs for Component props schema.
+-->
+
+<Code title={title} code={code} lang={lang} mark={newMeta} wrap={wrap} class=`${disable_copy && '[&_.copy]:hidden'}`/>

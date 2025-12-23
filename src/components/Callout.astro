@@ -1,0 +1,52 @@
+---
+import ddBitsLearnLogo from '../assets/images/learning-center-bits-logo-2.png';
+
+const {url, type, header, cta, hide_img, custom_class } = Astro.props;
+
+// callout cta variants
+const calloutVariants:{[key:string]: string} = {
+    learn: "Sign up",
+    default: "Request Access" 
+};
+const cta_text = cta  || calloutVariants[type];
+
+// callout style variants
+const calloutStyleVariants:{[key:string]: string} = {
+    learn: "bg-ddpurple-light border-ddpurple rounded-xl",
+    default: "bg-white border-gray-200 rounded-sm"
+}
+const anchorStyleVariants:{[key:string]: string} = {
+    learn: "bg-ddpurple !text-white px-3 py-[10px] uppercase min-w-[138px]",
+    default: "bg-white !text-ddpurple px-3 py-[10px] hover:bg-ddpurple hover:!text-white"
+}
+---
+
+<!--
+Renders a callout box with a header, content body, and a CTA button.
+@param url: string - the URL to link to.
+@param type: string - type of callout. Must match `"learn"` or `"default"`. Default value: `"default"`
+@param header: string - the header text. An `<h5>` tag.
+@param cta: string - the button text. 
+@param hide_img: boolean - determines if the bits learn logo  will be shown when `type` is `"learn"`
+@param custom_class: string - a string of class names to apply to the `cta` button
+-->
+
+<div class=`${calloutStyleVariants[type]} flex flex-col p-4 border shadow-xs`>
+    <div class="flex flex-col gap-x-5 md:flex-row">
+        { (type === "learn" && !hide_img) &&
+            <img class="mb-2 min-w-[166px] min-h-[94px] object-cover md:mb-0" src={ddBitsLearnLogo.src} alt="learning center"/>
+        }
+        <div class="flex flex-col">
+            <h5 class="text-black font-semibold mt-0 mb-1">{header || "Join the Preview"}</h5>
+            <slot />
+        </div>
+    </div>
+    { url &&
+        <a href={url}
+        target="_blank"
+        class={`flex justify-center self-end rounded-[5px] font-semibold border border-ddpurple no-underline mt-4 ${anchorStyleVariants[type]} ${custom_class}`}
+        >
+            {cta_text}
+        </a>
+    }
+</div>

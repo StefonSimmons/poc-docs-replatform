@@ -1,0 +1,61 @@
+---
+
+type Product = {
+    name: string;
+    url: string;
+    icon: string;
+}
+type Names = string;
+
+let { products, names } = Astro.props as { products: Product[], names: Names };
+
+if(!products.length) throw new Error(`No products provided for productavailability component in file: ${Astro.url.pathname}`);
+
+if(names) {
+    products = products.filter((product: { name: string }) => names.split(',').includes(product.name));
+}
+
+const len = products.length;
+---
+<!-- Displays a list of products related to the current page. Use the "names" parameter to specify and show a subset of products.
+
+@param products: array.<{name:string, url:string, icon:string}> - (frontmatter data) list of products.
+    - name: name of product. should be unique to the array.
+    - url: path to product documentation
+    - icon: icon name from our iconfont (websites-modules)
+@param names: str - (named parameter) a comma-separated list of product names. Each name must match a product in the products list. Do not include spaces between names.
+
+*EXAMPLE*
+   products:
+    - name: DDSQL Editor
+      url: /ddsql_editor/
+      icon: ddsql
+    - name: Notebooks
+      url: /notebooks/
+      icon: notebook
+
+    {% product-availability products=$frontmatter.products %} <-- shows all products
+    OR
+    {% product-availability products=$frontmatter.products names="Cloud SIEM,DDSQL Editor" %} <-- only shows 2 of the 3 products -->
+
+
+
+<div class="product-availability mb-3 p-0">
+    <div class="flex">
+        <strong class="p-0 me-1">Available for:</strong>
+        <p class="mb-0 p-0 flex flex-wrap">
+            {products.map((product: Product, index: number) => {
+                return (
+                <span class="product-wrapper whitespace-nowrap">
+                    <a class="product relative text-black no-underline hover:text-ddpurple" href={product.url}>
+                        {/* {{ partial "icon" (dict "name" $product.icon "size" "14px")}} */}
+                        ✅
+                        <span>{product.name}</span>
+                    </a>
+                    <span class="separator mr-1">{index === len - 1 ? '' : '|'}</span>
+                </span>
+                )
+            })}
+        </p>
+    </div>
+</div>

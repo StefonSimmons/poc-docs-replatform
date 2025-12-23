@@ -1,0 +1,36 @@
+---
+title: Serverless Init Env Vars Sidecar
+description: Iterations of the `serverlessinitenvvarssidecar` component.
+---
+Renders a list of env vars for the Serverless Sidecar Instrumentation.
+
+## Parameters
+* **language**: string - The language of the function. If java, include a `JAVA_TOOL_OPTIONS` environement variable.
+* **defaultSource**: string - The default source for the `DD_SOURCE` environement variable.
+* **hasFunction**: boolean - Whether to include the `FUNCTION_TARGET` environement variable.
+
+
+## Examples
+
+**Default Serverless Init Env Vars Sidecar**
+``` {% title="Markdoc" %}
+{% serverlessinitenvvarssidecar language="ruby" defaultSource="containerapp" /%}
+```
+<br/>
+{% serverlessinitenvvarssidecar language="ruby" defaultSource="containerapp" /%}
+<br/>
+
+**Component with function target**
+``` {% title="Markdoc" %}
+{% serverlessinitenvvarssidecar language="nodejs" defaultSource="cloudrun" hasFunction=true /%}
+```
+<br/>
+{% serverlessinitenvvarssidecar language="nodejs" defaultSource="cloudrun" hasFunction=true /%}
+<br/>
+
+**Component with Java tool options**
+``` {% title="Markdoc" %}
+{% serverlessinitenvvarssidecar language="java" defaultSource="containerapp" /%}
+```
+<br/>
+{% serverlessinitenvvarssidecar language="java" defaultSource="containerapp" /%}

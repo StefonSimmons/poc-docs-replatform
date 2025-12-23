@@ -1,0 +1,32 @@
+---
+title: AgentConfig
+description: AgentConfig component.
+---
+
+Renders an agent configuration code block from `agent_config.json`. Displays YAML configuration with syntax highlighting, optional copy button, and collapsible functionality.
+
+## Parameters
+* **type**: string - required - The configuration type to display (must exist in `/src/data/agent_config.json`)
+* **filename**: string - optional - default: "Code example" - The filename to display above the code block
+* **collapsible**: boolean - optional - default: false - Whether the code block can be collapsed/expanded
+* **disable_copy**: boolean - optional - default: false - Whether to disable the copy button
+
+## Examples
+
+**Basic AgentConfig**
+``` {% title="Markdoc" %}
+{% agentconfig type="basic configuration" /%}
+```
+{% agentconfig type="basic configuration" /%}
+
+**AgentConfig with custom filename**
+``` {% title="Markdoc" %}
+{% agentconfig type="log collection configuration" filename="datadog.yaml" /%}
+```
+{% agentconfig type="log collection configuration" filename="datadog.yaml" /%}
+
+**Collapsible AgentConfig with disabled copy button**
+``` {% title="Markdoc" %}
+{% agentconfig type="advanced configuration" filename="agent-config.yaml" collapsible=true disable_copy=true /%}
+```
+{% agentconfig type="advanced configuration" filename="agent-config.yaml" collapsible=true disable_copy=true /%}

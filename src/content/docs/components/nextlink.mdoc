@@ -1,0 +1,43 @@
+---
+title: NextLink
+description: NextLink component.
+---
+
+Renders a link component with an arrow pointing to the right.
+
+## Examples
+
+**Basic NextLink**
+``` {% title="Markdoc" %}
+{% nextlink href="https://www.datadoghq.com" %}
+  A basic nextlink with no tag.
+{% /nextlink %}
+```
+<br/>
+{% nextlink href="https://www.datadoghq.com" %}
+  A basic nextlink with no tag.
+{% /nextlink %}
+<br/>
+
+**NextLink with href and tag**
+``` {% title="Markdoc" %}
+{% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+  A nextlink with a tag.
+{% /nextlink %}
+```
+<br/>
+{% nextlink href="https://www.datadoghq.com" tag="Learn More" %}
+  A nextlink with a tag.
+{% /nextlink %}
+<br/>
+
+**NextLink with relative href and tag**
+``` {% title="Markdoc" %}
+{% nextlink href="/guides/example/" tag="Learn More" %}
+  Should take you to the example guide.
+{% /nextlink %}
+```
+<br/>
+{% nextlink href="/guides/example/" tag="Learn More" %}
+  Should take you to the example guide.
+{% /nextlink %}

@@ -1,0 +1,168 @@
+---
+
+type Props = {
+    library: 'Classic' | 'Serverless' | 'Tracing' | 'Community' | 'Log' 
+}
+
+type ClassicLibrary = {
+    name: string;
+    link: string;
+    dogstatsd?: boolean;
+    authors: string;
+    notes: string;
+    official?: boolean;
+    api?: boolean;
+}
+
+type TracingLibrary = {
+    name: string;
+    link: string;
+    official?: boolean;
+    authors: string;
+    notes: string;
+}
+
+type ServerlessLibrary = {
+    name: string;
+    link: string;
+    official?: boolean;
+    authors: string;
+    notes: string;
+    api?: boolean;
+}
+
+
+type CommunityLibrary = {
+    name: string;
+    link: string;
+    authors: string;
+    notes: string;
+}
+
+type LogLibrary = {
+    name: string;
+    link: string;
+    authors: string;
+    notes: string;
+    official?: boolean;
+}
+
+type LibraryItem = ClassicLibrary | ServerlessLibrary | TracingLibrary | CommunityLibrary | LogLibrary;
+
+const { library } = Astro.props as Props;
+
+const headers: Record<string, string[]> = {
+    "Classic": ["Language", "Library", "Features", "Author", "Notes"],
+    "Serverless": ["Language", "Library", "Official", "Author", "Notes"],
+    "Tracing": ["Language", "Library", "Official", "Author", "Notes"],
+    "Community": ["Category", "Library", "Author", "Notes"],
+    "Log": ["Type", "Library", "Official", "Author", "Notes"]
+}
+
+/**
+ * Get the dataset for the given `library`
+ * @returns [string, LibraryItem[]][]
+ */
+const getDataset = async () => {
+    const libraries = await import('../data/libraries-test.yaml').then((module) => module.default);
+    const libraryRows = libraries[library] as Record<string, LibraryItem[]>[]
+
+    if(!libraryRows) throw new Error(`Library ${library} not found`);
+
+    const dataset = libraryRows.map((row:Record<string, LibraryItem[]>) => Object.entries(row)[0]);
+    return dataset;
+}
+
+/**
+ * A quick way to see the unique keys of the library rows. helped to define types.
+ */
+const getUniqueRowKeys = async () => {
+    const libraries = await import('../data/libraries-test.yaml').then((module) => module.default);
+    const libraryiesArray = Object.entries(libraries);
+
+    const data = libraryiesArray.reduce((acc, curr) => {
+        const [library, items] = curr;
+        const libraryKeys = Object.values(items).map((item) => {
+            return Object.entries(item)[0][1].map((item:LibraryItem) => Object.keys(item))
+        })
+        acc[library] = [...new Set(libraryKeys.flat(2))];
+
+        return acc
+    }, {} as Record<string, string[]>);
+    return data;
+}
+
+const dataset = await getDataset() as [string, LibraryItem[]][];
+---
+
+<!--
+ Renders a table of libraries for a given language.
+ @param library: string - The name of the library to display. Must be one of (Classic, Serverless, Tracing, Community, Log)
+ @returns HTML table
+/ -->
+
+<div class="table-responsive-container">
+  <div class="table-scroll">
+    <table class="table table-responsive">
+      <thead>
+        <tr>
+          {headers[library].map(header => {
+            return (<th>{header}</th>)
+          })}
+        </tr>
+      </thead>
+
+      <tbody>
+      {
+        dataset.map(([key, langData]: [string, LibraryItem[]]) => {
+            return langData.map((row:LibraryItem, rowIndex:number) => {
+                return (
+                    <tr>
+                        {
+                            library === "Classic" ?
+                            <td>{!rowIndex && (<strong>{key}</strong>)}</td>
+                            <td><a href={row.link}>{row.name}</a></td>
+                            <td>
+                                {(row as ClassicLibrary).official && "Official"}
+                                {(row as ClassicLibrary).dogstatsd && "DogStatsD"}
+                                {(row as ClassicLibrary).api && "API"}
+                            </td> 
+                            <td>{(row as ClassicLibrary).authors}</td>
+                            <td>{(row as ClassicLibrary).notes}</td>
+                            :
+                            library === "Community" ? 
+                            <td>{!rowIndex && (<strong>{key}</strong>)}</td>
+                            <td><a href={row.link}>{row.name}</a></td>
+                            <td>{(row as CommunityLibrary).authors}</td>
+                            <td>{(row as CommunityLibrary).notes}</td>
+                            :
+                            library === "Serverless" ?
+                            <td>{!rowIndex && (<strong>{key}</strong>)}</td>
+                            <td><a href={row.link}>{row.name}</a></td>
+                            <td>{(row as ServerlessLibrary).official && <i class="icon-check-bold">✔️</i>}</td>
+                            <td>{(row as ServerlessLibrary).authors}</td>
+                            <td>{(row as ServerlessLibrary).notes}</td> 
+                            :
+                            library === "Tracing" ?
+                            <td>{!rowIndex && (<strong>{key}</strong>)}</td>
+                            <td><a href={row.link}>{row.name}</a></td>
+                            <td>{(row as TracingLibrary).official && <i class="icon-check-bold">✔️</i>}</td>
+                            <td>{(row as TracingLibrary).authors}</td>
+                            <td>{(row as TracingLibrary).notes}</td> 
+                            :
+                            library === "Log" &&
+                            <td>{!rowIndex && (<strong>{key}</strong>)}</td>
+                            <td><a href={row.link}>{row.name}</a></td>
+                            <td>{(row as LogLibrary).official && <i class="icon-check-bold">✔️</i>}</td>
+                            <td>{(row as LogLibrary).authors}</td>
+                            <td>{(row as LogLibrary).notes}</td>
+                        }
+                    </tr>
+                )
+            })
+        }) 
+      }
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+---
+title: Collapsible Content
+description: Iterations of the `collapsiblecontent` component.
+---
+
+Renders a resusable interactive `<detail>` html tag that can be expanded or collapsed.
+
+## Parameters
+* **title**: string - The title of the collapsible content.
+* **headerLevel**: string - The header level of the collapsible content. Must match one of `h3`, `h4`, `h5`, or `h6`.
+* **expanded**: boolean - Whether the collapsible content is expanded by default.
+
+## Examples
+
+**CollapsibleContent with title and h5 header level.**
+```` {% title="Markdoc" %}
+{% collapsiblecontent title="Single Step Instrumentation" headerLevel="h5" %}
+   Follow these steps to enable Single Step Instrumentation across your entire cluster using Helm. This enables tracing for all applications written in supported languages.
+
+
+   1. Add the Helm Datadog repo:
+      ```shell
+      helm repo add datadog https://helm.datadoghq.com
+      helm repo update
+      ```
+   2. Create a Kubernetes secret to store your Datadog [API key][5]:
+      ```shell
+      kubectl create secret generic datadog-secret --from-literal api-key=<YOUR_DD_API_KEY>
+      ```
+      Replace `<DATADOG_SITE>` with your [Datadog site][6] and `<AGENT_ENV>` with the environment your Agent is installed on (for example, `env:staging`).
+
+   3. Wait a few minutes for the Datadog Cluster Agent changes to apply, then restart your applications.
+{% /collapsiblecontent %}
+````
+
+{% collapsiblecontent title="Single Step Instrumentation" headerLevel="h5" %}
+   Follow these steps to enable Single Step Instrumentation across your entire cluster using Helm. This enables tracing for all applications written in supported languages.
+
+
+   1. Add the Helm Datadog repo:
+      ```shell
+      helm repo add datadog https://helm.datadoghq.com
+      helm repo update
+      ```
+   2. Create a Kubernetes secret to store your Datadog [API key][5]:
+      ```shell
+      kubectl create secret generic datadog-secret --from-literal api-key=<YOUR_DD_API_KEY>
+      ```
+      Replace `<DATADOG_SITE>` with your [Datadog site][6] and `<AGENT_ENV>` with the environment your Agent is installed on (for example, `env:staging`).
+
+   3. Wait a few minutes for the Datadog Cluster Agent changes to apply, then restart your applications.
+{% /collapsiblecontent %}
+
+<br/>
+
+**CollapsibleContent expanded by default.**
+```` {% title="Markdoc" %}
+{% collapsiblecontent title="Single Step " headerLevel="h3" expanded=true %}
+   Follow these steps to enable Single Step Instrumentation across your entire cluster using Helm. This enables tracing for all applications written in supported languages.
+
+
+   **Add the Helm Datadog repo:**
+      ```shell
+      helm repo add datadog https://helm.datadoghq.com
+      helm repo update
+      ```
+{% /collapsiblecontent %}
+````
+
+{% collapsiblecontent title="Single Step" headerLevel="h3" expanded=true %}
+   Follow these steps to enable Single Step Instrumentation across your entire cluster using Helm. This enables tracing for all applications written in supported languages.
+
+
+   **Add the Helm Datadog repo:**
+      ```shell
+      helm repo add datadog https://helm.datadoghq.com
+      helm repo update
+      ```
+{% /collapsiblecontent %}
+
+
+**Custom CollapsibleContent component within a Markdoc table**
+
+``` {% title="Markdoc" meta="{3-5}"%}
+| <div style="width:200px"></div>| AWS CodePipeline | Azure Pipelines | Buildkite | CircleCI | Codefresh | GitHub Actions | GitLab | Jenkins | TeamCity | Other CI Providers |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| {% collapsiblecontent title="Logs collection" headerLevel="h5" inline=true %}Retrieval of pipeline or job logs from the CI provider. Logs are displayed on the <strong>Logs</strong> tab in the Pipeline Execution view.{% /collapsiblecontent %}  | dummy data | dummy data |  | dummy data |  | dummy data | dummy data | dummy data |  |  |
+| {% collapsiblecontent title="Infrastructure correlation" headerLevel="h5" inline=true %}Correlation of host-level information for the Datadog Agent, CI pipelines, or job runners to CI pipeline execution data.{% /collapsiblecontent %} |  |  | dummy data |  |  | dummy data | dummy data | dummy data |  |  |
+| {% collapsiblecontent title="Running pipelines" headerLevel="h5" inline=true %}Identification of pipelines executions that are running with associated tracing.{% /collapsiblecontent %} | dummy data | | | | | dummy data | dummy data | dummy data | | dummy data |```
+```
+
+| <div style="width:200px"></div>| AWS CodePipeline | Azure Pipelines | Buildkite | CircleCI | Codefresh | GitHub Actions | GitLab | Jenkins | TeamCity | Other CI Providers |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| {% collapsiblecontent title="Logs collection" headerLevel="h5" inline=true %}Retrieval of pipeline or job logs from the CI provider. Logs are displayed on the <strong>Logs</strong> tab in the Pipeline Execution view.{% /collapsiblecontent %}  | dummy data | dummy data |  | dummy data |  | dummy data | dummy data | dummy data |  |  |
+| {% collapsiblecontent title="Infrastructure correlation" headerLevel="h5" inline=true %}Correlation of host-level information for the Datadog Agent, CI pipelines, or job runners to CI pipeline execution data.{% /collapsiblecontent %} |  |  | dummy data |  |  | dummy data | dummy data | dummy data |  |  |
+| {% collapsiblecontent title="Running pipelines" headerLevel="h5" inline=true %}Identification of pipelines executions that are running with associated tracing.{% /collapsiblecontent %} | dummy data | | | | | dummy data | dummy data | dummy data | | dummy data |

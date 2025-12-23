@@ -1,9 +1,9 @@
 ---
 title: Welcome to Starlight, Stefon
-description: Get started building your docs site with Starlight.
+description: A Proof of Concept for the Docs Replatform.
 # template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: A Proof of Concept for Docs Replatforming.
   image:
     file: ../../assets/houston.webp
   actions:
@@ -16,21 +16,21 @@ hero:
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
-
 ## Next steps
-
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
+<p>
+  Below is a `Card Grid` of next steps for building out a `Starlight Docs` site.
+</p>
+{% cardgrid stagger=true %}
+	{% card title="Update content" icon="pencil" %}
 		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Add new content" icon="add-document">
+	{% /card %}
+	{% card title="Add new content" icon="add-document" %}
 		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
+	{% /card %}
+	{% card title="Configure your site" icon="setting" %}
 		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
+	{% /card %}
+	{% card title="Read the docs" icon="open-book" %}
 		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
-</CardGrid>
+	{% /card %}
+{% /cardgrid %}

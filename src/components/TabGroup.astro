@@ -1,0 +1,122 @@
+---
+interface Props {
+    syncKey: string;
+}
+
+const { syncKey } = Astro.props as Props;
+---
+<!-- 
+Renders a custom tab group component with multiple tab items.
+@param syncKey: string - The key to use to sync the `tab` components across multiple `tabgroup` components. If not provided, the `tab` components will not be synced.
+-->
+<style>
+    .tab-group {        
+        a {
+            color: black;
+        }
+    }
+</style>
+
+<div is="tab-group" class="tab-group" data-sync-key={syncKey}>
+    <ul class="tab-labels p-0 flex flex-row border-b-2 border-gray-300"></ul>
+    <slot />
+</div>
+
+<script>
+    class TabGroup extends HTMLDivElement {
+        tabLabels: NodeListOf<Element>;
+        tabContents: NodeListOf<Element>;
+        tabLabelsElement: Element | null;
+        initialTabID: string | null;
+
+        constructor() {
+            super();
+            this.tabLabels = this.querySelectorAll('.tab-label');
+            this.tabContents = this.querySelectorAll('.tab-content');
+            this.tabLabelsElement = this.querySelector('.tab-labels');
+            this.initialTabID = this.tabLabels[0].getAttribute('data-id');
+        }
+        connectedCallback() {
+            // Add event listeners to tab labels and append them to the tab labels element
+            if(!this.tabLabelsElement) throw new Error('No .tab-labels element found to append .tab-label element(s) to');
+            this.tabLabels.forEach((tabLabel, index) => {
+                tabLabel.addEventListener('click', () => {
+                    const relatedTabContent = this.tabContents[index];
+                    this.manageTabVisibility(tabLabel, relatedTabContent);
+                });
+                this.tabLabelsElement?.appendChild(tabLabel);
+            });
+            
+            this.setInitialTab();
+            
+        }
+
+        /**
+         * Manages Tab visibility for Synced and Non-synced items.
+         * @param tabLabel - The tab label element to set active
+         * @param tabContent - The tab content element to
+         */
+        manageTabVisibility(tabLabel: Element, tabContent: Element) {
+            const syncKey = this.getAttribute('data-sync-key');
+            const activeTabLabelClass = 'active font-semibold border-b-2 border-purple-700 -mb-[2px]';
+            const activeTabContentClass = 'active block';
+            const inactiveTabContentClass = 'hidden';
+            let syncableActiveTabLabels: Element[] = [];
+            let allSyncableTabLabels: Element[] = [];
+            let allSyncableTabContents: Element[] = [];
+            let syncableActiveTabContents: Element[] = [];
+
+            if(syncKey) {
+                const tabLabelID = tabLabel.getAttribute('data-id');
+                const syncableTabGroups = document.querySelectorAll(`.tab-group[data-sync-key="${syncKey}"]`);
+                syncableTabGroups.forEach(stg => {
+                    allSyncableTabLabels.push(...stg.querySelectorAll(`.tab-label`));
+                    allSyncableTabContents.push(...stg.querySelectorAll(`.tab-content`));
+                    syncableActiveTabLabels.push(...stg.querySelectorAll(`.tab-label[data-id="${tabLabelID}"]`));
+                    syncableActiveTabContents.push(...stg.querySelectorAll(`.tab-content[data-id="${tabLabelID}"]`));
+                });
+            }
+            if(syncableActiveTabLabels.length) {
+                allSyncableTabLabels.forEach(stl => {
+                    stl.classList.remove(...activeTabLabelClass.split(' '));
+                });
+                syncableActiveTabLabels.forEach(stl => {
+                    stl.classList.add(...activeTabLabelClass.split(' '));
+                });
+                allSyncableTabContents.forEach(stc => {
+                    stc.classList.remove(...activeTabContentClass.split(' '));
+                    stc.classList.add(inactiveTabContentClass);
+                });
+                syncableActiveTabContents.forEach(stc => {
+                    stc.classList.remove(inactiveTabContentClass);
+                    stc.classList.add(...activeTabContentClass.split(' '));
+                });
+            }else{
+                this.tabLabels.forEach(tl => {
+                    tl.classList.remove(...activeTabLabelClass.split(' '));
+                });
+                tabLabel.classList.add(...activeTabLabelClass.split(' '));
+                this.tabContents.forEach(tc => {
+                    tc.classList.remove(...activeTabContentClass.split(' '));
+                    tc.classList.add(inactiveTabContentClass);
+                });
+                tabContent.classList.remove(inactiveTabContentClass);
+                tabContent.classList.add(...activeTabContentClass.split(' '));
+            }
+        }
+
+        /**
+         * Sets the initial tab
+         */
+        setInitialTab() {
+            if(this.initialTabID) {
+                const initialTab = this.querySelector(`.tab-label[data-id="${this.initialTabID}"]`);
+                const initialTabContent = this.querySelector(`.tab-content[data-id="${this.initialTabID}"]`);
+                if(initialTab && initialTabContent) {
+                    this.manageTabVisibility(initialTab, initialTabContent);
+                }
+            }
+        }
+    }
+    customElements.define('tab-group', TabGroup, { extends: 'div' });
+</script>

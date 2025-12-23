@@ -1,0 +1,27 @@
+---
+type Props = {
+    language: string;
+}
+
+const { language }: Props = Astro.props;
+
+const styles = {
+    navigationMenu: 'bg-gray-100 border border-gray-200 rounded-md p-5 my-5',
+    container: 'mt-0 mb-4',
+    unorderedList: 'list-none p-0 m-0',
+    listItem: 'mb-2',
+    link: 'text-blue-500 hover:text-blue-700 hover:underline',
+}
+---
+<!-- 
+    Renders dynamic content related to App and API Protection enablement.
+    @param language: string - required - The language of the service to enable App and API Protection for
+-->
+<div class={styles.navigationMenu}>
+    <div class={styles.container}>
+      <ul class={styles.unorderedList}>
+        <li class={styles.listItem}>If your {language} service already has APM tracing set up and running, you can automatically enable App and API Protection through <a class={styles.link} href="#automatically-enabling-app-and-api-protection-through-remote-configuration">Remote Configuration</a>.</li>
+        <li class={styles.listItem}>If not, enable App and API Protection with the <a class={styles.link} href="#manually-enabling-app-and-api-protection-monitoring">manual configuration instructions</a>.</li>
+      </ul>
+    </div>
+</div>

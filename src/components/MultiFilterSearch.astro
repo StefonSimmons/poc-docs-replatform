@@ -1,0 +1,636 @@
+---
+/**
+ * Renders a table with search and optional filtering capabilities.
+ * Uses vanilla JavaScript for client-side interactivity. Supports URL state management for search and filter.
+ * @param resource: string - Reference to a JSON dataset in `/src/data/` directory (without .json extension)
+ * @param fm_resource: object - Dataset passed directly as a prop (from frontmatter or inline)
+ * NOTE: Provide either `resource` OR `fm_resource`, not both.
+
+ * Dataset Structure: 
+ * multifiltersearch: object.<{headers, data}> - holds the header and details for the searchable table
+ *   - multifiltersearch.headers: array.<{id:string, name:string, filter_by:boolean}> - header/field info.
+ *     - id: must be unique in the array. must match a key in "data" object
+ *     - name: field/header display name
+ *     - filter_by: (optional) if true, creates a filter dropdown and enables filtering for that field.
+ *   - multifiltersearch.data: array.<object> - table details. each key in the object must match a unique id in the "header" object.     
+ * @example
+ * {
+ *   "multifiltersearch": {
+ *     "headers": [...],
+ *     "data": [...]
+ *   }
+ * }
+ * // Using frontmatter in .mdoc file:
+ * {% multifiltersearch fm_resource=$frontmatter.multi_filter_search /%}
+ * 
+ * // Using a JSON resource file:
+ * {% multifiltersearch resource="sds_rules-test" /%}
+ */
+
+type Props = {
+  resource: string;
+  fm_resource: {
+    headers: {
+      id: string;
+      name: string;
+      filter_by: boolean;
+    }[];
+    data: Record<string, any>[];
+  };
+};
+
+const { resource, fm_resource } = Astro.props;
+const { pathname } = Astro.url;
+
+// Fail early if no data source found provided
+if (!fm_resource.headers.length && !fm_resource.data.length && !resource) {
+  throw new Error(
+    `No data source provided for multifiltersearch component in file: ${pathname}`
+  );
+}
+
+/**
+ * Get the componentn dataset from the prop or the JSON file
+ * @returns object {headers: {id:string, name:string, filter_by?:boolean}[], data: Record<string:any>[]}
+ */
+const getDataset = async () => {
+  let headers: Props["fm_resource"]["headers"] | [] = [];
+  let data: Props["fm_resource"]["data"] = [];
+
+  if (fm_resource && !resource) {
+    // Get frontmatter dataset
+    headers = fm_resource.headers;
+    data = fm_resource.data;
+  } else if (
+    resource &&
+    !fm_resource.headers.length &&
+    !fm_resource.data.length
+  ) {
+    // Get JSON dataset
+    const resourcePath = `../data/${resource}.json`;
+    const jsonFiles = await import.meta.glob(`../data/*.json`, { eager: true });
+    const jsonFile: any = Object.entries(jsonFiles).find(
+      (file) => file[0] === resourcePath
+    );
+    if (!jsonFile) {
+      throw new Error(
+        `No data source found for resource param: ${resource} in file: ${pathname}`
+      );
+    }
+    const jsonData = jsonFile[1].default;
+    headers = jsonData.multifiltersearch.headers;
+    data = jsonData.multifiltersearch.data;
+  }
+  return { headers, data };
+};
+
+/**
+ * Build a string with lookup info for filtering and searching against. must maintain filter_info order to align with filterTypes property.
+ * @param row 
+ * @returns string
+ */
+const getLookupInfoString = (row: Record<string, any>): string => { 
+    const filterInfo = datasetConfig.filterKeys.reduce((acc,filterKey, idx) => {
+        // Removes markdown link syntax if it exists
+        const cleanValue = row[filterKey].replace(/\[(.*)\]\(.*\)/g)
+        return `${acc}${cleanValue}${idx < datasetConfig.filterKeys.length - 1 ? ',' : ''}`
+    }, '')
+
+    const searchInfo = datasetConfig.searchKeys.reduce((acc,searchKey) => {
+        // Removes markdown link syntax if it exists
+        const cleanValue = row[searchKey.toLowerCase()].replace(/\[(.*)\]\(.*\)/g)
+        return `${acc};${cleanValue}`
+    }, '')
+    return `${filterInfo}${searchInfo}`
+}
+
+/**
+ * Builds the dropdowns object with unique values for filter dropdowns
+ * @param row
+ * @example:
+ * dropdown: {
+ *   Recommendation Category: [<unique values from `data`>],
+ *   Cloud Provider: [<unique values from `data`>],
+ *   Resource_Type: [<unique values from `data`>]
+ * } 
+ */
+const buildDropdowns = (row: Record<string, any>): void=> {
+    
+    headers.forEach((header) => {
+        if(header.filter_by){
+            if(!datasetConfig.dropdowns[header.name]){
+                datasetConfig.dropdowns[header.name] = [row[header.id]]
+            }else if(datasetConfig.dropdowns[header.name] && !datasetConfig.dropdowns[header.name]?.includes(row[header.id])){
+                datasetConfig.dropdowns[header.name].push(row[header.id])
+            }
+        }
+    })
+}
+
+const { headers, data } = await getDataset();
+
+const datasetConfig = {
+  headers: headers,
+  data: data,
+  filterKeys: headers.filter((header) => header.filter_by).map((header) => header.id),
+  searchKeys: headers.filter((header) => !header.filter_by).map((header) => header.id),
+  dropdowns: {} as Record<string, string[]>
+};
+---
+<div 
+is="multi-filter-search" 
+class="multifilter-search-component flex flex-col" 
+data-pathname={pathname}
+data-headers={JSON.stringify(headers)}
+>
+    <!-- DATA TABLE -->
+    <div class="order-1">
+        <div class="table-wrapper pb-7">
+        <table class="px-4">
+            <!-- TABLE HEADER -->
+            <thead class="table-header">
+                <tr>
+                    <!-- Range headers -->
+                    { headers.map(({name}) => <th>{name}</th>)}
+                </tr>
+            </thead>
+            <tbody>
+            { 
+                data.map((row, idx) => {
+                    const allInfo = getLookupInfoString(row)
+                    buildDropdowns(row)
+                    return (
+                        <tr 
+                        class="record"
+                        data-id={idx}
+                        data-info={allInfo} >
+                            { headers.map(({id}) => {
+                                return <td>{row[id]}</td>
+                            })}
+                        </tr>
+                    )
+                })
+            }
+            </tbody>
+        </table>
+        <!-- Empty Results Message -->
+        <div>
+            <span class="empty-results-msg font-semibold"></span>
+        </div>
+        </div>
+    </div>
+    
+    <!-- NAV - Keep here. Forming dropdown data first-->
+    <nav id="multifilter-search-nav" class="w-full sticky top-[64px] self-start z-2 bg-white pt-3 pb-3 px-0">
+        <div class="filters__multifilter flex flex-wrap mb-3">
+            { headers.filter((header) => header.filter_by).map((header, idx) => {
+                return (
+                    <div class={`filter-type flex flex-col mt-0 mb-6 ${idx ? 'w-1/2' : 'w-full'} px-4`} data-id={header.id} >
+                        <p class="filter-type-name mb-2 font-semibold">{ header.name }</p>
+                        <div class="filter-component">
+                            <button 
+                            data-id={header.id}
+                            class="toggler cursor-pointer relative w-full flex items-center h-10! pe-12 ps-2 rounded-lg bg-[#f6f6f6] border border-gray-300 text-left"
+                            >
+                                <div class="selections flex gap-x-1 overflow-scroll">
+                                    {/* All */}
+                                    <span class="all font-semibold ms-2">All</span>
+                                    {/* Show filter selections from `filterTypes` data in button as they are selected */}
+                                    {datasetConfig.dropdowns[header.name]?.map((filter) => {
+                                        const cleanValue = filter.replace(/\[(.*)\]\(.*\)/g, '$1')
+                                        return (
+                                            <div 
+                                            data-value={cleanValue} 
+                                            data-filter-type={header.id} 
+                                            class="hidden selection-container m-0 rounded-lg items-center bg-[#E6D6F9] px-1">
+                                                <span class="selection-name whitespace-nowrap relative -top-[1]">{cleanValue}</span>
+                                                {/* Delete one selection */}
+                                                <div 
+                                                class="close-light-wrapper ps-1 cursor-pointer ">
+                                                    x
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                {/* { Delete all selections for a filter type } */}
+                                <div class="overflow-gradient absolute top-0 right-0 rounded-end grid grid-cols-3 items-center m-0 h-full w-[70px] ps-2">
+                                    <span data-filter-type={header.id} class="cancel-circle-wrapper col-start-2 flex items-center justify-center rounded-full bg-purple-800 w-4 h-4 cursor-pointer ">
+                                        <span class="text-xs text-white inline relative -top-px">x</span>        
+                                    </span>
+                                    <span class="chevron-wrapper flex items-center justify-center relative h-full">
+                                        <div class="chevron chevron-down border-l-2 border-b-2 border-purple-800 p-1 w-[3px] h-[3px] -rotate-45 relative -top-[2px]"></div>
+                                    </span>
+                                </div>
+                            </button>
+                            {/* Filter Form */}
+                            <form 
+                            data-id={header.id}
+                            class="toggler-form hidden flex-col bg-white rounded-lg absolute w-100 max-h-545px overflow-y-scroll gap-x-3 p-2 mt-2 z-2 shadow-[0_0_1px_0_rgba(0,0,0,0.10),0_4px_16px_0_rgba(0,0,0,0.32)]"
+                            >
+                                <div class="filter-selection-container flex items-center ms-2">
+                                    <span>All</span>
+                                </div>
+                                {
+                                    datasetConfig.dropdowns[header.name]?.map((filter) => {
+                                        const cleanValue = filter.replace(/\[(.*)\]\(.*\)/g, '$1')
+                                        const id = `${cleanValue}-${header.id}`
+                                        return (
+                                            <div class="filter-selection-container flex items-center ms-2">
+                                                <input 
+                                                class="w-4 h-4 cursor-pointer"
+                                                type="checkbox" 
+                                                id={id} 
+                                                value={cleanValue}
+                                                data-filter-type={header.id}
+                                                />
+                                                <label for={id} class="ms-2 cursor-pointer">
+                                                    {cleanValue}
+                                                </label>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </form>
+                </div>                      
+            </div>
+        )})}
+        </div>
+        <!-- //  SEARCH FORM -->
+        <form class="search__multifilter px-4">
+            <input type="search" placeholder="Search here" class="w-full p-2 rounded-sm border border-gray-300">
+        </form>
+    </nav>
+    </div>
+</div>
+
+<script>
+
+    class MultiFilterSearch extends HTMLDivElement {
+        // Customized built-in <div> Web Component. Used to encapsulate this component's code. no bleeding out
+        // Note: if passing an object as data attr, you have to JSON.stringify it. you can then JSON parse it here
+        pathname: string | undefined
+        filterTypes: Record<string, string[]>
+        searchValue: string
+        filteredSet: Set<string | undefined>
+        headers: { id: string; name: string; filter_by: boolean | undefined }[]
+
+
+        constructor() {
+            // Always call super first in constructor
+            super();
+            this.pathname = this.dataset.pathname;
+            this.filterTypes = {};
+            this.searchValue = "";
+            this.filteredSet = new Set();
+            this.headers = JSON.parse(this.dataset.headers || "[]");
+        }
+
+        connectedCallback() {            
+            // add event listeners to toggler buttons
+            const togglerBtns = this.querySelectorAll("button.toggler") as NodeListOf<HTMLElement> || null;
+            togglerBtns?.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    this.toggleFilterForm(btn);
+                });
+            });
+
+            // add event listener to document to close opened toggler forms when clicking outside of elements
+            document.addEventListener("click", (e) => {
+                const target = e.target as HTMLElement;
+                const openedToggleForm = this.querySelector('form.toggler-form.flex') as HTMLElement;
+                
+                if (!openedToggleForm) return; // No form is currently open
+                
+                // Check if click is inside this component
+                if (!this.contains(target)) return;
+                
+                // Check if click is inside the form or its associated button
+                const clickedInsideForm = openedToggleForm.contains(target);
+                const clickedInsideButton = target.closest('button.toggler') !== null;
+                
+                if (!clickedInsideForm && !clickedInsideButton) {
+                    // Clicked outside - close the form
+                    openedToggleForm.classList.remove("flex");
+                    openedToggleForm.classList.add("hidden");
+                }
+            });
+
+            // add event listener to search input
+            const searchInput = this.querySelector(".search__multifilter > input[type='search']") as HTMLInputElement;
+            searchInput.addEventListener("input", () => {
+                this.searchValue = searchInput.value;
+                this.updateRecordDisplay();
+
+                // update the url with the new search value
+                this.pushState();
+            });
+
+            // add event listener to filter form inputs
+            const filterInputs = this.querySelectorAll(".filter-selection-container > input[type='checkbox']") as NodeListOf<HTMLInputElement>;
+            filterInputs.forEach(input => {
+                input.addEventListener("change", (e) => {
+                    const {filterType} = input.dataset;
+                    const filterValue = input.value;
+                    const isCustomEvent = e instanceof CustomEvent;
+                    const isInitialLoad = isCustomEvent && e.detail.initialLoad;
+
+                    if(!filterType || !filterValue){
+                        throw new Error(`Required filter type and filter value not found for filter input element in file: ${this.pathname}`);
+                    }
+
+                    if(!isInitialLoad){
+                        // update the filterTypes object with the new filter value
+                        this.updateFilterTypes(filterType, filterValue);
+                    }
+
+                    this.updateRecordDisplay();
+                    
+                    if(!isInitialLoad){
+                        // update the url with the new filter options
+                        this.pushState(filterType, filterValue);
+                    }
+                    // update the toggler button selections
+                    this.updateTogglerButtonSelections(filterType, filterValue);
+                });
+
+                // add event listener to filter toggler labels
+                const label = input.nextElementSibling as HTMLElement;
+                [input,label].forEach(el => el.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                }));
+            });
+
+            // initialize filter and search values. Call this after the change event listener
+            this.initFilterSearchValues();
+
+            // add event listener to close-light-wrapper
+            const selectionContainer = this.querySelectorAll(`.selection-container`) as NodeListOf<HTMLElement>;
+            selectionContainer.forEach(selection => {
+                const close = selection.querySelector(`.close-light-wrapper`) as HTMLElement;
+                close.addEventListener("click", () => {
+                    if(!selection.dataset.filterType || !selection.dataset.value){
+                        throw new Error(`Required selection attributes not found for close-light-wrapper in file: ${this.pathname}`);
+                    }
+                    this.deleteOneSelection(selection.dataset.filterType, selection.dataset.value);
+                })
+            });
+
+            // add event listener to delete all
+            const deleteAlls = this.querySelectorAll(`.cancel-circle-wrapper`) as NodeListOf<HTMLElement>;
+            deleteAlls.forEach(d => {
+                d.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    if(!d.dataset.filterType){
+                        throw new Error(`Required filter type attribute not found for delete all element in file: ${this.pathname}`);
+                    }
+                    this.deleteAllSelections(d.dataset.filterType);
+                });
+            });
+        }
+
+        /**
+         * Manage filter form accordion - ensures only one form is open at a time
+         * Triggered on Button click
+         * @param selectedFilterFormEl 
+         */
+        toggleFilterForm (selectedFilterFormEl: HTMLElement):void {
+            const filterTypeID = selectedFilterFormEl.dataset.id;
+            if (!filterTypeID)
+            throw new Error(
+                `No filter type ID found for filter form element in file: ${this.pathname}`
+            );
+            const togglerForm = this.querySelector(`form.toggler-form[data-id="${filterTypeID}"]`) as HTMLElement;
+            const isCurrentFormOpen = togglerForm.classList.contains("flex");
+            
+            // Close all open forms first
+            const allForms = this.querySelectorAll('form.toggler-form') as NodeListOf<HTMLElement>;
+            allForms.forEach(form => {
+                form.classList.remove("flex");
+                form.classList.add("hidden");
+            });
+            
+            // If the clicked form wasn't already open, open it
+            if (!isCurrentFormOpen) {
+                togglerForm.classList.remove("hidden");
+                togglerForm.classList.add("flex");
+            }
+        }
+
+        /**
+         * Determines if a record matches current filters and search
+         * @param record - The table row HTML element to check
+         * @returns true if record matches all criteria
+         */
+        matchesFilters(record: HTMLElement): boolean {
+            const lookupInfo = record.dataset.info?.split(";");
+            if (!lookupInfo) {
+                throw new Error(`No lookup info found for record in file: ${this.pathname}`);
+            }
+            
+            const filterInfo = lookupInfo[0].toLowerCase().split(",");
+            const searchInfo = lookupInfo.slice(1).join(" ").toLowerCase();
+
+            // Check filters match
+            const filteredValues = Object.values(this.filterTypes);
+            const matchesFilters = filteredValues.every((filterOptions, idx) => 
+                filterOptions.length === 0 || 
+                filterOptions.some(option => filterInfo[idx] === option.toLowerCase())
+            );
+            // Check search matches (split once, filter empty strings)
+            const searchTerms = this.searchValue.split(" ").filter(term => term.length > 0);
+            const matchesSearch = searchTerms.length === 0 || 
+                searchTerms.every(term => searchInfo.includes(term.toLowerCase()));
+
+            return matchesFilters && matchesSearch;
+        }
+
+        /**
+         * Updates the display of all table rows based on current filters/search
+         * @param filterValue - The value of the filter input element
+         * @param filterType - The type of the filter input element
+         */
+        updateRecordDisplay(): void {
+            const records = this.querySelectorAll("tbody tr.record") as NodeListOf<HTMLElement>;
+
+            records.forEach(record => {
+                const shouldShow = !this.matchesFilters(record);
+                record.classList.toggle("hidden", shouldShow);
+            });
+            // records that are hidden
+            const hiddenRecords = this.querySelectorAll("tbody tr.record.hidden") as NodeListOf<HTMLElement>;
+            const allRecordsVisible = !!(records.length - hiddenRecords.length);
+
+            // show the appropriate empty results message, if any
+            this.showEmptyResultsMsg(allRecordsVisible);
+        }
+
+        /**
+         * Updates the filterTypes object with the new filter value
+         * @param filterType - The type of the filter input element
+         * @param filterValue - The value of the filter input element
+         */
+        updateFilterTypes(filterType: string, filterValue: string): void {
+            if(filterType && filterValue){
+                if(this.filterTypes[filterType].includes(filterValue)){
+                    this.filterTypes[filterType] = this.filterTypes[filterType].filter(value => value !== filterValue);
+                }else{
+                    this.filterTypes[filterType].push(filterValue);
+                }
+            }
+        }
+
+        /**
+         * Updates the visibility of selections of the toggler buttons
+         * @param filterType - The dropdown filter type. Parent of filter value 
+         * @param filterValue - The value of the filter selection within the filter type
+         */
+        updateTogglerButtonSelections(filterType: string, filterValue: string): void {
+            const selectedFilter = this.querySelector(`button.toggler[data-id="${filterType}"] > .selections > .selection-container[data-value="${filterValue}"]`) as HTMLElement;
+            selectedFilter.classList.toggle("hidden");
+            selectedFilter.classList.toggle("flex");
+
+            const allSelection = this.querySelector(`button.toggler[data-id="${filterType}"] > .selections > .all`) as HTMLElement;
+            allSelection.classList.toggle("hidden", this.filterTypes[filterType].length > 0);
+        }
+         
+        /** Initializes and Updates filter and search properties with url param values, if any
+         * Setup empty filterTypes object
+         */
+        initFilterSearchValues () {
+            // setup filterTypes object with empty arrays
+            this.filterTypes = this.headers
+            .filter((header) => header.filter_by)
+            .reduce(
+                (acc, header) => {
+                acc[header.id] = [];
+                return acc;
+                },
+                {} as Record<string, string[]>
+            );
+
+            // get search and filter value from url params
+            const url = new URL(window.location.href);
+            Array.from(url.searchParams.entries()).forEach(([key, value]) => {
+                if (key === "search") {
+                    this.searchValue = value;
+                    // trigger input update
+                    const searchInput = this.querySelector(".search__multifilter > input[type='search']") as HTMLInputElement;
+                    searchInput.value = this.searchValue;
+                    this.updateRecordDisplay();
+
+                } else {
+                    this.filterTypes[key]?.push(value);
+
+                    const filterInput = this.querySelector(`input[data-filter-type="${key}"][value="${value}"]`) as HTMLInputElement;
+                    filterInput.dispatchEvent(new CustomEvent("change", { detail: {initialLoad: true}}));
+                    filterInput.checked = true;
+                }
+            });            
+        }
+
+        /**
+         * Removes a selection from the toggler button
+         * Triggered on .close-light-wrapper click
+         * @param filterType - The dropdown filter type. Parent of filter value 
+         * @param filterValue - 
+         */
+        deleteOneSelection (filterType: string, filterValue: string): void {
+            const filterInput = this.querySelector(`input[id="${filterValue}-${filterType}"]:checked`) as HTMLInputElement;
+            if(filterInput){
+                // dispatch a change event to the filter input to update the display
+                filterInput.dispatchEvent(new CustomEvent("change", { detail: {initialLoad: false}}));
+                filterInput.checked = false;
+            }
+        }
+
+        /**
+         * Deletes all selections of a filter type from filter toggler and url params
+         * @param filterType - The dropdown filter type. Parent of filter value 
+         */
+        deleteAllSelections (filterType: string) {
+            // delete all selections of a filter type from filter toggler and url params
+            const allCheckedFilterInputs = this.querySelectorAll(`.filter-selection-container > input[data-filter-type="${filterType}"]:checked`) as NodeListOf<HTMLInputElement>;
+            allCheckedFilterInputs.forEach(input => {
+                input.dispatchEvent(new CustomEvent("change", { detail: {initialLoad: false}}));
+                input.checked = false;
+            });
+            const url = new URL(window.location.href);
+
+            url.searchParams.delete(filterType);
+            window.history.pushState(null, "", url.toString());
+        }
+
+        /**
+         * Determines and returns the appropriate empty results message dependent on number of visible records
+         * @param allRecordsVisible - boolean used to determine if a query (filter or search) lead to results/records
+         */ 
+        showEmptyResultsMsg (allRecordsVisible: boolean): void {
+            const filterValues = Object.values(this.filterTypes).flat().map(item => item.split(',')[0]).join(', ');
+            const emptyResultsMsgElement = this.querySelector('.empty-results-msg') as HTMLElement;
+            let message = ''
+
+            // If all records are hidden 
+            if(!allRecordsVisible){
+                if(this.searchValue && filterValues){
+                    message = `No results found for query on search: '${this.searchValue}' and filter: '${filterValues}'`
+                }else{
+                    message = `No results found for query '${this.searchValue || filterValues}'`
+                }
+            }
+            emptyResultsMsgElement.textContent = message;
+            
+        }
+
+
+        /**
+         * Updates url with new query params for filter type and search without refreshing the page
+         * @param filterType 
+         * @param filterOption 
+         */
+        pushState (filterType?: string, filterOption?: string): void {
+            const url = new URL(window.location.href);
+            let newURL = "";
+
+            if (filterType && filterOption) {
+                if (!url.searchParams.getAll(filterType).includes(filterOption)) {
+                    // add one key:value param
+                    url.searchParams.append(filterType, filterOption);
+                } else {
+                    // remove one key:value param
+                    const regex = new RegExp(
+                    `([\\&\\?])${filterType}=${filterOption.replace(/[\s()!*\[\]%,]/g, this.encode)}(?=\&|$)`,
+                    "g"
+                    );
+                    newURL = url.toString().replaceAll(regex, "").replace("/&", "/?");
+                }
+                if (!this.filterTypes[filterType].length) {
+                    // delete the key:value param if no filter options are selected
+                    url.searchParams.delete(filterType);
+                }
+            } else {
+                // set the search value if it exists
+                url.searchParams.set("search", this.searchValue);
+                if (!this.searchValue) {
+                    url.searchParams.delete("search");
+                }
+            }
+
+            window.history.pushState(null, "", newURL || url.toString());
+        }
+
+        /**
+         * callback function to encode some special characters. remove one key:value param
+         * accounting for how the toString url method encodes characters
+         * @param match - the string to encode
+         */
+        private encode(match: string) {
+            return match === " "
+                ? "\\+"
+                : "%" + match.charCodeAt(0).toString(16).toUpperCase();
+        }
+
+}
+    // register this web component with the DOM
+    customElements.define("multi-filter-search", MultiFilterSearch, { extends: "div" });
+</script>

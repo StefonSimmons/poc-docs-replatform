@@ -1,0 +1,166 @@
+---
+
+type Props = {
+    lang: 'java' | 'python' | 'dotnet' | 'nodejs' | 'go' | 'ruby';
+    lib: string;
+    type: 'minimal' | 'recommended';
+}
+
+type Versions = Record<string, Record<string, { minimal: string; recommended: string }>>
+
+const { lang, lib, type } = Astro.props as Props;
+
+const versions: Versions = {
+    java: {
+        "kafka-clients": {
+            minimal: "1.9.0",
+            recommended: "1.43.0 or later"
+        },
+        "amqp-client": {
+            minimal: "1.9.0",
+            recommended: "1.42.2 or later"
+        },
+        "aws-java-sdk-sqs-v1": {
+            minimal: "1.27.0",
+            recommended: "1.42.2 or later"
+        },
+        "sqs-v2": {
+            minimal: "1.27.0",
+            recommended: "1.42.2 or later"
+        },
+        "kinesis-v1": {
+            minimal: "1.22.0",
+            recommended: "1.42.2 or later"
+        },
+        "kinesis-v2": {
+            minimal: "1.22.0",
+            recommended: "1.42.2 or later"
+        },
+        "sns-v1": {
+            minimal: "1.31.0",
+            recommended: "1.42.2 or later"
+        },
+        "sns-v2": {
+            minimal: "1.31.0",
+            recommended: "1.42.2 or later"
+        },
+        "google-pubsub": {
+            minimal: "1.25.0",
+            recommended: "1.42.2 or later"
+        },
+        "ibmmqjmsclient": {
+            minimal: "1.55.0",
+            recommended: "1.55.0 or later"
+        }
+    },
+    python: {
+        "confluent-kafka": {
+            minimal: "1.16.0",
+            recommended: "2.11.0 or later"
+        },
+        "kombu": {
+            minimal: "2.6.0",
+            recommended: "2.6.0 or later"
+        },
+        "botocore": {
+            minimal: "1.20.0",
+            recommended: "2.8.0 or later"
+        }
+    },
+    dotnet: {
+        "confluent-kafka": {
+            minimal: "2.28.0",
+            recommended: "2.41.0 or later"
+        },
+        "rabbitmq-client": {
+            minimal: "2.28.0",
+            recommended: "2.37.0 or later"
+        },
+        "amazon-sqs-sdk": {
+            minimal: "2.48.0",
+            recommended: "2.48.0 or later"
+        },
+        "amazon-sns-sdk": {
+            minimal: "3.6.0",
+            recommended: "3.6.0 or later"
+        },
+        "amazon-kinesis-sdk": {
+            minimal: "3.7.0",
+            recommended: "3.7.0 or later"
+        },
+        "ibmmqdotnetclient": {
+            minimal: "2.49.0",
+            recommended: "2.49.0 or later"
+        },
+        "azure-messaging-servicebus": {
+            minimal: "2.53.0",
+            recommended: "2.53.0 or later"
+        }
+    },
+    nodejs: {
+        "kafkajs": {
+            minimal: "2.39.0 or 3.26.0 or 4.5.0",
+            recommended: "5.25.0 or later"
+        },
+        "confluent-kafka-javascript": {
+            minimal: "5.52.0",
+            recommended: "5.52.0 or later"
+        },
+        "amqplib": {
+            minimal: "3.48.0 or 4.27.0 or 5.3.0",
+            recommended: "5.3.0 or later"
+        },
+        "client-sqs": {
+            minimal: "3.47.0 or 4.26.0 or 5.2.0",
+            recommended: "5.18.0 or later"
+        },
+        "client-kinesis": {
+            minimal: "3.47.0 or 4.26.0 or 5.2.0",
+            recommended: "5.18.0 or later"
+        },
+        "client-sns": {
+            minimal: "3.47.0 or 4.26.0 or 5.2.0",
+            recommended: "5.18.0 or later"
+        },
+        "google-cloud-pubsub": {
+            minimal: "4.49.0 or 5.25.0",
+            recommended: "5.25.0 or later"
+        }
+    },
+    go: {
+        "confluent-kafka-go": {
+            minimal: "1.56.1",
+            recommended: "1.66.0 or later"
+        },
+        "sarama": {
+            minimal: "1.56.1",
+            recommended: "1.66.0 or later"
+        }
+    },
+    ruby: {
+        "ruby-kafka": {
+            minimal: "2.23.0",
+            recommended: "2.23.0 or later"
+        },
+        "karafka": {
+            minimal: "2.23.0",
+            recommended: "2.23.0 or later"
+        }
+    }
+}
+
+const version = versions[lang]?.[lib]?.[type];
+
+if (!version) {
+    throw new Error(`No version found for lang: ${lang}, lib: ${lib}, type: ${type}`);
+}
+---
+<!-- 
+    Renders the DSM tracer version for a given language, library, and type.
+    
+    @param lang: string - The language (java, python, dotnet, nodejs, go, ruby)
+    @param lib: string - The library name
+    @param type: string - The type (minimal or recommended)
+-->
+
+<span>{version}</span>

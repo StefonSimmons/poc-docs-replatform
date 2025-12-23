@@ -1,0 +1,29 @@
+---
+title: Libraries Table
+description: Libraries Table component.
+---
+
+Renders a table of libraries for a given language. Data is sourced from the `libraries-test.yaml` file.
+
+## Parameters
+* **library**: string - The name of the library to display. Must be one of (Classic, Serverless, Tracing, Community, Log)
+
+## Example
+
+**Classic Libraries Table**
+``` {% title="Markdoc" %}
+{% librariestable library="Classic" /%}
+```
+{% librariestable library="Classic" /%}
+
+**Community Libraries Table**
+``` {% title="Markdoc" %}
+{% librariestable library="Community" /%}
+```
+{% librariestable library="Community" /%}
+
+**Tracing Libraries Table**
+``` {% title="Markdoc" %}
+{% librariestable library="Tracing" /%}
+```
+{% librariestable library="Tracing" /%}

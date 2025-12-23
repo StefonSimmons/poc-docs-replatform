@@ -1,0 +1,58 @@
+---
+import CodeBlock from './CodeBlock.astro';
+import CollapsibleContent from './CollapsibleContent.astro';
+
+type Props = {
+    type: string;
+    filename?: string;
+    collapsible?: boolean;
+    disable_copy?: boolean;
+}
+
+const { type, filename="Code example", collapsible, disable_copy }: Props = Astro.props;
+
+// Load agent config data
+const agentConfigData = await import('../data/agent_config.json').then((module) => module.default) as Record<string, string>;
+
+// Look up the config by type (case-insensitive)
+const configType = type.toLowerCase();
+const configData = agentConfigData[configType];
+
+if (!configData) {
+    throw new Error(`AgentConfig component error: given 'type' param '${type}' was not found in agent_config.json. Available types: ${Object.keys(agentConfigData).join(', ')}`);
+}
+
+// Trim newlines from config data
+const configDataString = configData.trim();
+---
+<!-- 
+    Renders an agent configuration code block from agent_config.json.
+    
+    @param type: string - required - The configuration type to display
+    @param filename: string - optional - default: "Code example" - The filename to display
+    @param collapsible: boolean - optional - default: false - Whether the code block is collapsible
+    @param disable_copy: boolean - optional - default: false - Whether to disable the copy button
+-->
+<div class="max-h-[350px] overflow-y-auto">
+{collapsible ? (
+    <CollapsibleContent title={filename} headerLevel="h5" expanded={false} inline={false}>
+        <CodeBlock 
+            code={configDataString} 
+            lang="yaml" 
+            title="" 
+            disable_copy={disable_copy}
+            meta=""
+            wrap={false}
+        />
+    </CollapsibleContent>
+) : (
+    <CodeBlock 
+        code={configDataString} 
+        lang="yaml" 
+        title={filename} 
+        disable_copy={disable_copy}
+        meta=""
+        wrap={false}
+    />
+)}
+</div>

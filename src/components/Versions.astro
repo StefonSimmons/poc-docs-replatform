@@ -1,0 +1,17 @@
+---
+type Props = {
+    key: string;
+}
+const { key }: Props = Astro.props;
+
+type Versions = Record<string, string>;
+
+const versions = await import('../data/versions.yaml').then((module) => module.default) as Versions;
+
+const version = versions[key];
+if (!version) {
+    throw new Error(`Versions component error: given 'key' param '${key}' was not found in versions.yaml. Available keys: ${Object.keys(versions).join(', ')}`);
+}
+---
+
+<span>{version}</span>

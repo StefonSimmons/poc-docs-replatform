@@ -1,0 +1,80 @@
+---
+import NextLink from './NextLink.astro';
+type Data = {
+    [key: string]: Record<string, any>[];
+}
+
+const getDataset = async (): Promise<Data> => {
+    const resourcePath = "/src/data/cloud_siem_content_packs-test.json";
+    const jsonFiles = await import.meta.glob("/src/data/cloud_siem_content_packs-test.json", { eager: true });
+    if(!jsonFiles[resourcePath]) throw new Error(`No data source found for resource param: ${resourcePath}`);
+    const data: any = jsonFiles[resourcePath]
+    return data.default as Data;
+};
+
+const data = Object.entries(await getDataset());
+
+/**
+ * Converts string to title case
+ * @param str - The string to convert to title case
+ */
+export const toTitleCase = (str: string) => {
+    return str.replaceAll("_", " ").replace(/\b\w/g, char => char.toUpperCase());
+}
+---
+<!-- 
+Renders a list of Cloud SIEM content packs. 
+-->
+
+
+<p>Content Packs are grouped into the following categories:</p>
+
+<div class="whatsnext mb-2">
+    <ul class="p-0 list-none">
+        {
+            data.map(([category, content_packs]) => {
+            const names = content_packs.map((content_pack) => content_pack.name).join(", ");
+            
+            return (
+                <li>
+                    <NextLink href={`#${category.replaceAll("-", "_")}`} hasArrow={false}>
+                        <u>{toTitleCase(category)}</u>: {names}
+                    </NextLink>
+                </li>
+            )})
+        }
+    </ul>
+</div>
+
+{
+    data.map(([category, content_packs]) => {
+        const id = category.replaceAll("-", "_");
+        const content = content_packs.map((content_pack) => {
+            const { name, description,app_link,threat_detection, dashboard, investigator, workflow_automation, documentation_href, ocsf_pipelines } = content_pack;
+            return (
+                <div>
+                    <h3>{name}</h3>
+                    <p>{description}</p>
+                    <p><a class="text-black" href={app_link}>{name}</a> Content Pack includes:</p>
+                    <ul>
+                        {threat_detection && (<li><a class="text-black" href={`https://docs.datadoghq.com/security/default_rules/#${threat_detection}`}>Detection Rules</a></li>)}
+                        {dashboard && (<li>An interactive dashboard</li>)}
+                        {investigator && (<li>{investigator.toUpperCase()} Investigator</li>)}
+                        {workflow_automation && (<li>Workflow Automation</li>)}
+                        {documentation_href && (<li><a class="text-black" href={documentation_href}>Configuration guide</a></li>)}
+                        {ocsf_pipelines && (<li>OCSF pipelines</li>)}
+                    </ul>
+                </div>
+            )
+        });
+        return (
+            <div>
+                <h2 id={id}>
+                    <a href={`#${id}`} class="no-underline text-black font-light">
+                    {toTitleCase(category)} Content Packs
+                    </a>
+                </h2>
+                {content}
+            </div>
+        )
+})

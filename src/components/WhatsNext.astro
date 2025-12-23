@@ -1,0 +1,28 @@
+---
+import NextLink from './NextLink.astro';
+const {further_reading, desc, header} = Astro.props;
+---
+
+<!-- 
+Renders a list of resources relevant to the parent page (i.e. documents and articles).
+link, text, and optional tag. 
+-->
+
+<div class="whatsnext text-sm">
+    { header && <h2>{header}</h2> }
+    <p>{desc}</p>
+    <div>
+    <!-- If further_reading frontmatter exists, render the links else render nextlink components that should be nested-->
+    {
+        further_reading.length ? further_reading.map((reading:{link:string, text:string, tag:string}) => {
+            return (
+                <NextLink tag={reading.tag} href={reading.link}>
+                    {reading.text}
+                </NextLink>
+            )
+        })
+        :
+        <slot/>
+    }
+    </div>
+</div>

@@ -1,0 +1,82 @@
+---
+import { getEntry, render } from 'astro:content';
+import { toTitleCase } from './CloudSiemContentPacks.astro';
+
+type Props = {
+    text: string;
+    tooltip: string;
+    glossary: string;
+    textCase: 'title' | 'lower' | 'upper';
+}
+
+const { text, tooltip, glossary, textCase }:Props = Astro.props;
+
+let displayText = text;
+let fullDefinitionLink
+let tooltipContent = tooltip;
+
+if(glossary) {
+    const snakeCaseGlossaryTerm = glossary.toLowerCase().replaceAll(" ", "_");
+    const glossaryTermPath = `glossary/terms/${snakeCaseGlossaryTerm}`;
+    const glossaryTermEntry = await getEntry('docs', glossaryTermPath ) as any;
+    
+    if(!glossaryTermEntry) throw new Error(`No glossary term entry found for ${glossaryTermPath}`);
+
+    tooltipContent = glossaryTermEntry.data.short_definition;
+
+    fullDefinitionLink = `/glossary/#${snakeCaseGlossaryTerm}`;
+    displayText = glossary
+}
+
+if(textCase === 'title') {
+    displayText = toTitleCase(displayText);
+} else if(textCase === 'lower') {
+    displayText = displayText.toLowerCase();
+} else if(textCase === 'upper') {
+    displayText = displayText.toUpperCase();
+}
+
+const anchorizedDisplayText = displayText.toLowerCase().replaceAll(' ', '-');
+
+---
+<!-- 
+Renders a tooltip component.
+
+@param text: string - The glossary term to display.
+@param tooltip: string - The tooltip text.
+@param glossary: string - The glossary term to display. Indicates that there is a glossary term to display. Overwrites `text`. If present, `tooltip` is ignored. Must be a valid glossary term file in `/glossary/terms/{glossary}` (expects `glossary` file name to be in snake case).
+@param textCase: string - required -The case to apply to the `text` or `glossary` parameter. Must be one of: title, lower, upper.
+
+-->
+<span is="tooltip-component" class="tooltip-container relative">
+    <button class="tooltip-trigger bg-transparent underline decoration-dotted underline-offset-2 p-0 m-0 cursor-help" aria-describedby={`tooltip-${anchorizedDisplayText}`}>{displayText}</button>
+    <span 
+    id={`tooltip-${anchorizedDisplayText}`}
+    class="tooltip-content hidden absolute left-15 bg-blue-700 text-white leading-1.5 p-2 rounded-md max-w-xs w-max z-10 bg-linear-to-br from-violet-900 to-fuchsia-500" 
+    role="tooltip">
+        <span class="text-sm">{tooltipContent}</span>
+        { fullDefinitionLink &&
+            <a href={fullDefinitionLink} class="tooltip-full-link text-white/80 underline-offset-4 text-xs block font-semibold text-right hover:text-white" aria-label="View full definition">Glossary →</a>
+        }
+    </span>
+</span>
+
+<script>
+    class Tooltip extends HTMLSpanElement {
+        constructor() {
+            super();
+        }
+        connectedCallback() {
+            const tooltipContent = this.querySelector('.tooltip-content') as HTMLElement;
+            if(!tooltipContent) throw new Error('No tooltip content found');
+            this.addEventListener('mouseenter', () => {
+                tooltipContent.classList.remove('hidden');
+            });
+            this.addEventListener('mouseleave', () => {
+                tooltipContent.classList.add('hidden');
+            });
+        }
+    }
+
+    customElements.define('tooltip-component', Tooltip, { extends: 'span' });
+</script>
