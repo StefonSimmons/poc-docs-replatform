@@ -77,7 +77,7 @@ export default defineMarkdocConfig({
             }
         },
         imagelink: {
-            render: component('./src/components/ImageLink.astro'),
+            render: component('./src/components/ImageLink/ImageLink.astro'),
             attributes: {
                 link: { type: String, required: true, errorLevel: 'error' },
                 name: { type: String },

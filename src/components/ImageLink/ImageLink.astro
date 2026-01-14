@@ -1,10 +1,17 @@
 ---
 import {Image} from 'astro:assets';
 
-const { link, name, src, avatar } = Astro.props;
+type Props = {
+    link: string;
+    name: string;
+    src: string;
+    avatar: string;
+}
+
+const { link, name, src, avatar }: Props = Astro.props;
 
 const getDataset = async (): Promise<ImageMetadata> => {
-  const imageFiles = await import.meta.glob('../assets/images/integrations_logos/*', { eager: true });
+  const imageFiles = await import.meta.glob('../../assets/images/integrations_logos/*', { eager: true });
   if(!imageFiles[src]) throw new Error(`No image file found for path: ${src}`);
   const imageFile: any = imageFiles[src];
   return imageFile.default as ImageMetadata;
@@ -12,7 +19,7 @@ const getDataset = async (): Promise<ImageMetadata> => {
 
 let sourceString: string = `https://static.datadoghq.com/static/images/logos/${avatar}_avatar.svg`;
 let source: ImageMetadata | null = null;
-if(src){
+if(src){  
   source = await getDataset();
   sourceString = source.src;
 }
