@@ -1,9 +1,30 @@
+## Table of Contents
+
+- [Docs Replatform Proof of Concept](#docs-replatform-proof-of-concept)
+  - [Local Development](#local-development)
+    - [Use GitHub Token](#use-github-token)
+    - [Start the Local Astro Server](#start-the-local-astro-server)
+  - [Load and Fetch Upstream](#load-and-fetch-upstream)
+    - [SSR with REST as an Astro Action](#ssr-with-rest-as-an-astro-action)
+    - [SSR with GraphQL as an Astro Action](#ssr-with-graphql-as-an-astro-action)
+    - [SSR with GraphQL as a Live Content Loader (LCL)](#ssr-with-graphql-as-a-live-content-loader-lcl)
+    - [SSG with GraphQL as a build-time Content Loader (CL)](#ssg-with-graphql-as-a-build-time-content-loader-cl)
+- [Components Section](#components-section)
+  - [Problem](#problem)
+  - [Solution](#solution)
+  - [Atomic Design Model](#atomic-design-model)
+  - [Contribution Standards](#contribution-standards)
+
+- [Code Issues and Resolutions](#code-issues-and-resolutions)
+  - [Added `.pnp.cjs`, `.pnp.loader.mjs` and `.yarn/install-state.gz` Files](#added-pnpcjs-pnploader-mjs-and-yarninstall-stategz-files)
+
 # Docs Replatform Proof of Concept
 
 1. **Load and Fetch Upstream**: Renders Docs Integrations using 4 different load and fetch combinations. Requires markdown content in `websites-sources`. [See RFC](https://docs.google.com/document/d/1ftkZC4-o0tP1xh5nNy1V_MgDwc8i8yGCuIhO2-m39_c/edit?tab=t.0#heading=h.qnh5oea3lgsp)
 2. **Component Page**: Renders all components on a demo page. These components are converted from Hugo Shortcodes 
 
 # Local Development
+
 ## Use Github Token
 We use `octokit` for our **graphql** requests.
 For these requests, we need to generate a short-lived GitHub token provided by Datadog's `ddtool`.
@@ -16,7 +37,7 @@ yarn start
 ```
 
 
-# Load and Fetch Upstream: Short-term findings
+# Load and Fetch Upstream
 Built a Proof of Concept (POC) here that fetches integrations from `websites-sources` four ways. It leverages **SSR** and **SSG** astro solutions and **REST** vs **GraphQL** fetches.
 
 ## SSR with REST as an Astro Action
@@ -74,7 +95,7 @@ This site will:
 Writers and engineers should rely on this catalog instead of creating ad hoc implementations. Usage should be limited to approved patterns.
 
 
-### Atomoic Design Model
+## Atomic Design Model
 
 components should move toward an **atomic design model**:
 - `Atoms` → smallest UI primitives  
@@ -85,7 +106,7 @@ components should move toward an **atomic design model**:
 The goal is to identify common patterns and abstract them into simple, reusable building blocks that can be composed into more complex UI without rewriting the same logic repeatedly.
 
 
-### Contribution Standards
+## Contribution Standards
 
 To prevent drift and duplication, every new component must:
 - Include accompanying component tests  
