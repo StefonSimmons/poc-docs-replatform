@@ -62,7 +62,6 @@ Using the Github GraphQL in a build-time Content Loader, I instantly experience 
 
 
 # Components Section
-Build a Proof of Concept her that renders all of Docs old Hugo Shortcodes as Astro Components
 
 The goal of the Components POC layer in this replatform is twofold:
 
