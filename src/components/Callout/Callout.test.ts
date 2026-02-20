@@ -87,12 +87,12 @@ describe('Callout', () => {
     test('should render complete "learn" Callout with all props', async () => {
         const container = await AstroContainer.create();
         const props = {
-            type: "learn",
             url: "https://example.com/signup",
             header: "Learn More About Our Product",
             cta: "Start Learning",
             hide_img: false,
-            custom_class: "test-class"
+            custom_class: "test-class",
+            type: "learn"
         };
         const slotContent = "Discover amazing features and capabilities.";
         
