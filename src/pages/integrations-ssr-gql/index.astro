@@ -24,7 +24,7 @@ if (error) {
     <AnchorHeading level="2" id="greeting">Getting Started with Integrations GraphQL</AnchorHeading>
     <div>
         {
-            data.repository.object.entries.map((entry: any) => {
+            data.repository.object?.entries?.map((entry: any) => {
                 const fm = greyMatter(entry.object.text).data // use greyMatter to parse markdown. separate yaml from markdown content
                 const title = fm.title
                 const slug = entry.name.replace('.md', '')

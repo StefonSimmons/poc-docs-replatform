@@ -60,7 +60,7 @@ export function remoteLoader(options: Options): Loader {
             }  
 
             const response: any = await getIntegrations(options);
-            const entries = response.repository.object.entries;
+            const entries = response.repository.object?.entries || [];
 
 
             store.clear();  
