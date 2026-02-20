@@ -40,8 +40,59 @@ Using the Github GraphQL in a Live Content Loader, I found that I maintain the r
 Using the Github GraphQL in a build-time Content Loader, I instantly experience quicker page load time in comparison with SSR. Integrations have more content than we would probably want to render on-demand and so this solution seems appropriate for this content. CL has many features available including validating our output with schema validation and a way to support cache management with the use of meta and digest generation props.
 
 
-# Component Page
+# Components Section
 Build a Proof of Concept her that renders all of Docs old Hugo Shortcodes as Astro Components
+
+The goal of the Components POC layer in this replatform is twofold:
+
+1. **Standardize clearer path toward reusable, testable, discoverable and composable UI elements**
+2. **Render Docs Hugo Shortcodes as Astro Components**
+
+As part of this effort, ~50% of the Hugo shortcodes from the Documentation repo have already been converted into Astro components. As a result that equates to ~65% of the shortcode references in Docs.
+
+## Problem
+
+Today, components and patterns tend to get duplicated because there’s no easy way for writers or engineers to visually discover what already exists. That leads to:
+- Duplicate implementations  
+- Repo bloat  
+- Inconsistent usage patterns  
+
+The replatform aims to fix that by centralizing UI patterns into approved, reusable components.
+
+
+## Solution
+
+Create a **component catalog site**, built with Astro + Starlight as seen in this POC.
+
+This site will:
+- Serve as the single source of truth for approved components  
+- Show how each component looks  
+- Document accepted parameters  
+- Provide usage examples  
+- Include search  
+
+Writers and engineers should rely on this catalog instead of creating ad hoc implementations. Usage should be limited to approved patterns.
+
+
+### Atomoic Design Model
+
+components should move toward an **atomic design model**:
+- `Atoms` → smallest UI primitives  
+- `Molecules` → composed elements that include atoms
+- `Organisms` → more complex entities which include molecules possibly 
+- `Wrappers` → layout/context-level  
+
+The goal is to identify common patterns and abstract them into simple, reusable building blocks that can be composed into more complex UI without rewriting the same logic repeatedly.
+
+
+### Contribution Standards
+
+To prevent drift and duplication, every new component must:
+- Include accompanying component tests  
+- Include a Markdown documentation page explaining usage and parameters  
+- Follow the established folder and naming conventions (simple   
+
+
 
 # Code Issues and Resolutions
 ## Added `.pnp.cjs`, `.pnp.loader.mjs` and `.yarn/install-state.gz` files
