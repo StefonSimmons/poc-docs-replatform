@@ -12,8 +12,8 @@
 - [Components Section](#components-section)
   - [Problem](#problem)
   - [Solution](#solution)
-  - [Atomic Design Model](#atomic-design-model)
-  - [Contribution Standards](#contribution-standards)
+    - [Atomic Design Model](#atomic-design-model)
+    - [Contribution Standards](#contribution-standards)
 
 - [Code Issues and Resolutions](#code-issues-and-resolutions)
   - [Added `.pnp.cjs`, `.pnp.loader.mjs` and `.yarn/install-state.gz` Files](#added-pnpcjs-pnploader-mjs-and-yarninstall-stategz-files)
@@ -94,7 +94,7 @@ This site will:
 Writers and engineers should rely on this catalog instead of creating ad hoc implementations. Usage should be limited to approved patterns.
 
 
-## Atomic Design Model
+### Atomic Design Model
 
 components should move toward an **atomic design model**:
 - `Atoms` → smallest UI primitives  
@@ -105,7 +105,7 @@ components should move toward an **atomic design model**:
 The goal is to identify common patterns and abstract them into simple, reusable building blocks that can be composed into more complex UI without rewriting the same logic repeatedly.
 
 
-## Contribution Standards
+### Contribution Standards
 
 To prevent drift and duplication, every new component must:
 - Include accompanying component tests  
