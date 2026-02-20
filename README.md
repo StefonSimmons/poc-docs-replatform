@@ -69,7 +69,7 @@ The goal of the Components POC layer in this replatform is twofold:
 1. **Standardize clearer path toward reusable, testable, discoverable and composable UI elements**
 2. **Render Docs Hugo Shortcodes as Astro Components**
 
-As part of this effort, ~50% of the Hugo shortcodes from the Documentation repo have already been converted into Astro components. As a result that equates to ~65% of the shortcode references in Docs.
+As part of this effort, ~50% of the Hugo shortcodes from the Documentation repo have already been converted into Astro components. As a result that equates to ~65% of the shortcode references in Docs. [See the shortcode conversion sheet](https://docs.google.com/spreadsheets/d/1dmhGoiBNU5sm38gZeshcOsqaN3bYbQuKmCGtOG-wAKI/edit?gid=623811061#gid=623811061)
 
 ## Problem
 
