@@ -12,8 +12,8 @@
 - [Components Section](#components-section)
   - [Problem](#problem)
   - [Solution](#solution)
-    - [Atomic Design Model](#atomic-design-model)
-    - [Contribution Standards](#contribution-standards)
+      - [Atomic Design Model](#atomic-design-model)
+      - [Contribution Standards](#contribution-standards)
 
 - [Code Issues and Resolutions](#code-issues-and-resolutions)
   - [Added `.pnp.cjs`, `.pnp.loader.mjs` and `.yarn/install-state.gz` Files](#added-pnpcjs-pnploader-mjs-and-yarninstall-stategz-files)
