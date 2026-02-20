@@ -1,13 +1,13 @@
 {
-  "name": "",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "start": "export GITHUB_TOKEN=$(ddtool auth github token) && astro dev",
+    "start": "zsh -c 'export GITHUB_TOKEN=$(ddtool auth github token) && astro dev'",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "test": "vitest"
   },
   "dependencies": {
     "@astrojs/check": "0.9.5",
@@ -27,6 +27,8 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@rollup/plugin-yaml": "^4.1.2"
-  }
+    "@rollup/plugin-yaml": "^4.1.2",
+    "vitest": "^4.0.16"
+  },
+  "packageManager": "yarn@4.12.0"
 }

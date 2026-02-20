@@ -42,3 +42,11 @@ Using the Github GraphQL in a build-time Content Loader, I instantly experience 
 
 # Component Page
 Build a Proof of Concept her that renders all of Docs old Hugo Shortcodes as Astro Components
+
+# Code Issues and Resolutions
+## Added `.pnp.cjs`, `.pnp.loader.mjs` and `.yarn/install-state.gz` files
+
+**Problem**: Before I could install `vitest` (`yarn add -D vitest`), I needed to bump my version of `node`. I installed `node 24` via `nvm`. When I installed `vitest`, it added Yarn Plug'n'Play files. Yarn 1.22.22 has incomplete support for PnP which broke my `yarn start` script causing a `command not found: export` error.
+
+**Resolution**
+bump `yarn` to `berry` version. added `zsh -c` to the beginning of the `start` command
