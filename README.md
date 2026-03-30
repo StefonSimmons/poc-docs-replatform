@@ -79,7 +79,6 @@ Today, components and patterns tend to get duplicated because there’s no easy 
 
 This section of the POC aims to fix that by centralizing UI patterns into approved, reusable components.
 
-
 ## Solution
 
 Create a **component catalog site**, built with Astro + Starlight as seen in this POC.
@@ -112,8 +111,16 @@ To prevent drift and duplication, every new component must:
 - Include a Markdown documentation page explaining usage and parameters  
 - Follow the established folder and naming conventions (simple   
 
+
+# Loading and Fetching Upstream Content (Part 2)
+Since Ive worked on Part 1 of this, we have moved all content from github to S3 ([see PR](https://github.com/DataDog/websites-sources/pull/451)). Reason? We didnt want to keep the content there(?). Now that we are using S3 to store the content, I should update the POC to point to S3 instead of Github 
+
 # Findings
-**Customizable Docs (C-Docs)** aims to leverage **SSR** to enhance user experience by incorporating user data. It also introduces solutions that could make many of our existing shortcodes obsolete. While we have a clear direction for how Docs shortcodes should be rendered, the open question is which ones should actually be converted. This project is currently paused to avoid divergence between two sets of components (Docs production and this proof of concept).
+**Customizable Docs (C-Docs)** aims to leverage **SSR** to enhance user experience by incorporating user data. So, this means that rendering cdocs via ssr is critical. However, not all pages will be rendered this way. We should break up these pages into their own collection? 
+
+**Customizable Docs (C-Docs)** also introduces solutions that could make many of our existing **shortcodes obsolete**. While we have a clear direction for how Docs shortcodes should be rendered, the open question is which ones should actually be converted. Conversion of Hugo shortcodes to Astro components is currently paused to avoid divergence between two sets of components (Docs production and this proof of concept).
+
+
 
 
 # Code Issues and Resolutions
