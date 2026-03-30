@@ -50,7 +50,7 @@ export const collections = {
       path: "content/en/integrations",
       owner: "DataDog",
       repo: "websites-sources",
-      branch: "main",
+      branch: "auto-build-preview-3ccfbb4a",
     }),
     schema: z.object({
       name: z.string(),
