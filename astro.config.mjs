@@ -14,6 +14,7 @@ export default defineConfig({
     liveContentCollections: true,
   },
   output: 'static',
+  prefetch: false,
   adapter: vercel({
     imageService: true,
     excludeFiles: ['./src/pages/**/*.astro']
