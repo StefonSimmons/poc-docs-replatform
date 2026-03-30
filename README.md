@@ -4,7 +4,7 @@
   - [Local Development](#local-development)
     - [Use GitHub Token](#use-github-token)
     - [Start the Local Astro Server](#start-the-local-astro-server)
-  - [Load and Fetch Upstream](#load-and-fetch-upstream)
+  - [Loading and Fetching Upstream Content (Part 1)](#loading-and-fetching-upstream-content-part-1)
     - [SSR with REST as an Astro Action](#ssr-with-rest-as-an-astro-action)
     - [SSR with GraphQL as an Astro Action](#ssr-with-graphql-as-an-astro-action)
     - [SSR with GraphQL as a Live Content Loader (LCL)](#ssr-with-graphql-as-a-live-content-loader-lcl)
@@ -37,8 +37,8 @@ yarn start
 ```
 
 
-# Loading and Fetching Upstream Content
-Built a Proof of Concept (POC) here that fetches integrations from `websites-sources` four ways. It leverages **SSR** and **SSG** astro solutions and **REST** vs **GraphQL** fetches.
+# Loading and Fetching Upstream Content (Part 1)
+This section of the Proof of Concept (POC) fetches integrations from the [`websites-sources`](https://github.com/DataDog/websites-sources) Github four different ways. It leverages **SSR** and **SSG** astro rendering solutions with **REST** and **GraphQL** fetching solutions.
 
 ## SSR with REST as an Astro Action
 `http://localhost:4321/integrations-ssr-rest`
@@ -68,7 +68,7 @@ The goal of the Components POC layer in this replatform is twofold:
 1. **Standardize clearer path toward reusable, testable, discoverable and composable UI elements**
 2. **Render Docs Hugo Shortcodes as Astro Components**
 
-As part of this effort, ~50% of the Hugo shortcodes from the Documentation repo have already been converted into Astro components. As a result that equates to ~65% of the shortcode references in Docs. [See the shortcode conversion sheet](https://docs.google.com/spreadsheets/d/1dmhGoiBNU5sm38gZeshcOsqaN3bYbQuKmCGtOG-wAKI/edit?gid=623811061#gid=623811061)
+As part of this effort, ~50% of the Hugo shortcodes from the Documentation repo have already been converted into Astro components. As a result that equates to ~65% of shortcode references in Docs. [See the shortcode conversion sheet](https://docs.google.com/spreadsheets/d/1dmhGoiBNU5sm38gZeshcOsqaN3bYbQuKmCGtOG-wAKI/edit?gid=623811061#gid=623811061)
 
 ## Problem
 
@@ -77,7 +77,7 @@ Today, components and patterns tend to get duplicated because there’s no easy 
 - Repo bloat  
 - Inconsistent usage patterns  
 
-The replatform aims to fix that by centralizing UI patterns into approved, reusable components.
+This section of the POC aims to fix that by centralizing UI patterns into approved, reusable components.
 
 
 ## Solution
@@ -112,6 +112,8 @@ To prevent drift and duplication, every new component must:
 - Include a Markdown documentation page explaining usage and parameters  
 - Follow the established folder and naming conventions (simple   
 
+## Findings
+**Customizable Docs (C-Docs)** aims to leverage **SSR** to enhance user experience by incorporating user data. It also introduces solutions that could make many of our existing shortcodes obsolete. While we have a clear direction for how Docs shortcodes should be rendered, the open question is which ones should actually be converted. This project is currently paused to avoid divergence between two sets of components (Docs production and this proof of concept).
 
 
 # Code Issues and Resolutions
