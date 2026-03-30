@@ -13,6 +13,7 @@ const integrations = await getCollection('remote_integrations');
 
 <StarlightPage frontmatter={{ title: 'Integrations ACL' }}>
     <AnchorHeading level="2" id="greeting">Getting Started with Integrations ACL</AnchorHeading>
+    <p>{integrations.length} integrations found</p>
     <div class="">
         {
             integrations.map((entry: any) => {

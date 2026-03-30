@@ -54,10 +54,11 @@ export const server = {
             path: z.string().describe('The file path to fetch the content for')
         }),
         handler: async ({ owner, branch, repo, path }: { owner: string, branch: string, repo: string, path: string }) => {
-            const octokit = new Octokit({ 
-                auth: getSecret('GITHUB_TOKEN')
-            });
             try {
+                const octokit = new Octokit({ 
+                    auth: getSecret('GITHUB_TOKEN')
+                });
+
                 const expression = `${branch}:${path}`;
                 const query = `
                 query ($owner: String!, $repo: String!, $expression: String!) {
@@ -87,40 +88,57 @@ export const server = {
      * This is an Object oriented approach to fetching data that specifies what information is fetched. thus, lessening the number of requests on one page.
      * Note: I used the GraphQL Explorer (a browser-based developer environment) to help with defining the query https://docs.github.com/en/graphql/overview/explorer
      */
+
+    /**
+     * GitHub's GraphQL API has a complexity/timeout limit. 1000 integrations is too much for the API. When the directory has hundreds of markdown files (each potentially large), 
+     * fetching all their full text in one query exceeds what GitHub can process within its timeout window — hence "We cant extrapulate the frontmatter from the integrations on request.
+     * using this query is too heavy
+     * object {
+     *     ... Blob {
+     *         text
+     *     }
+     * }
+     */
     getRepoContentGQL: defineAction({
         input: z.object({
             owner: z.string().default("DataDog").describe('The name of the repository owner'),
             repo: z.string().default("websites-sources").describe('The name of the repository to fetch the content for'),
-            branch: z.string().default('main').describe('The branch to fetch from'),
+            branch: z.string().default("main").describe('The branch to fetch from'),
             path: z.string().describe('The directory path to fetch the content for')
         }),
         handler: async ({ owner, repo, path, branch }: { owner: string, repo: string, path: string, branch: string }) => {
-            const octokit = new Octokit({ 
-                auth: getSecret('GITHUB_TOKEN')
-            });
-            const expression = `${branch}:${path}`;
-            const query = `
-            query ($owner: String!, $repo: String!, $expression: String!) {
-                repository(owner: $owner, name: $repo) {
-                    object (expression: $expression){
-                        ... on Tree {
-                            entries{
-                                name,
-                                object {
-                                    ... on Blob {
-                                        text
+            try {
+                const octokit = new Octokit({ 
+                    auth: getSecret('GITHUB_TOKEN')
+                });
+                const expression = `${branch}:${path}`;
+                const query = `
+                query ($owner: String!, $repo: String!, $expression: String!) {
+                    repository(owner: $owner, name: $repo) {
+                        object (expression: $expression){
+                            ... on Tree {
+                                entries{
+                                    name,
+                                    object {
+                                        ... on Blob {
+                                            text
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                `
+                const variables = { owner, repo, expression };
+                const result = await octokit.graphql(query, variables);
+                return result;
+            } catch (error:any) {
+                throw new ActionError({
+                    code: error.status === 404 ? "NOT_FOUND" : "INTERNAL_SERVER_ERROR",
+                    message: `No file found at ${error.request.url}`
+                });
             }
-            `
-          const variables = { owner, repo, expression };
-          const result = await octokit.graphql(query, variables);
-          return result;
         }
-      })
-
+    })
 }

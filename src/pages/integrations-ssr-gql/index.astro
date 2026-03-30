@@ -10,14 +10,16 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 /**
  * Fetch integrations directory from websites-sources using GraphQL.
+ * See note for getRepoContentGQL. cannot access 1000 files. using older branch 
  */
 const { data, error } = await Astro.callAction(
     actions.getRepoContentGQL, 
-    { path: `content/en/integrations`, branch: "stefon.simmons/processing-output-readme" }
+    { path: `content/en/integrations`, branch: "auto-build-preview-3ccfbb4a" }
 ) as {data: any, error: any};
 
 if (error) {
-  console.error("Error fetching repo content:", decodeURIComponent(error.message));
+  console.error(`${error.status} Error fetching repo content:`, decodeURIComponent(error.message));
+  
   return Astro.redirect("/404");
 }
 ---
@@ -25,6 +27,7 @@ if (error) {
 
 <StarlightPage frontmatter={{ title: 'Integrations GQL' }}>
     <AnchorHeading level="2" id="greeting">Getting Started with Integrations GraphQL</AnchorHeading>
+    <p>{data.repository.object?.entries?.length} integrations found</p>
     <div>
         {
             data.repository.object?.entries?.map((entry: any) => {

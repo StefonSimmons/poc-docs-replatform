@@ -8,7 +8,7 @@ export const collections = {
             path: "content/en/integrations",
             owner: "DataDog",
             repo: "websites-sources",
-            branch: "stefon.simmons/processing-output-readme",
+            branch: "auto-build-preview-3ccfbb4a",
         })
     }),
 };

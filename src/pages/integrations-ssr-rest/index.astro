@@ -31,6 +31,7 @@ if (error) {
 
 <StarlightPage frontmatter={{ title: 'Integrations REST' }}>
     <AnchorHeading level="2" id="greeting">Getting Started with Integrations REST</AnchorHeading>
+    <p>{data.data.entries.length} integrations found</p>
     <div class="">
         {
             data.data.entries.map((entry: any) => {

@@ -16,7 +16,7 @@ export function remoteLoader(options: Options): Loader {
         load: async ({ collection, store, logger, parseData, generateDigest }: LoaderContext) => {
             logger.info("Loading Remote Integrations");
             /**
-             * This function fetches the integrations data via the Github GraphQL API. 
+             * This function fetches the integrations data via the Github GraphQL API at Build time. 
              * @param options 
              * @returns an object in the same shape as it's query.
              * @example
@@ -59,40 +59,52 @@ export function remoteLoader(options: Options): Loader {
                 return result;
             }  
 
-            const response: any = await getIntegrations(options);
-            const entries = response.repository.object?.entries || [];
+            
+
+            try {
+                const response: any = await getIntegrations(options);
+                const entries = response.repository.object?.entries || [];
 
 
-            store.clear();  
+                store.clear();  
 
-            for (const entry of entries) {
-                const greyMatterData = greyMatter(entry.object.text)
-                const fm = greyMatterData.data
-                const content = marked.parse(greyMatterData.content)
+                for (const entry of entries) {
+                    const greyMatterData = greyMatter(entry.object.text)
+                    const fm = greyMatterData.data
+                    const content = marked.parse(greyMatterData.content)
 
-                // validates the data against the schema.
-                const data = await parseData({
-                    id: entry.name.replace('.md', ''),
-                    data: {
-                        name: entry.name,
-                        // edge case for Jenkins.md. this should be handled in websites sources.
-                        fm: fm.app_id ? fm : {
-                            title: "Jenkins (Manual FM)",
-                            description: "jenkins ManualFM Description",
-                        },
-                        content
-                    }
+                    // validates the data against the schema.
+                    const data = await parseData({
+                        id: entry.name.replace('.md', ''),
+                        data: {
+                            name: entry.name,
+                            // edge case for Jenkins.md. this should be handled in websites sources.
+                            fm: fm.app_id ? fm : {
+                                title: "Jenkins (Manual FM)",
+                                description: "jenkins ManualFM Description",
+                            },
+                            content
+                        }
+                    });
+                    
+                    // used to generate a digest of the content which helps with invalidating the cache
+                    const contentDigest = generateDigest(entry);
+                    
+                    // store the data in the store.
+                    store.set({
+                        id: entry.name.replace('.md', ''),
+                        data,
+                        digest: contentDigest,
+                    });
+                }
+            } catch (error:any) {
+                const {data, status} = error.response;
+                console.error("BUILDING COLLECTION ERROR:", {
+                    status: status,
+                    message: data.message,
                 });
-                
-                // used to generate a digest of the content which helps with invalidating the cache
-                const contentDigest = generateDigest(entry);
-                
-                // store the data in the store.
-                store.set({
-                    id: entry.name.replace('.md', ''),
-                    data,
-                    digest: contentDigest,
-                });
+                // continue despite erro
+                return
             }
         }, 
     };
@@ -147,10 +159,13 @@ export function remoteLiveLoader (config: Options): LiveLoader {
                     })
                 }
             } catch (error:any) {
-                console.error("LIVE ERROR:",error);
-                return {
-                    error: new Error(`FAILED on LIVE Content Collection: ${error.message}`)
-                }
+                const {data, status} = error.response;
+                console.error("LIVE LOADING COLLECTION ERROR:", {
+                    status: status,
+                    message: data.message,
+                });
+                // continue despite error
+                return
             }
         },
         loadEntry: async ({filter}:any) => {
@@ -196,10 +211,13 @@ export function remoteLiveLoader (config: Options): LiveLoader {
                     }
                 }
             } catch (error:any) {
-                console.error("LIVE ERROR:",error);
-                return {
-                    error: new Error(`FAILED on Single LIVE Content Collection: ${error.message}`)
-                }
+                const {data, status} = error.response;
+                console.error("LIVE LOADING ENTRY ERROR:", {
+                    status: status,
+                    message: data.message,
+                });
+                // continue despite error
+                return
             }
         }
     }
