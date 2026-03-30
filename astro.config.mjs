@@ -43,12 +43,12 @@ export default defineConfig({
           link: "/integrations-ssr-gql",
         },
         {
-          label: "Integrations-SSG-ACL",
-          link: "/integrations-ssg-acl",
-        },
-        {
           label: "Integrations-SSR-LCC",
           link: "/integrations-ssr-lcc",
+        },
+        {
+          label: "Integrations-SSG-ACL",
+          link: "/integrations-ssg-acl",
         },
         {
           // Autogenerate a group of links for the 'components' directory within /content/docs.
