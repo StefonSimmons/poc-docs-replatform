@@ -14,7 +14,7 @@
   - [Solution](#solution)
       - [Atomic Design Model](#atomic-design-model)
       - [Contribution Standards](#contribution-standards)
-
+- [Findings](#findings)
 - [Code Issues and Resolutions](#code-issues-and-resolutions)
   - [Added `.pnp.cjs`, `.pnp.loader.mjs` and `.yarn/install-state.gz` Files](#added-pnpcjs-pnploader-mjs-and-yarninstall-stategz-files)
 
@@ -112,7 +112,7 @@ To prevent drift and duplication, every new component must:
 - Include a Markdown documentation page explaining usage and parameters  
 - Follow the established folder and naming conventions (simple   
 
-## Findings
+# Findings
 **Customizable Docs (C-Docs)** aims to leverage **SSR** to enhance user experience by incorporating user data. It also introduces solutions that could make many of our existing shortcodes obsolete. While we have a clear direction for how Docs shortcodes should be rendered, the open question is which ones should actually be converted. This project is currently paused to avoid divergence between two sets of components (Docs production and this proof of concept).
 
 
