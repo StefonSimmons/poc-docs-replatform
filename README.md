@@ -37,7 +37,7 @@ yarn start
 ```
 
 
-# Load and Fetch Upstream
+# Loading and Fetching Upstream Content
 Built a Proof of Concept (POC) here that fetches integrations from `websites-sources` four ways. It leverages **SSR** and **SSG** astro solutions and **REST** vs **GraphQL** fetches.
 
 ## SSR with REST as an Astro Action
