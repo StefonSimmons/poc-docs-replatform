@@ -50,7 +50,7 @@ export const collections = {
       path: "content/en/integrations",
       owner: "DataDog",
       repo: "websites-sources",
-      branch: "main",
+      branch: "stefon.simmons/processing-output-readme",
     }),
     schema: z.object({
       name: z.string(),

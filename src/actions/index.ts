@@ -17,17 +17,19 @@ export const server = {
         input: z.object({
             owner: z.string().optional().default("DataDog").describe('The name of the repository owner'),
             repo: z.string().optional().default("websites-sources").describe('The name of the repository to fetch the content for'),
-            path: z.string().describe('The file path to fetch the content for')
+            path: z.string().describe('The file path to fetch the content for'),
+            branch: z.string().default("main").describe('The branch to fetch from')
         }),
-        handler: async ({owner, repo, path}: {owner: string, repo: string, path: string}) => {
+        handler: async ({owner, repo, path, branch}: {owner: string, repo: string, path: string, branch: string}) => {
             const octokit = new Octokit({ 
                 auth: getSecret('GITHUB_TOKEN')
             });
             try {
-                const content = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+                const content = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}?ref={branch}', {
                     owner,
                     repo,
                     path,
+                    branch,
                     headers: {
                         'Accept': 'application/vnd.github.object+json'
                     }
