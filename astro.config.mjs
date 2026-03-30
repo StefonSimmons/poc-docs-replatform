@@ -35,40 +35,45 @@ export default defineConfig({
       ],
       sidebar: [
         {
-          label: "Integrations-SSR-REST",
-          link: "/integrations-ssr-rest",
-        },
-        {
-          label: "Integrations-SSR-GQL",
-          link: "/integrations-ssr-gql",
-        },
-        {
-          label: "Integrations-SSR-LCC",
-          link: "/integrations-ssr-lcc",
-        },
-        {
-          label: "Integrations-SSG-ACL",
-          link: "/integrations-ssg-acl",
+          label: "Integrations - Github API",
+          items: [
+            {
+              label: "SSR REST Solution",
+              link: "/integrations/ssr-rest",
+            },
+            {
+              label: "SSR GQL Solution",
+              link: "/integrations/ssr-gql",
+            },
+            {
+              label: "SSR LCC On-Demand Solution",
+              link: "/integrations/ssr-lcc",
+            },
+            {
+              label: "SSG CL Build-time Solution",
+              link: "/integrations/ssg-cl",
+            },
+          ],
+          collapsed: true,
         },
         {
           // Autogenerate a group of links for the 'components' directory within /content/docs.
           label: "Components",
           autogenerate: { directory: "components" },
+          collapsed: true,
         },
         {
-          label: "Reference",
-          // Autogenerate a group of links for the 'reference' directory within /content/docs
-          autogenerate: { directory: "reference" },
+          label: "Documentation",
+          autogenerate: { directory: "content"},
+          collapsed: true,
         },
         {
-          label: "Guides",
-          // Autogenerate a group of links for the 'guides' directory within /content/docs.
-          autogenerate: { directory: "guides" },
+          label: "Starlight",
+          // Autogenerate a group of links for the 'how_to' directory within /content/docs
+          autogenerate: { directory: "starlight_how_to" },
+          collapsed: true,
+          badge: { text: 'How to', variant: 'caution' }
         },
-        {
-          label: "Supported Platforms",
-          autogenerate: { directory: "supported_platforms" }
-        }
       ],
       customCss: [
         // Path to your Tailwind base styles:
