@@ -1,23 +1,3 @@
-## Table of Contents
-
-- [Docs Replatform Proof of Concept](#docs-replatform-proof-of-concept)
-  - [Local Development](#local-development)
-    - [Use GitHub Token](#use-github-token)
-    - [Start the Local Astro Server](#start-the-local-astro-server)
-  - [Loading and Fetching Upstream Content (Part 1)](#loading-and-fetching-upstream-content-part-1)
-    - [SSR with REST as an Astro Action](#ssr-with-rest-as-an-astro-action)
-    - [SSR with GraphQL as an Astro Action](#ssr-with-graphql-as-an-astro-action)
-    - [SSR with GraphQL as a Live Content Loader (LCL)](#ssr-with-graphql-as-a-live-content-loader-lcl)
-    - [SSG with GraphQL as a build-time Content Loader (CL)](#ssg-with-graphql-as-a-build-time-content-loader-cl)
-- [Components Section](#components-section)
-  - [Problem](#problem)
-  - [Solution](#solution)
-      - [Atomic Design Model](#atomic-design-model)
-      - [Contribution Standards](#contribution-standards)
-- [Findings](#findings)
-- [Code Issues and Resolutions](#code-issues-and-resolutions)
-  - [Added `.pnp.cjs`, `.pnp.loader.mjs` and `.yarn/install-state.gz` Files](#added-pnpcjs-pnploader-mjs-and-yarninstall-stategz-files)
-
 # Docs Replatform Proof of Concept
 
 1. **Load and Fetch Upstream**: Renders Docs Integrations using 4 different load and fetch combinations. Requires markdown content in `websites-sources`. [See RFC](https://docs.google.com/document/d/1ftkZC4-o0tP1xh5nNy1V_MgDwc8i8yGCuIhO2-m39_c/edit?tab=t.0#heading=h.qnh5oea3lgsp)
@@ -70,28 +50,35 @@ The goal of the Components POC layer in this replatform is twofold:
 
 As part of this effort, ~50% of the Hugo shortcodes from the Documentation repo have already been converted into Astro components. As a result that equates to ~65% of shortcode references in Docs. [See the shortcode conversion sheet](https://docs.google.com/spreadsheets/d/1dmhGoiBNU5sm38gZeshcOsqaN3bYbQuKmCGtOG-wAKI/edit?gid=623811061#gid=623811061)
 
-## Problem
+## Problems and Solutions
 
-Today, components and patterns tend to get duplicated because there’s no easy way for writers or engineers to visually discover what already exists. That leads to:
-- Duplicate implementations  
-- Repo bloat  
-- Inconsistent usage patterns  
+### Discoverability Driving Duplicate and Inconsistent UI Patterns
+**Problem**
+- Today, components and patterns tend to get duplicated because there’s no easy way for writers or engineers to visually discover what already exists. That leads to:
+  - Duplicate implementations  
+  - Repo bloat  
+  - Inconsistent usage patterns  
 
 This section of the POC aims to fix that by centralizing UI patterns into approved, reusable components.
 
-## Solution
-
-Create a **component catalog site**, built with Astro + Starlight as seen in this POC.
-
-This site will:
-- Serve as the single source of truth for approved components  
-- Show how each component looks  
-- Document accepted parameters  
-- Provide usage examples  
-- Include search  
+**Solution** 
+- Create a **component catalog site**, built with Astro + Starlight as seen in this POC. This site will:
+  - Serve as the single source of truth for approved components  
+  - Show how each component looks  
+  - Document accepted parameters  
+  - Provide usage examples  
+  - Include search  
 
 Writers and engineers should rely on this catalog instead of creating ad hoc implementations. Usage should be limited to approved patterns.
 
+
+### Content mixed up in UI components
+**Problem**
+- Today, UI components include reusable content. This two concerns (UI and content) should be separate. Also, if there is no logic in the component, it most likely can liklely be a partial import rather than a astro component
+
+**Solution**
+- Add content to [Markdoc partials](https://markdoc.dev/docs/partials).
+  - We can then add reusable components to partials. See example https://poc-docs-replatform.vercel.app/components/partials/supportedruntimes/
 
 ### Atomic Design Model
 
