@@ -3,6 +3,9 @@
 1. **Load and Fetch Upstream**: Renders Docs Integrations using 4 different load and fetch combinations. Requires markdown content in `websites-sources`. [See RFC](https://docs.google.com/document/d/1ftkZC4-o0tP1xh5nNy1V_MgDwc8i8yGCuIhO2-m39_c/edit?tab=t.0#heading=h.qnh5oea3lgsp)
 2. **Component Page**: Renders all components on a demo page. These components are converted from Hugo Shortcodes 
 
+# Tech
+**Starlight** -- A speciailized _documentation_ theme built on top of the `Astro` framework. [Docs](https://starlight.astro.build/getting-started/)
+
 # Local Development
 
 ## Use Github Token
